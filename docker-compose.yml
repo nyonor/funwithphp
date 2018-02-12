@@ -1,0 +1,40 @@
+version:  '2'
+
+volumes:
+  database_data:
+    driver: local
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - 8080:80
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    volumes_from:
+      - php
+
+  php:
+    build: ./docker/php/
+    expose:
+      - 9000
+    volumes:
+      - .:/var/www/html
+    environment:
+      XDEBUG_CONFIG: remote_host=192.168.1.40
+      PHP_IDE_CONFIG: "serverName=nginx.local"
+
+  mysql:
+    image: mysql:latest
+    command: --disable-partition-engine-check
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    environment:
+      MYSQL_ROOT_PASSWORD: iddqdidkfa
+      MYSQL_DATABASE: manufactory_db
+      MYSQL_USER: askidans
+      MYSQL_PASSWORD: geekbrains
+    volumes:
+        - database_data:/var/lib/mysql
