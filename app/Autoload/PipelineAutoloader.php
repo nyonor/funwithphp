@@ -7,9 +7,9 @@
  *
  * todo описание автозагрузчика
  */
-
 namespace App\Autoload;
 use App\Autoload\Interfaces\PipelineAutoloaderInterface;
+use const App\Config\APP_DIR;
 use Exception;
 
 /**
@@ -34,7 +34,7 @@ class PipelineAutoloader implements PipelineAutoloaderInterface
             $this->requireArray = $requireArray;
         } catch (Exception $e) {
             //todo логировать ошибки? чем? решить вопрос!
-            return; //не кидаем ошибок, просто передаем управление другому автозагрузчика (если он есть)
+            return; //не кидаем ошибок, просто передаем управление другому автозагрузчику (если он есть)
         }
     }
 
@@ -49,9 +49,9 @@ class PipelineAutoloader implements PipelineAutoloaderInterface
     {
         // TODO: Implement loadClass() method.
 
-        $posOfLastSlash = strpos($class, '\\');
+        $posOfLastSlash = strrpos($class, '\\');
         $namespace = substr($class,0, $posOfLastSlash);
-        $class_name = substr($class, $posOfLastSlash, strlen($class));
+        $class_name = substr($class, $posOfLastSlash + 1, strlen($class));
 
         $path_to_file = $this->requireArray[$namespace];
 
@@ -59,7 +59,13 @@ class PipelineAutoloader implements PipelineAutoloaderInterface
             return false;
         }
 
-        $required_file = file_exists($path_to_file);
+        $required_file = str_replace('\\', '/', APP_DIR . $path_to_file . '/' . $class_name . '.php');
+        clearstatcache();
+        if (file_exists($required_file) == false){
+            return false;
+        }
+
+        require $required_file;
     }
 
     /**

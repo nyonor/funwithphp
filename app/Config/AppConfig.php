@@ -10,7 +10,9 @@
 
 namespace App\Config;
 
+const APP_DIR = '/var/www/html';
+
 class AppConfig
 {
-    const APP_DIR = '';
+
 }

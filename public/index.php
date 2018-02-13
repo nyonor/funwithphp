@@ -6,12 +6,18 @@
  * Time: 12:16 PM
  */
 
+//Инклудим интерфейс автозагрузчика
+require_once("../app/Autoload/Interfaces/PipelineAutoloaderInterface.php");
+
+//Инклудим константы
+require_once ("../app/Config/AppConfig.php");
+
 // Инклудим автозагрузчик
 require_once("../app/Autoload/PipelineAutoloader.php");
 
 /**
  * Массив-связка: неймспейс к базовой директории.
- * конфиг для автозагрузчика Pipeline
+ * конфиг для автозагрузчика PipelineAutoloader
  */
 $requireArray = [
     'App\Autoload\Interfaces' => '/app/Autoload/Interfaces',
@@ -21,3 +27,6 @@ $requireArray = [
 
 $pipeLineAutoloader = new App\Autoload\PipelineAutoloader($requireArray);
 $pipeLineAutoloader -> register();
+
+use \App\Ioc\SystemIoc;
+$test = new SystemIoc();
