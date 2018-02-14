@@ -1,5 +1,7 @@
 <?php
 /**
+ * todo описание
+ *
  * Created by PhpStorm.
  * User: NyoNor
  * Date: 2/9/2018
@@ -25,8 +27,8 @@ $requireArray = [
     'App\Ioc' => '/app/Ioc'
 ];
 
+//регистрируем автолоадер
 $pipeLineAutoloader = new App\Autoload\PipelineAutoloader($requireArray);
 $pipeLineAutoloader -> register();
 
-use \App\Ioc\SystemIoc;
-$test = new SystemIoc();
+//здесь можно зарегистрировать еще!

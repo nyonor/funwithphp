@@ -1,5 +1,7 @@
 <?php
 /**
+ * todo описание
+ *
  * Created by PhpStorm.
  * User: NyoNor
  * Date: 2/12/2018
@@ -13,6 +15,4 @@ class SystemIoc
     protected static $autoloadBinds = [
         'PipelineAutoloaderInterface' => 'PipelineAutoloader'
     ];
-
-    //todo методы и тп
 }
