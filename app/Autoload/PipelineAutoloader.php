@@ -8,7 +8,6 @@
  * todo описание автозагрузчика
  */
 namespace App\Autoload;
-use App\Autoload\Interfaces\PipelineAutoloaderInterface;
 use const App\Config\APP_DIR;
 use Exception;
 
@@ -53,6 +52,19 @@ class PipelineAutoloader implements PipelineAutoloaderInterface
         $namespace = substr($class,0, $posOfLastSlash);
         $class_name = substr($class, $posOfLastSlash + 1, strlen($class));
 
+        //если класс был вызван БЕЗ неймспейса
+        if (strlen($namespace) == 0){
+            foreach ($this->requireArray as $nmc => $path){
+                $files = scandir(APP_DIR . $path);
+                $file_index = array_search($class . '.php', $files);
+                if ($file_index != false){
+                    $file_path = APP_DIR . $path . '/' . $files[$file_index];
+                    require_once $file_path;
+                    return $file_path;
+                }
+            }
+        }
+
         $path_to_file = $this->requireArray[$namespace];
 
         if ($path_to_file == null) {
@@ -60,12 +72,15 @@ class PipelineAutoloader implements PipelineAutoloaderInterface
         }
 
         $required_file = str_replace('\\', '/', APP_DIR . $path_to_file . '/' . $class_name . '.php');
+
         clearstatcache();
         if (file_exists($required_file) == false){
             return false;
         }
 
-        require $required_file;
+        require_once $required_file;
+
+        return $required_file;
     }
 
     /**

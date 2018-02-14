@@ -13,6 +13,11 @@ namespace App\Ioc;
 class SystemIoc
 {
     protected static $autoloadBinds = [
-        'PipelineAutoloaderInterface' => 'PipelineAutoloader'
+
     ];
+
+    public static function Factory($interface){
+        $class = SystemIoc::$autoloadBinds[$interface];
+        return new $class;
+    }
 }

@@ -9,7 +9,7 @@
  * Time: 4:36 PM
  */
 
-namespace App\Autoload\Interfaces;
+namespace App\Autoload;
 
 interface PipelineAutoloaderInterface
 {
