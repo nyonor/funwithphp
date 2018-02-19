@@ -14,5 +14,5 @@ const APP_DIR = '/var/www/html';
 
 class AppConfig
 {
-
+    //todo конфиг приложения в виде констант?
 }

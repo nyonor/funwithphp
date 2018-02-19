@@ -8,7 +8,7 @@
  * Time: 12:16 PM
  */
 
-//Инклудим интерфейс автозагрузчика
+//Инклудим интерфейс автозагрузчика //todo внедрить в систему IOC?
 require_once("../app/Autoload/PipelineAutoloaderInterface.php");
 
 //Инклудим константы

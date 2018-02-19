@@ -53,6 +53,9 @@ class PipelineAutoloader implements PipelineAutoloaderInterface
         $class_name = substr($class, $posOfLastSlash + 1, strlen($class));
 
         //если класс был вызван БЕЗ неймспейса
+        /**
+         * @deprecated
+         *
         if (strlen($namespace) == 0){
             foreach ($this->requireArray as $nmc => $path){
                 $files = scandir(APP_DIR . $path);
@@ -64,6 +67,7 @@ class PipelineAutoloader implements PipelineAutoloaderInterface
                 }
             }
         }
+         */
 
         $path_to_file = $this->requireArray[$namespace];
 
