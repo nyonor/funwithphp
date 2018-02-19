@@ -10,14 +10,14 @@
 
 namespace App\Ioc;
 
-class SystemIoc
+class Ioc
 {
     protected static $autoloadBinds = [
 
     ];
 
     public static function Factory($interface){
-        $class = SystemIoc::$autoloadBinds[$interface];
+        $class = Ioc::$autoloadBinds[$interface];
         return new $class;
     }
 }

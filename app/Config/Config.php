@@ -12,7 +12,7 @@ namespace App\Config;
 
 const APP_DIR = '/var/www/html';
 
-class AppConfig
+class Config
 {
     //todo конфиг приложения в виде констант?
 }

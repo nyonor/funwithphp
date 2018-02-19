@@ -9,17 +9,17 @@
  */
 
 //Инклудим интерфейс автозагрузчика //todo внедрить в систему IOC?
-require_once("../app/Autoload/PipelineAutoloaderInterface.php");
+require_once("../app/Autoload/AutoloaderInterface.php");
 
 //Инклудим константы
-require_once ("../app/Config/AppConfig.php");
+require_once("../app/Config/Config.php");
 
 // Инклудим автозагрузчик
-require_once("../app/Autoload/PipelineAutoloader.php");
+require_once("../app/Autoload/Autoloader.php");
 
 /**
  * Массив-связка: неймспейс к базовой директории.
- * конфиг для автозагрузчика PipelineAutoloader
+ * конфиг для автозагрузчика Autoloader
  */
 $requireArray = [
     'App\Autoload' => '/app/Autoload',
@@ -27,7 +27,7 @@ $requireArray = [
 ];
 
 //регистрируем автолоадер
-$pipeLineAutoloader = new App\Autoload\PipelineAutoloader($requireArray);
+$pipeLineAutoloader = new App\Autoload\Autoloader($requireArray);
 $pipeLineAutoloader -> register();
 
 //здесь можно зарегистрировать еще!

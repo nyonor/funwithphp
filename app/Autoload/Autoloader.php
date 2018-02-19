@@ -12,10 +12,10 @@ use const App\Config\APP_DIR;
 use Exception;
 
 /**
- * Class PipelineAutoloader
+ * Class Autoloader
  * @package App\Autoload
  */
-class PipelineAutoloader implements PipelineAutoloaderInterface
+class Autoloader implements AutoloaderInterface
 {
 
     /**
@@ -24,7 +24,7 @@ class PipelineAutoloader implements PipelineAutoloaderInterface
     protected $requireArray;
 
     /**
-     * PipelineAutoloader constructor.
+     * Autoloader constructor.
      * @param array $requireArray
      */
     public function __construct(array $requireArray)

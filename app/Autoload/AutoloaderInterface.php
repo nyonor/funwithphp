@@ -11,11 +11,11 @@
 
 namespace App\Autoload;
 
-interface PipelineAutoloaderInterface
+interface AutoloaderInterface
 {
     /**
      * todo описание конструктора интерфейса
-     * PipelineAutoloaderInterface constructor.
+     * AutoloaderInterface constructor.
      * @param array $requireArray массив вида ['НЕЙМСПЕЙС', 'ИМЯ_КЛАССА'], будет использован для require_once классов
      */
     public function __construct(array $requireArray);
