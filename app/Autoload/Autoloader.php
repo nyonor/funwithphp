@@ -77,7 +77,7 @@ class Autoloader implements AutoloaderInterface
 
         $required_file = str_replace('\\', '/', APP_DIR . $path_to_file . '/' . $class_name . '.php');
 
-        clearstatcache();
+        //clearstatcache();
         if (file_exists($required_file) == false){
             return false;
         }

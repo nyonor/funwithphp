@@ -16,20 +16,32 @@
 
 namespace App\Pipeline;
 
-use Exception;
+use App\Modules\ModuleInterface;
 
 interface PipelineInterface
 {
     /**
      * Регистрирует модуль в пайпе
      * @param ModuleInterface $module
-     * @return null
-     * @throws Exception
+     * @return $this
      */
-    function RegisterModule(ModuleInterface $module);
+    public function RegisterModule(ModuleInterface $module);
+
+//    /**
+//     * Возвращает зарегистрированные модули
+//     * @param array $moduleInterface
+//     * @return array
+//     */
+//    public function GetAllModules(array $moduleInterface);
 
     /**
-     * @return PipeInterface
+     * Запускает обработку запроса через все зарегистрированные модули
+     * в этом методе входные параметры будут преобразованы в ModuleArgument
+     * и будут переданы в первый зарегистрированный модуль, затем в следующий и так далее
+     * пока массив всех модулей не будет пройден.
+     * @param $_REQUEST
+     * @throws PipelineException
+     * @return void
      */
-    function GetPipe();
+    public function Process($request_array);
 }

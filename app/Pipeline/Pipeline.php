@@ -11,7 +11,66 @@
 namespace App\Pipeline;
 
 
+use App\Ioc\Ioc;
+use App\Modules\ModuleArgumentInterface;
+use App\Modules\ModuleInterface;
+use App\Modules\Routing\RequestInterface;
+
 class Pipeline implements PipelineInterface
 {
+    protected $registeredModules = [];
+    protected $request = null;
 
+    /**
+     * Регистрирует модуль в пайпе
+     * @param ModuleInterface $module
+     * @return $this
+     * @throws PipelineException
+     */
+    function RegisterModule(ModuleInterface $module)
+    {
+        $foundModuleKey = array_search($module, $this->registeredModules);
+        $foundModule = $this->registeredModules[$foundModuleKey];
+        if (isset($foundModule) && get_class($module) == get_class($foundModule)) {
+            throw new PipelineException("Модуль уже зарегистрирован в пайплайне!");
+        }
+        $this->registeredModules[get_class($module)] = $module;
+        return $this;
+    }
+
+//    /**
+//     * Возвращает зарегистрированные модули
+//     * @param array $moduleInterface
+//     * @return array
+//     */
+//    function GetAllModules(array $moduleInterface)
+//    {
+//        return $this->registeredModules;
+//    }
+
+    /**
+     * Запускает обработку запроса через все зарегистрированные модули
+     * в этом методе входные параметры будут преобразованы в ModuleArgument
+     * и будут переданы в первый зарегистрированный модуль, затем в следующий и так далее
+     * пока массив всех модулей не будет пройден.
+     * @param $request_array
+     * @return void
+     */
+    public function Process($request_array)
+    {
+        //создаем объект запроса (Request)
+        $this->request = Ioc::FactoryWithArgs(RequestInterface::class, $request_array);
+        $result = null;
+        foreach ($this->registeredModules as $module) {
+            if ($result == null) {
+                $args = $this->request;
+            } else {
+                $args = $result;
+            }
+            /**
+             * @var $module ModuleInterface
+             */
+            $result = $module->Process(Ioc::FactoryWithArgs(ModuleArgumentInterface::class, $args));
+        }
+    }
 }

@@ -14,7 +14,7 @@ namespace App\Autoload;
 interface AutoloaderInterface
 {
     /**
-     * todo описание конструктора интерфейса
+     * В качестве аргумента передается массив-связка: Неймспейс -> Директория
      * AutoloaderInterface constructor.
      * @param array $requireArray массив вида ['НЕЙМСПЕЙС', 'ИМЯ_КЛАССА'], будет использован для require_once классов
      */
