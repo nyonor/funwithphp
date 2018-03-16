@@ -13,7 +13,10 @@
 namespace App\Modules;
 
 
+use App\Modules\Mvc\Routing\RequestInterface;
+
 interface ModuleArgumentInterface
 {
-    //todo реализовать интерфейс
+    public function __construct(RequestInterface $request);
+    public function GetRequest() : RequestInterface;
 }

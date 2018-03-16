@@ -14,10 +14,10 @@ use App\Modules\ModuleArgument;
 use App\Modules\ModuleArgumentInterface;
 use App\Modules\Mvc\MvcModule;
 use App\Modules\Mvc\MvcModuleInterface;
-use App\Modules\Routing\Request;
-use App\Modules\Routing\RequestInterface;
-use App\Modules\Routing\RoutingModule;
-use App\Modules\Routing\RoutingModuleInterface;
+use App\Modules\Mvc\Routing\Request;
+use App\Modules\Mvc\Routing\RequestInterface;
+use App\Modules\Mvc\Routing\Routing;
+use App\Modules\Mvc\Routing\RoutingInterface;
 use App\Pipeline\Pipeline;
 use App\Pipeline\PipelineInterface;
 
@@ -27,7 +27,7 @@ class Ioc
     protected static $autoloadBinds = [
         PipelineInterface::class => Pipeline::class,
         MvcModuleInterface::class => MvcModule::class,
-        RoutingModuleInterface::class => RoutingModule::class,
+        RoutingInterface::class => Routing::class,
         RequestInterface::class => Request::class,
         ModuleArgumentInterface::class => ModuleArgument::class
     ];

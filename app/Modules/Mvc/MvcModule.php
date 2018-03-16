@@ -9,7 +9,9 @@
 namespace App\Modules\Mvc;
 
 
+use App\Ioc\Ioc;
 use App\Modules\ModuleArgumentInterface;
+use App\Modules\Mvc\Routing\RoutingInterface;
 
 class MvcModule implements MvcModuleInterface
 {
@@ -20,6 +22,25 @@ class MvcModule implements MvcModuleInterface
      */
     public function Process(ModuleArgumentInterface $argument = null): ModuleArgumentInterface
     {
-        // TODO: Implement StartModule() method.
+        /**
+         * @var $routing RoutingInterface
+         */
+        //создаем роут на основе входящих аргументов
+        $routing = Ioc::FactoryWithArgs(RoutingInterface::class, $argument);
+        $route = $routing->GetRoute($argument->GetRequest());
+
+        //получаем контоллер
+        $controller = $route->GetController();
+
+        //экшн
+        $action = $route->GetAction();
+
+        //параметры
+        $parameters = $route->GetParameters();
+
+        //выполняем
+        $result = $controller->$action($parameters);
+
+        //todo реализовать
     }
 }

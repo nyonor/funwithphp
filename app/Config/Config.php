@@ -14,5 +14,8 @@ const APP_DIR = '/var/www/html';
 
 class Config
 {
+    public static $routeTemplates = [
+        "{controller}/{action}/{id}"
+    ];
     //todo конфиг приложения в виде констант?
 }

@@ -9,6 +9,19 @@
 namespace App\Modules;
 
 
+use App\Modules\Mvc\Routing\RequestInterface;
+
 class ModuleArgument implements ModuleArgumentInterface
 {
+    protected $currentRequest = null;
+
+    public function __construct(RequestInterface $request)
+    {
+        $this->currentRequest = $request;
+    }
+
+    public function GetRequest(): RequestInterface
+    {
+        return $this->currentRequest;
+    }
 }

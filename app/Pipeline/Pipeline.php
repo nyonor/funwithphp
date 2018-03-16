@@ -14,12 +14,22 @@ namespace App\Pipeline;
 use App\Ioc\Ioc;
 use App\Modules\ModuleArgumentInterface;
 use App\Modules\ModuleInterface;
-use App\Modules\Routing\RequestInterface;
+use App\Modules\Mvc\Routing\RequestInterface;
 
+/**
+ * Class Pipeline
+ * @package App\Pipeline
+ * @property RequestInterface $request
+ */
 class Pipeline implements PipelineInterface
 {
     protected $registeredModules = [];
     protected $request = null;
+
+    function __construct()
+    {
+        $this->request = Ioc::Factory(RequestInterface::class);
+    }
 
     /**
      * Регистрирует модуль в пайпе
@@ -38,16 +48,6 @@ class Pipeline implements PipelineInterface
         return $this;
     }
 
-//    /**
-//     * Возвращает зарегистрированные модули
-//     * @param array $moduleInterface
-//     * @return array
-//     */
-//    function GetAllModules(array $moduleInterface)
-//    {
-//        return $this->registeredModules;
-//    }
-
     /**
      * Запускает обработку запроса через все зарегистрированные модули
      * в этом методе входные параметры будут преобразованы в ModuleArgument
@@ -56,10 +56,13 @@ class Pipeline implements PipelineInterface
      * @param $request_array
      * @return void
      */
-    public function Process($request_array)
+    public function Process($request_array = null)
     {
         //создаем объект запроса (Request)
-        $this->request = Ioc::FactoryWithArgs(RequestInterface::class, $request_array);
+        if ($request_array != null) {
+            $this->request = Ioc::FactoryWithArgs(RequestInterface::class, $request_array);
+        }
+
         $result = null;
         foreach ($this->registeredModules as $module) {
             if ($result == null) {

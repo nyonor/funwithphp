@@ -27,21 +27,14 @@ interface PipelineInterface
      */
     public function RegisterModule(ModuleInterface $module);
 
-//    /**
-//     * Возвращает зарегистрированные модули
-//     * @param array $moduleInterface
-//     * @return array
-//     */
-//    public function GetAllModules(array $moduleInterface);
-
     /**
      * Запускает обработку запроса через все зарегистрированные модули
      * в этом методе входные параметры будут преобразованы в ModuleArgument
      * и будут переданы в первый зарегистрированный модуль, затем в следующий и так далее
      * пока массив всех модулей не будет пройден.
-     * @param $_REQUEST
+     * @param $request_array
      * @throws PipelineException
      * @return void
      */
-    public function Process($request_array);
+    public function Process($request_array = null);
 }
