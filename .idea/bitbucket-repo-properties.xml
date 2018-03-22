@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BitbucketRepositoryProperties">
+    <repository relativeRootPath="/">
+      <properties>
+        <property name="always_link_to_remote">https://bitbucket.org/nyonor/manufactory</property>
+        <property name="pull_request_default_target_branch_name">https://nyonor@bitbucket.org/eds_team/manufactory.git</property>
+      </properties>
+    </repository>
+  </component>
+</project>

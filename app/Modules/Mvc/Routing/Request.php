@@ -11,18 +11,23 @@ namespace App\Modules\Mvc\Routing;
 
 class Request implements RequestInterface
 {
-    public function GetMethod()
+    public function getMethod()
     {
         return $_SERVER['REQUEST_METHOD'];
     }
 
-    public function GetUri()
+    public function getUri()
     {
         return $_SERVER['REQUEST_URI'];
     }
 
-    public function GetParameters()
+    public function getParameters()
     {
         return $_REQUEST;
+    }
+
+    public function getDomain()
+    {
+        return $_SERVER['HTTP_HOST'];
     }
 }

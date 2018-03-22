@@ -11,7 +11,8 @@ namespace App\Modules\Mvc\Routing;
 
 interface RequestInterface
 {
-    public function GetMethod();
-    public function GetUri();
-    public function GetParameters();
+    public function getMethod();
+    public function getUri();
+    public function getParameters();
+    public function getDomain();
 }

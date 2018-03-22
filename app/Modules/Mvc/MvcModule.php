@@ -20,23 +20,23 @@ class MvcModule implements MvcModuleInterface
      * @param ModuleArgumentInterface $argument
      * @return ModuleArgumentInterface ;
      */
-    public function Process(ModuleArgumentInterface $argument = null): ModuleArgumentInterface
+    public function process(ModuleArgumentInterface $argument = null): ModuleArgumentInterface
     {
         /**
          * @var $routing RoutingInterface
          */
         //создаем роут на основе входящих аргументов
-        $routing = Ioc::FactoryWithArgs(RoutingInterface::class, $argument);
-        $route = $routing->GetRoute($argument->GetRequest());
+        $routing = Ioc::factoryWithArgs(RoutingInterface::class, $argument);
+        $route = $routing->getRoute($argument->getRequest());
 
         //получаем контоллер
-        $controller = $route->GetController();
+        $controller = $route->getController();
 
         //экшн
-        $action = $route->GetAction();
+        $action = $route->getAction();
 
         //параметры
-        $parameters = $route->GetParameters();
+        $parameters = $route->getParameters();
 
         //выполняем
         $result = $controller->$action($parameters);

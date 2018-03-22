@@ -28,7 +28,7 @@ class Pipeline implements PipelineInterface
 
     function __construct()
     {
-        $this->request = Ioc::Factory(RequestInterface::class);
+        $this->request = Ioc::factory(RequestInterface::class);
     }
 
     /**
@@ -37,7 +37,7 @@ class Pipeline implements PipelineInterface
      * @return $this
      * @throws PipelineException
      */
-    function RegisterModule(ModuleInterface $module)
+    function registerModule(ModuleInterface $module)
     {
         $foundModuleKey = array_search($module, $this->registeredModules);
         $foundModule = $this->registeredModules[$foundModuleKey];
@@ -56,11 +56,11 @@ class Pipeline implements PipelineInterface
      * @param $request_array
      * @return void
      */
-    public function Process($request_array = null)
+    public function process($request_array = null)
     {
         //создаем объект запроса (Request)
         if ($request_array != null) {
-            $this->request = Ioc::FactoryWithArgs(RequestInterface::class, $request_array);
+            $this->request = Ioc::factoryWithArgs(RequestInterface::class, $request_array);
         }
 
         $result = null;
@@ -73,7 +73,7 @@ class Pipeline implements PipelineInterface
             /**
              * @var $module ModuleInterface
              */
-            $result = $module->Process(Ioc::FactoryWithArgs(ModuleArgumentInterface::class, $args));
+            $result = $module->process(Ioc::factoryWithArgs(ModuleArgumentInterface::class, $args));
         }
     }
 }

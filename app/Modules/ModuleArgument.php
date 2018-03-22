@@ -20,7 +20,7 @@ class ModuleArgument implements ModuleArgumentInterface
         $this->currentRequest = $request;
     }
 
-    public function GetRequest(): RequestInterface
+    public function getRequest(): RequestInterface
     {
         return $this->currentRequest;
     }

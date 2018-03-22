@@ -16,6 +16,10 @@ use App\Modules\Mvc\MvcModule;
 use App\Modules\Mvc\MvcModuleInterface;
 use App\Modules\Mvc\Routing\Request;
 use App\Modules\Mvc\Routing\RequestInterface;
+use App\Modules\Mvc\Routing\Route;
+use App\Modules\Mvc\Routing\RouteArgument;
+use App\Modules\Mvc\Routing\RouteArgumentInterface;
+use App\Modules\Mvc\Routing\RouteInterface;
 use App\Modules\Mvc\Routing\Routing;
 use App\Modules\Mvc\Routing\RoutingInterface;
 use App\Pipeline\Pipeline;
@@ -23,11 +27,13 @@ use App\Pipeline\PipelineInterface;
 
 class Ioc
 {
-    //todo видимо это должно быть вынесено в конфиг? или куда то еще
+    //todo видимо это должно быть вынесено в конфиг?
     protected static $autoloadBinds = [
         PipelineInterface::class => Pipeline::class,
         MvcModuleInterface::class => MvcModule::class,
         RoutingInterface::class => Routing::class,
+        RouteInterface::class => Route::class,
+        RouteArgumentInterface::class => RouteArgument::class,
         RequestInterface::class => Request::class,
         ModuleArgumentInterface::class => ModuleArgument::class
     ];
@@ -37,7 +43,7 @@ class Ioc
      * @param $interface
      * @return mixed
      */
-    public static function Factory($interface){
+    public static function factory($interface){
         $class = Ioc::$autoloadBinds[$interface];
         return new $class;
     }
@@ -48,7 +54,7 @@ class Ioc
      * @param $arguments
      * @return mixed
      */
-    public static function FactoryWithArgs($interface, $arguments){
+    public static function factoryWithArgs($interface, $arguments){
         $class = Ioc::$autoloadBinds[$interface];
         return new $class($arguments);
     }

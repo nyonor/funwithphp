@@ -25,12 +25,12 @@ class Autoloader implements AutoloaderInterface
 
     /**
      * Autoloader constructor.
-     * @param array $requireArray
+     * @param array $require_array
      */
-    public function __construct(array $requireArray)
+    public function __construct(array $require_array)
     {
         try {
-            $this->requireArray = $requireArray;
+            $this->requireArray = $require_array;
         } catch (Exception $e) {
             //todo логировать ошибки? чем? решить вопрос!
             return; //не кидаем ошибок, просто передаем управление другому автозагрузчику (если он есть)
@@ -52,23 +52,6 @@ class Autoloader implements AutoloaderInterface
         $namespace = substr($class,0, $posOfLastSlash);
         $class_name = substr($class, $posOfLastSlash + 1, strlen($class));
 
-        //если класс был вызван БЕЗ неймспейса
-        /**
-         * @deprecated
-         *
-        if (strlen($namespace) == 0){
-            foreach ($this->requireArray as $nmc => $path){
-                $files = scandir(APP_DIR . $path);
-                $file_index = array_search($class . '.php', $files);
-                if ($file_index != false){
-                    $file_path = APP_DIR . $path . '/' . $files[$file_index];
-                    require_once $file_path;
-                    return $file_path;
-                }
-            }
-        }
-         */
-
         $path_to_file = $this->requireArray[$namespace];
 
         if ($path_to_file == null) {
@@ -77,7 +60,6 @@ class Autoloader implements AutoloaderInterface
 
         $required_file = str_replace('\\', '/', APP_DIR . $path_to_file . '/' . $class_name . '.php');
 
-        //clearstatcache();
         if (file_exists($required_file) == false){
             return false;
         }

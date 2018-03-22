@@ -25,7 +25,7 @@ interface PipelineInterface
      * @param ModuleInterface $module
      * @return $this
      */
-    public function RegisterModule(ModuleInterface $module);
+    public function registerModule(ModuleInterface $module);
 
     /**
      * Запускает обработку запроса через все зарегистрированные модули
@@ -36,5 +36,5 @@ interface PipelineInterface
      * @throws PipelineException
      * @return void
      */
-    public function Process($request_array = null);
+    public function process($request_array = null);
 }

@@ -1,6 +1,7 @@
 <?php
 /**
- * Создает Route на основе переданных данных
+ * Подбирает роутинговый шаблон на основе запроса.
+ * Создает Route на основе переданных данных,
  *
  * Created by PhpStorm.
  * User: NyoNor
@@ -11,6 +12,9 @@
 namespace App\Modules\Mvc\Routing;
 
 
+use App\Config\Config;
+use App\Ioc\Ioc;
+
 class Routing implements RoutingInterface
 {
     protected $argument;
@@ -20,8 +24,60 @@ class Routing implements RoutingInterface
      * @param $request RequestInterface
      * @return RouteInterface
      */
-    public function GetRoute($request): RouteInterface
+    public function getRoute($request): RouteInterface
     {
-        //todo реализация
+        $templates = Config::$routeTemplates;
+        foreach ($templates as $template) {
+            $mapping_result = $this->Map($template, $request);
+
+            if ($mapping_result == null) {
+                continue;
+            }
+
+            $new_route = Ioc::factoryWithArgs(RouteInterface::class, $mapping_result);
+            return $new_route;
+        }
+    }
+
+    /**
+     * Маппинг Request к шаблону
+     * @param $template string
+     * @param $request RequestInterface
+     * @return RouteArgumentInterface
+     */
+    public function map($template, $request)
+    {
+        $current_uri = $request->getUri();
+        $uri_splitted_arr = explode('/', ltrim($current_uri, '/'));
+        $template_splitted_arr = explode('/', ltrim($template, '/'));
+
+        if (count($uri_splitted_arr) != count($template_splitted_arr)) {
+            echo 'NEXT <br/>';
+            return null;
+        }
+
+        echo 'THIS ONE <br/>';
+
+        $controller_uri_str = $uri_splitted_arr[0];
+        $action_uri_str = $uri_splitted_arr[1];
+        $other_uri_arr = array_slice($uri_splitted_arr, 2, count($uri_splitted_arr));
+        $other_uri_str = implode('/', $other_uri_arr);
+        $route_params_arr = explode('/', substr($other_uri_str, 0, stripos($other_uri_str, '?') - 1));
+        $uri_params_part_str = ltrim(substr($other_uri_str, stripos($other_uri_str, '?'), strlen($other_uri_str)), '?');
+        $uri_params_arr = explode('&', $uri_params_part_str);
+        $form_parameters = null; //todo
+
+        $arg = [
+            'template' => $template,
+            'controller' => !empty($controller_uri_str) ? $controller_uri_str : Config::ROUTING_DEFAULT_CONTROLLER_NAME,
+            'action' => !empty($action_uri_str) ? $action_uri_str : Config::ROUTING_DEFAULT_ACTION_NAME,
+            'route_parameters' => $route_params_arr,
+            'uri_parameters' => $uri_params_arr,
+            'form_parameters' => $form_parameters, //todo,
+            'domain_name' => $request->getDomain()
+        ];
+
+        $route_argument = Ioc::factoryWithArgs(RouteArgumentInterface::class, $arg);
+        return $route_argument;
     }
 }

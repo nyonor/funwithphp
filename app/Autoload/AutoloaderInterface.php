@@ -16,9 +16,9 @@ interface AutoloaderInterface
     /**
      * В качестве аргумента передается массив-связка: Неймспейс -> Директория
      * AutoloaderInterface constructor.
-     * @param array $requireArray массив вида ['НЕЙМСПЕЙС', 'ИМЯ_КЛАССА'], будет использован для require_once классов
+     * @param array $require_array массив вида ['НЕЙМСПЕЙС', 'ИМЯ_КЛАССА'], будет использован для require_once классов
      */
-    public function __construct(array $requireArray);
+    public function __construct(array $require_array);
 
     /**
      * Метод который непосредственно загружает запрошенный класс...

@@ -18,5 +18,5 @@ use App\Modules\Mvc\Routing\RequestInterface;
 interface ModuleArgumentInterface
 {
     public function __construct(RequestInterface $request);
-    public function GetRequest() : RequestInterface;
+    public function getRequest() : RequestInterface;
 }

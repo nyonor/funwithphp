@@ -17,5 +17,5 @@ interface RoutingInterface
      * @param $request RequestInterface
      * @return RouteInterface
      */
-    public function GetRoute($request) : RouteInterface;
+    public function getRoute($request) : RouteInterface;
 }

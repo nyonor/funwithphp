@@ -13,17 +13,47 @@ namespace App\Modules\Mvc\Routing;
 
 interface RouteInterface
 {
+    /**
+     * RouteInterface constructor.
+     * @param RouteArgumentInterface $argument
+     */
+    public function __construct(RouteArgumentInterface $argument);
 
     /**
      * Возвращает функцию по выполнению которой будут вызваны соответствующие классы и переданы
      * необходимые аргументы для выполнения маршрута
      * @return callable
      */
-    public function GetCallChain() : callable;
+    public function getCallChain() : callable;
 
     /**
      * Возвращает темплейт связанный с данным роутом
      * @return string
      */
-    public function GetTemplate() : string;
+    public function getTemplate() : string;
+
+    /**
+     * Возвращает ИМЯ КЛАССА, который является соответсвтующим контроллером
+     * @return string
+     */
+    public function getController() : string;
+
+    /**
+     * Возвращает ИМЯ МЕТОДА, который является соответствующим экшеном
+     * @return string
+     */
+    public function getAction() : string;
+
+    /**
+     * Возвращает соответствущие список параметров типа
+     * имя_параметра => значение_параметра
+     * @return array
+     */
+    public function getParameters() : array;
+
+    /**
+     * На основании
+     * @return array
+     */
+    public function getSegment() : array;
 }
