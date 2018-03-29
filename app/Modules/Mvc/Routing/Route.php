@@ -10,6 +10,9 @@ namespace App\Modules\Mvc\Routing;
 
 
 use App\Config\Config;
+use const App\Config\SEGMENT_ACTION_KEYWORD;
+use const App\Config\SEGMENT_CONTROLLER_KEYWORD;
+use const App\Config\SEGMENT_CONTROLLER_LAST_NAMESPACE;
 use App\Pipeline\PipelineException;
 
 class Route implements RouteInterface
@@ -25,6 +28,18 @@ class Route implements RouteInterface
      * @var $controllerClassName string
      */
     protected $controllerClassName;
+
+    /**
+     * Имя метода класса-контроллера
+     * @var string
+     */
+    protected $actionMethodName;
+
+    /**
+     * Параметры
+     * @return array
+     */
+    protected $parameters;
 
     /**
      * Текущий сегмент
@@ -65,7 +80,7 @@ class Route implements RouteInterface
      * @return string
      * @throws PipelineException
      */
-    public function getController(): string
+    public function getControllerClassName(): string
     {
         if (empty($this->controllerClassName)){
             $this->controllerClassName = $this->findControllerClassName($this->routeArgument->getControllerName());
@@ -78,9 +93,15 @@ class Route implements RouteInterface
      * Возвращает ИМЯ МЕТОДА, который является соответствующим экшеном
      * @return string
      */
-    public function getAction(): string
+    public function getActionMethodName(): string
     {
-        // TODO: Implement GetAction() method.
+        if (empty($this->action)) {
+            $this->actionMethodName = $this->routeArgument->getActionName() == Config::ROUTING_DEFAULT_ACTION_NAME ?
+                Config::ROUTING_DEFAULT_ACTION_NAME . SEGMENT_ACTION_KEYWORD :
+                $this->routeArgument->getActionName() . SEGMENT_ACTION_KEYWORD;
+        }
+
+        return $this->actionMethodName;
     }
 
     /**
@@ -90,7 +111,7 @@ class Route implements RouteInterface
      */
     public function getParameters(): array
     {
-        // TODO: Implement GetParameters() method.
+        // todo
     }
 
     /**
@@ -124,12 +145,18 @@ class Route implements RouteInterface
         $supposed_class_name = null;
 
         foreach ($segment['autoload_data'] as $namespace => $path) {
-
+            $last_namespace = substr($namespace, strripos($namespace, '\\') + 1);
+            if (SEGMENT_CONTROLLER_LAST_NAMESPACE != $last_namespace){ //todo сомнительно конечно
+                continue;
+            }
+            $supposed_class_name = $namespace . '\\' . $controller_name . SEGMENT_CONTROLLER_KEYWORD;
+            $exists = class_exists($supposed_class_name, true);
+            if ($exists == true) {
+                $controller_class_name = $supposed_class_name;
+                return $controller_class_name;
+            }
         }
 
-        $res = class_exists($supposed_class_name, true);
-        var_dump($res);
-
-        return $controller_class_name;
+        return null;
     }
 }

@@ -30,16 +30,16 @@ class MvcModule implements MvcModuleInterface
         $route = $routing->getRoute($argument->getRequest());
 
         //получаем контоллер
-        $controller = $route->getController();
+        $controller_class_name = $route->getControllerClassName();
 
         //экшн
-        $action = $route->getAction();
+        $action_method_name = $route->getActionMethodName();
 
         //параметры
-        $parameters = $route->getParameters();
+        //$parameters_ = $route->getParameters();
 
         //выполняем
-        $result = $controller->$action($parameters);
+        //$result = $controller->$action($parameters);
 
         //todo реализовать
     }

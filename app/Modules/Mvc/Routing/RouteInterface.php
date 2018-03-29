@@ -36,13 +36,13 @@ interface RouteInterface
      * Возвращает ИМЯ КЛАССА, который является соответсвтующим контроллером
      * @return string
      */
-    public function getController() : string;
+    public function getControllerClassName() : string;
 
     /**
      * Возвращает ИМЯ МЕТОДА, который является соответствующим экшеном
      * @return string
      */
-    public function getAction() : string;
+    public function getActionMethodName() : string;
 
     /**
      * Возвращает соответствущие список параметров типа

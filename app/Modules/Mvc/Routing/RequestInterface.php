@@ -13,6 +13,6 @@ interface RequestInterface
 {
     public function getMethod();
     public function getUri();
-    public function getParameters();
+    public function getRawParameters();
     public function getDomain();
 }

@@ -13,6 +13,8 @@ namespace App\Config;
 
 const APP_DIR = '/var/www/html';
 const SEGMENT_CONTROLLER_KEYWORD = "Controller";
+const SEGMENT_CONTROLLER_LAST_NAMESPACE = "Controllers";
+const SEGMENT_ACTION_KEYWORD = "Action";
 
 
 class Config
@@ -37,7 +39,8 @@ class Config
         'backend' => [
             'domain_name' => 'localhost:8080',
             'autoload_data' => [
-                'Segments\Nyo\Backend\Controllers' => '/segments/nyo/backend/Controllers'
+                'Segments\Nyo\Backend\\' . SEGMENT_CONTROLLER_LAST_NAMESPACE => '/segments/nyo/backend/Controllers'
+                //todo соминтельно конечно
             ],
         ]
     ];

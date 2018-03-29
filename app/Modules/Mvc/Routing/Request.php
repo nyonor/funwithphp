@@ -21,7 +21,7 @@ class Request implements RequestInterface
         return $_SERVER['REQUEST_URI'];
     }
 
-    public function getParameters()
+    public function getRawParameters()
     {
         return $_REQUEST;
     }
