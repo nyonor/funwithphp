@@ -1,5 +1,9 @@
 <?php
 /**
+ * Модуль создает роут, контроллер и экшен на основе
+ * реквеста, обрабатывет результаты отработки экшена и контроллера.
+ * Возвращает результаты в виде респонса.
+ *
  * Created by PhpStorm.
  * User: NyoNor
  * Date: 3/15/2018
@@ -20,7 +24,7 @@ class MvcModule implements MvcModuleInterface
      * @param ModuleArgumentInterface $argument
      * @return ModuleArgumentInterface ;
      */
-    public function process(ModuleArgumentInterface $argument = null): ModuleArgumentInterface
+    public function process(ModuleArgumentInterface $argument): ModuleArgumentInterface
     {
         /**
          * @var $routing RoutingInterface
@@ -36,10 +40,19 @@ class MvcModule implements MvcModuleInterface
         $action_method_name = $route->getActionMethodName();
 
         //параметры
-        //$parameters_ = $route->getParameters();
+        $route_and_url_args = $route->getParameters();
 
         //выполняем
-        //$result = $controller->$action($parameters);
+        $controller_instance = new $controller_class_name;
+        /**
+         * @var $action_result ActionResultInterface
+         */
+        $action_result = call_user_func_array([$controller_instance, $action_method_name], $route_and_url_args);
+
+        //если
+        if (empty($action_result)) {
+            return null;
+        }
 
         //todo реализовать
     }

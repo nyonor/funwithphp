@@ -59,13 +59,16 @@ class Routing implements RoutingInterface
         echo 'THIS ONE <br/>';
 
         $controller_uri_str = $uri_splitted_arr[0];
-        $action_uri_str = $uri_splitted_arr[1];
+        $action_uri_str = lcfirst($uri_splitted_arr[1]);
         $other_uri_arr = array_slice($uri_splitted_arr, 2, count($uri_splitted_arr));
         $other_uri_str = implode('/', $other_uri_arr);
-        $route_params_arr = explode('/', substr($other_uri_str, 0, stripos($other_uri_str, '?') - 1));
-        $uri_params_part_str = ltrim(substr($other_uri_str, stripos($other_uri_str, '?'), strlen($other_uri_str)), '?');
-        $uri_params_arr = explode('&', $uri_params_part_str);
-        $form_parameters = null; //todo
+        $supposed_pos_of_q_mark = strripos($other_uri_str, '?') - 1;
+        $route_params_arr = array_filter(explode('/', substr($other_uri_str, 0,
+            $supposed_pos_of_q_mark == -1 ? strlen($other_uri_str) : $supposed_pos_of_q_mark)));
+        $uri_params_part_str = ltrim(substr($other_uri_str, stripos($other_uri_str, '?'),
+            strlen($other_uri_str)), '?');
+        $uri_params_arr = array_filter(explode('&', $uri_params_part_str));
+        $form_parameters = array_filter(array_diff($request->getRawParameters(), $uri_params_arr, $route_params_arr)); //todo
 
         $arg = [
             'template' => $template,

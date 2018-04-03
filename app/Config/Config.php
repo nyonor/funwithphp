@@ -35,6 +35,14 @@ class Config
         'App\Modules\Mvc\Routing' => '/app/Modules/Mvc/Routing',
     ];
 
+    /*
+     * название_сегмента => [
+     *  domaint_name => имя_домена,
+     *  autoload_data => [
+     *      неймспейс => путь
+     *  ]
+     * ]
+     */
     public static $projectSegments = [
         'backend' => [
             'domain_name' => 'localhost:8080',
@@ -48,7 +56,8 @@ class Config
     public static $routeTemplates = [
         '{controller}',
         '{controller}/{action}',
-        '{controller}/{action}/{parameter:id}'
+        '{controller}/{action}/{parameter:id}',
+        '{controller}/{action}/{parameter:some_string}/{parameter:some_other_parameter}'
     ];
     //todo конфиг приложения в виде констант?
 }

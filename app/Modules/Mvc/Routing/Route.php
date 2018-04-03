@@ -111,7 +111,11 @@ class Route implements RouteInterface
      */
     public function getParameters(): array
     {
-        // todo
+        $route_params_arr = $this->routeArgument->getRouteParameters();
+        $uri_params_arr = $this->routeArgument->getUriParameters();
+        $form_params_arr = $this->routeArgument->getFormParameters();
+
+        return array_merge($route_params_arr, $uri_params_arr, $form_params_arr);
     }
 
     /**

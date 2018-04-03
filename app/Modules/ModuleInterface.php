@@ -17,5 +17,5 @@ interface ModuleInterface
      * @param ModuleArgumentInterface $argument
      * @return ModuleArgumentInterface ;
      */
-    public function process(ModuleArgumentInterface $argument = null): ModuleArgumentInterface;
+    public function process(ModuleArgumentInterface $argument): ModuleArgumentInterface;
 }
