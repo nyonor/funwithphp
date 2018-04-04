@@ -16,6 +16,7 @@
 
 namespace App\Pipeline;
 
+use App\Modules\ModuleArgumentInterface;
 use App\Modules\ModuleInterface;
 
 interface PipelineInterface
@@ -36,5 +37,12 @@ interface PipelineInterface
      * @throws PipelineException
      * @return void
      */
-    public function process($request_array = null);
+    public function go($request_array = null);
+
+    /**
+     * todo
+     * @param ModuleArgumentInterface $module_argument
+     * @return mixed
+     */
+    public function handleResponse(ModuleArgumentInterface $module_argument);
 }

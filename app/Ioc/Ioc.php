@@ -23,6 +23,7 @@ use App\Modules\Mvc\Routing\RouteInterface;
 use App\Modules\Mvc\Routing\Routing;
 use App\Modules\Mvc\Routing\RoutingInterface;
 use App\Pipeline\Pipeline;
+use App\Pipeline\PipelineException;
 use App\Pipeline\PipelineInterface;
 
 class Ioc
@@ -35,7 +36,7 @@ class Ioc
         RouteInterface::class => Route::class,
         RouteArgumentInterface::class => RouteArgument::class,
         RequestInterface::class => Request::class,
-        ModuleArgumentInterface::class => ModuleArgument::class
+        ModuleArgumentInterface::class => ModuleArgument::class,
     ];
 
     /**
@@ -43,7 +44,8 @@ class Ioc
      * @param $interface
      * @return mixed
      */
-    public static function factory($interface){
+    public static function factory($interface)
+    {
         $class = Ioc::$autoloadBinds[$interface];
         return new $class;
     }
@@ -54,8 +56,15 @@ class Ioc
      * @param $arguments
      * @return mixed
      */
-    public static function factoryWithArgs($interface, $arguments){
+    public static function factoryWithArgs($interface, $arguments)
+    {
         $class = Ioc::$autoloadBinds[$interface];
         return new $class($arguments);
+    }
+
+    public static function factoryWithVariadic($interface, ...$argument)
+    {
+        $class = Ioc::$autoloadBinds[$interface];
+        return new $class($argument);
     }
 }

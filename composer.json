@@ -1,0 +1,15 @@
+{
+  "name": "NyoNor/SoloFramework",
+  "description": "description_text",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "NyoNor",
+      "email": "cadistortion@gmail.com"
+    }
+  ],
+  "require": {
+    "twig/twig": "2.x-dev"
+  }
+}

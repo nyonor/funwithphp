@@ -25,7 +25,10 @@ $autoloader -> register();
 $segment_autoloader = new \App\Autoload\SegmentAutoloader(App\Config\Config::$projectSegments);
 $segment_autoloader->register();
 
-//здесь можно зарегистрировать еще!
+//регистрируем автозагрузчик composer'a
+require_once '../vendor/autoload.php';
+
+//здесь можно зарегистрировать еще автозагрузчики!
 
 //регистрация модулей в пайплайне
 /**
@@ -37,4 +40,4 @@ $pipe_line
     ->registerModule($mvc_module);
 
 //стартуем пайплан
-$pipe_line->process();
+$pipe_line->go();

@@ -1,5 +1,6 @@
 <?php
 /**
+ * //todo
  * Created by PhpStorm.
  * User: NyoNor
  * Date: 3/16/2018
@@ -12,7 +13,7 @@ namespace App\Modules\Mvc\Routing;
 use App\Config\Config;
 use const App\Config\SEGMENT_ACTION_KEYWORD;
 use const App\Config\SEGMENT_CONTROLLER_KEYWORD;
-use const App\Config\SEGMENT_CONTROLLER_LAST_NAMESPACE;
+use const App\Config\SEGMENT_CONTROLLERS_LAST_NAMESPACE;
 use App\Pipeline\PipelineException;
 
 class Route implements RouteInterface
@@ -144,13 +145,13 @@ class Route implements RouteInterface
         $controller_class_name = null;
         $segment = $this->getSegment();
         if (empty($segment)) {
-            throw new PipelineException("Сегмент не найден!");
+            throw new PipelineException("Сегмент не найден!"); //todo NEW???? сделать через Ioc
         }
         $supposed_class_name = null;
 
         foreach ($segment['autoload_data'] as $namespace => $path) {
             $last_namespace = substr($namespace, strripos($namespace, '\\') + 1);
-            if (SEGMENT_CONTROLLER_LAST_NAMESPACE != $last_namespace){ //todo сомнительно конечно
+            if (SEGMENT_CONTROLLERS_LAST_NAMESPACE != $last_namespace){ //todo сомнительно конечно
                 continue;
             }
             $supposed_class_name = $namespace . '\\' . $controller_name . SEGMENT_CONTROLLER_KEYWORD;

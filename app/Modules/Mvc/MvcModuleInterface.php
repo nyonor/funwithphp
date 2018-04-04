@@ -10,7 +10,9 @@ namespace App\Modules\Mvc;
 
 
 use App\Modules\ModuleInterface;
+use App\Modules\View\RendererInterface;
 
 interface MvcModuleInterface extends ModuleInterface
 {
+    //public function getRenderer() : RendererInterface;
 }

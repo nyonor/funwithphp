@@ -1,9 +1,9 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: NyoNor
- * Date: 3/23/2018
- * Time: 1:56 PM
+ * User: cadistortion
+ * Date: 4/4/18
+ * Time: 3:50 PM
  */
 
 namespace App\Modules\Mvc\Controller;
@@ -11,5 +11,5 @@ namespace App\Modules\Mvc\Controller;
 
 interface MvcControllerInterface
 {
-
+    public function getActionResultFactory() : ActionResultFactoryInterface;
 }

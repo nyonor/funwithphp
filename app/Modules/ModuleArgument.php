@@ -24,4 +24,9 @@ class ModuleArgument implements ModuleArgumentInterface
     {
         return $this->currentRequest;
     }
+
+    public function getResponse(): ResponseInterface
+    {
+        // TODO: Implement getResponse() method.
+    }
 }

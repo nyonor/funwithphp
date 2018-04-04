@@ -19,4 +19,5 @@ interface ModuleArgumentInterface
 {
     public function __construct(RequestInterface $request);
     public function getRequest() : RequestInterface;
+    public function getResponse() : ResponseInterface;
 }

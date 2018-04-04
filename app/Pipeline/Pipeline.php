@@ -15,6 +15,7 @@ use App\Ioc\Ioc;
 use App\Modules\ModuleArgumentInterface;
 use App\Modules\ModuleInterface;
 use App\Modules\Mvc\Routing\RequestInterface;
+use Exception;
 
 /**
  * Class Pipeline
@@ -25,6 +26,8 @@ class Pipeline implements PipelineInterface
 {
     protected $registeredModules = [];
     protected $request = null;
+    protected $result = null;
+    protected $exceptions = [];
 
     function __construct()
     {
@@ -56,26 +59,43 @@ class Pipeline implements PipelineInterface
      * @param $request_array
      * @return void
      */
-    public function process($request_array = null)
+    public function go($request_array = null)
     {
         //создаем объект запроса (Request)
         if ($request_array != null) {
             $this->request = Ioc::factoryWithArgs(RequestInterface::class, $request_array);
         }
 
-        $result = null;
         foreach ($this->registeredModules as $module) {
-            if ($result == null) {
-                $args = $this->request;
-            } else {
-                $args = $result;
+            try{
+                if ($this->result == null) {
+                    $args = $this->request;
+                } else {
+                    $args = $this->result;
+                }
+                /**
+                 * @var $module ModuleInterface
+                 */
+                $this->result = $module->process(Ioc::factoryWithArgs(ModuleArgumentInterface::class, $args));
+            } catch (Exception $e) {
+                array_push($this->exceptions, $e);
             }
-            /**
-             * @var $module ModuleInterface
-             */
-            $result = $module->process(Ioc::factoryWithArgs(ModuleArgumentInterface::class, $args));
         }
 
+        $this->handleResponse($this->result);
+    }
 
+    public function handleResponse(ModuleArgumentInterface $moduleArgument)
+    {
+        if (!empty($this->exceptions)){
+            $this->handleExceptions();
+        }
+
+        //TODO вывод результатов
+    }
+
+    protected function handleExceptions()
+    {
+        //todo
     }
 }
