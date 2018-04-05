@@ -12,11 +12,14 @@
 
 namespace App\Config;
 
+use App\Modules\Mvc\View\Render\TwigRenderInterface;
 const APP_DIR = '/var/www/html';
 const SEGMENT_CONTROLLER_KEYWORD = "Controller";
 const SEGMENT_CONTROLLERS_LAST_NAMESPACE = "Controllers";
 const SEGMENT_ACTION_KEYWORD = "Action";
 const SEGMENT_VIEWS_LAST_NAMESPACE = "Views";
+
+const CURRENT_VIEW_RENDERER_INTERFACE = TwigRenderInterface::class;
 
 
 class Config
@@ -35,6 +38,9 @@ class Config
         'App\Modules' => '/app/Modules',
         'App\Modules\Mvc' => '/app/Modules/Mvc',
         'App\Modules\Mvc\Routing' => '/app/Modules/Mvc/Routing',
+        'App\Modules\Mvc\Controller' => '/app/Modules/Mvc/Controller',
+        'App\Modules\Mvc\View' => '/app/Modules/Mvc/View',
+        'App\Modules\Mvc\View\Render' => '/app/Modules/Mvc/View/Render'
     ];
 
     /*

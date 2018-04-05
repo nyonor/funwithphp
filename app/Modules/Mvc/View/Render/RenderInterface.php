@@ -6,10 +6,10 @@
  * Time: 12:24 PM
  */
 
-namespace App\Modules\View;
+namespace App\Modules\Mvc\View\Render;
 
 
-class RendererInterface
+interface RenderInterface
 {
-
+    public function render();
 }

@@ -13,11 +13,14 @@
 namespace App\Modules;
 
 
+use App\Modules\Mvc\Controller\ActionResultInterface;
 use App\Modules\Mvc\Routing\RequestInterface;
+use App\Modules\Mvc\Routing\ResponseInterface;
 
 interface ModuleArgumentInterface
 {
     public function __construct(RequestInterface $request);
     public function getRequest() : RequestInterface;
     public function getResponse() : ResponseInterface;
+    public function getActionResult() : ActionResultInterface;
 }

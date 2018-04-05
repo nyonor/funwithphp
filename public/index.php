@@ -9,6 +9,8 @@
  */
 
 //Инклудим интерфейс автозагрузчика //todo внедрить в систему IOC?
+use App\Ioc\Ioc;
+
 require_once("../app/Autoload/AutoloaderInterface.php");
 
 //Инклудим конфиг
@@ -34,10 +36,14 @@ require_once '../vendor/autoload.php';
 /**
  * @var $pipe_line \App\Pipeline\PipelineInterface
  */
-$pipe_line = App\Ioc\Ioc::factory(\App\Pipeline\PipelineInterface::class);
-$mvc_module = App\Ioc\Ioc::factory(\App\Modules\Mvc\MvcModuleInterface::class);
-$pipe_line
-    ->registerModule($mvc_module);
+$pipe_line = Ioc::factory(\App\Pipeline\PipelineInterface::class);
+$action_result_factory = Ioc::factoryWithArgs(\App\Modules\Mvc\Controller\ActionResultFactoryInterface::class,
+    Ioc::factory(\App\Modules\Mvc\View\Render\TwigRenderInterface::class));
+$mvc_module = Ioc::factoryWithVariadic(\App\Modules\Mvc\MvcModuleInterface::class,
+    Ioc::factory(\App\Modules\Mvc\Routing\RoutingInterface::class),
+    Ioc::factory(\App\Modules\Mvc\Controller\MvcControllerFactoryInterface::class),
+    $action_result_factory);
+$pipe_line->registerModule($mvc_module);
 
 //стартуем пайплан
 $pipe_line->go();

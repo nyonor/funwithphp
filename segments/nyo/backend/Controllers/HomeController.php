@@ -13,23 +13,23 @@ use App\Modules\Mvc\Controller\AbstractMvcController;
 
 class HomeController extends AbstractMvcController
 {
-    public function indexAction()
+    protected function indexAction()
     {
         echo "<h1>HomeController -> IndexAction</h1>";
     }
 
-    public function pageAction(int $x)
+    protected function pageAction(int $x)
     {
         echo "<h1>HomeController -> PageAction(page $x)</h1>";
     }
 
-    public function elseAction(string $some, $andAnother)
+    protected function elseAction(string $some, $andAnother)
     {
         echo "<h1>HomeController -> elseAction($some, $andAnother)</h1>";
     }
 
-    public function simpleViewAction(int $x)
+    protected function simpleViewAction(int $x)
     {
-        return View();
+        return $this->View();
     }
 }

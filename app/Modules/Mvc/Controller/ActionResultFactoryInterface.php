@@ -10,8 +10,11 @@
 namespace App\Modules\Mvc\Controller;
 
 
+use App\Modules\Mvc\View\Render\RenderInterface;
+
 interface  ActionResultFactoryInterface
 {
+    public function __construct(RenderInterface... $renders);
     public function getViewResult($view_name, $view_model) : ActionResultInterface;
     public function getJsonResult($to_json_content) : ActionResultInterface;
 }

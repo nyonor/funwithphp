@@ -11,5 +11,6 @@ namespace App\Modules\Mvc\Controller;
 
 interface MvcControllerInterface
 {
-    public function getActionResultFactory() : ActionResultFactoryInterface;
+    public function getControllerClassName();
+    public function getActionResultFactory(); //todo deprecated
 }

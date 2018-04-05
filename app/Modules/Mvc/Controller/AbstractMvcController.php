@@ -11,6 +11,7 @@ namespace App\Modules\Mvc\Controller;
 
 
 use const App\Config\SEGMENT_ACTION_KEYWORD;
+
 abstract class AbstractMvcController implements MvcControllerInterface
 {
     /**
@@ -29,17 +30,28 @@ abstract class AbstractMvcController implements MvcControllerInterface
      * Все вызванные экшены будут помещены в $callChain
      * @param $name
      * @param $arguments
+     * @return ActionResultInterface
      */
     public function __call($name, $arguments)
     {
-        if (strrpos($name, SEGMENT_ACTION_KEYWORD) == false) {
-            return;
+        if (strrpos($name, SEGMENT_ACTION_KEYWORD) != false) {
+            array_push($this->callChain, [
+                'method_name' => $name,
+                'args' => $arguments
+            ]);
         }
 
-        array_push($this->callChain, [
-            'method_name' => $name,
-            'args' => $arguments
-        ]);
+        return call_user_func_array([$this, $name], $arguments);
+    }
+
+    public function getActionResultFactory()
+    {
+        return $this->actionResultFactory;
+    }
+
+    public function getControllerClassName()
+    {
+        //TODO Implement
     }
 
     /**
@@ -66,6 +78,7 @@ abstract class AbstractMvcController implements MvcControllerInterface
      */
     private function getViewResult(string $view_name = null, array $view_model = null) : ActionResultInterface
     {
+
         return $this->actionResultFactory->getViewResult($view_name, $view_model);
     }
 
@@ -76,6 +89,6 @@ abstract class AbstractMvcController implements MvcControllerInterface
      */
     private function getLastActionMethodName()
     {
-        return array_pop($this->callChain['method_name']);
+        return array_pop($this->callChain)['method_name'];
     }
 }

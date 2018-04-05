@@ -9,11 +9,11 @@
 namespace App\Modules\Mvc\Controller;
 
 
-use App\Modules\View\RendererInterface;
+use App\Modules\Mvc\View\Render\RenderInterface;
 
 interface MvcControllerFactoryInterface
 {
     public function createController(string $controller_class_name,
                                      ActionResultFactoryInterface $action_result_factory,
-                                     RendererInterface ...$renders) : MvcControllerInterface;
+                                     RenderInterface ...$renders) : MvcControllerInterface;
 }

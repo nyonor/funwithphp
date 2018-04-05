@@ -31,7 +31,7 @@ class Pipeline implements PipelineInterface
 
     function __construct()
     {
-        $this->request = Ioc::factory(RequestInterface::class);
+        $this->request = Ioc::factory(RequestInterface::class); //todo inject throug constructor
     }
 
     /**
@@ -63,7 +63,7 @@ class Pipeline implements PipelineInterface
     {
         //создаем объект запроса (Request)
         if ($request_array != null) {
-            $this->request = Ioc::factoryWithArgs(RequestInterface::class, $request_array);
+            $this->request = Ioc::factoryWithArgs(RequestInterface::class, $request_array); //todo inject throug constructor
         }
 
         foreach ($this->registeredModules as $module) {
@@ -76,7 +76,7 @@ class Pipeline implements PipelineInterface
                 /**
                  * @var $module ModuleInterface
                  */
-                $this->result = $module->process(Ioc::factoryWithArgs(ModuleArgumentInterface::class, $args));
+                $this->result = $module->process(Ioc::factoryWithArgs(ModuleArgumentInterface::class, $args)); //todo inject throug constructor
             } catch (Exception $e) {
                 array_push($this->exceptions, $e);
             }

@@ -15,6 +15,5 @@ use App\Modules\Mvc\Controller\ActionResultInterface;
 interface ViewResultInterface extends ActionResultInterface
 {
     public function getViewName();
-    //public function getViewPath();
     public function getViewModel();
 }

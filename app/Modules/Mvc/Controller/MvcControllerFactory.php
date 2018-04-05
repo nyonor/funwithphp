@@ -9,14 +9,14 @@
 namespace App\Modules\Mvc\Controller;
 
 
-use App\Modules\View\RendererInterface;
+use App\Modules\Mvc\View\Render\RenderInterface;
 
 class MvcControllerFactory implements MvcControllerFactoryInterface
 {
     public function createController(string $controller_class_name,
                                      ActionResultFactoryInterface $action_result_factory,
-                                     RendererInterface ...$renders): MvcControllerInterface
+                                     RenderInterface ...$renders): MvcControllerInterface
     {
-        // TODO: Implement createController() method.
+        return new $controller_class_name($action_result_factory, ...$renders);
     }
 }

@@ -12,6 +12,10 @@ namespace App\Ioc;
 
 use App\Modules\ModuleArgument;
 use App\Modules\ModuleArgumentInterface;
+use App\Modules\Mvc\Controller\ActionResultFactory;
+use App\Modules\Mvc\Controller\ActionResultFactoryInterface;
+use App\Modules\Mvc\Controller\MvcControllerFactory;
+use App\Modules\Mvc\Controller\MvcControllerFactoryInterface;
 use App\Modules\Mvc\MvcModule;
 use App\Modules\Mvc\MvcModuleInterface;
 use App\Modules\Mvc\Routing\Request;
@@ -22,8 +26,12 @@ use App\Modules\Mvc\Routing\RouteArgumentInterface;
 use App\Modules\Mvc\Routing\RouteInterface;
 use App\Modules\Mvc\Routing\Routing;
 use App\Modules\Mvc\Routing\RoutingInterface;
+use App\Modules\Mvc\View\Render\TwigRender;
+use App\Modules\Mvc\View\Render\TwigRenderInterface;
+use App\Modules\Mvc\View\Render\ViewRenderInterface;
+use App\Modules\Mvc\View\ViewResult;
+use App\Modules\Mvc\View\ViewResultInterface;
 use App\Pipeline\Pipeline;
-use App\Pipeline\PipelineException;
 use App\Pipeline\PipelineInterface;
 
 class Ioc
@@ -37,6 +45,11 @@ class Ioc
         RouteArgumentInterface::class => RouteArgument::class,
         RequestInterface::class => Request::class,
         ModuleArgumentInterface::class => ModuleArgument::class,
+        MvcControllerFactoryInterface::class => MvcControllerFactory::class,
+        ActionResultFactoryInterface::class => ActionResultFactory::class,
+        ViewRenderInterface::class => TwigRender::class,
+        TwigRenderInterface::class => TwigRender::class,
+        ViewResultInterface::class => ViewResult::class
     ];
 
     /**
@@ -65,6 +78,6 @@ class Ioc
     public static function factoryWithVariadic($interface, ...$argument)
     {
         $class = Ioc::$autoloadBinds[$interface];
-        return new $class($argument);
+        return new $class(...$argument);
     }
 }

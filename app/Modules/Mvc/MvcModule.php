@@ -19,25 +19,21 @@ use App\Modules\Mvc\Controller\ActionResultFactoryInterface;
 use App\Modules\Mvc\Controller\ActionResultInterface;
 use App\Modules\Mvc\Controller\MvcControllerFactoryInterface;
 use App\Modules\Mvc\Routing\RoutingInterface;
-use App\Modules\View\RendererInterface;
 
 class MvcModule implements MvcModuleInterface
 {
     protected $routing;
     protected $controllerFactory;
     protected $actionResultFactory;
-    protected $renders;
 
 
     public function __construct(RoutingInterface $routing,
                                 MvcControllerFactoryInterface $controller_factory,
-                                ActionResultFactoryInterface $action_result_factory,
-                                RendererInterface ...$renders)
+                                ActionResultFactoryInterface $action_result_factory)
     {
         $this->routing = $routing;
         $this->controllerFactory = $controller_factory;
         $this->actionResultFactory = $action_result_factory;
-        $this->renders = $renders;
     }
 
     /**
@@ -63,11 +59,12 @@ class MvcModule implements MvcModuleInterface
         //параметры
         $route_and_url_args = $route->getParameters();
 
-        //выполняем
+        //создаем контроллер
         $controller_instance = $this->controllerFactory->createController(
             $controller_class_name,
-            $this->actionResultFactory,
-            $this->renders);
+            $this->actionResultFactory);
+
+        //вызываем метод контроллера (экшен)
         /**
          * @var $action_result ActionResultInterface
          */
@@ -77,6 +74,8 @@ class MvcModule implements MvcModuleInterface
         if (empty($action_result)) {
             Ioc::factory(ModuleArgumentInterface::class);
         }
+
+        echo $action_result->getRenderedContent(); //todo
 
         //todo реализовать
     }

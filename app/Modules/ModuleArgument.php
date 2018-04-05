@@ -9,7 +9,9 @@
 namespace App\Modules;
 
 
+use App\Modules\Mvc\Controller\ActionResultInterface;
 use App\Modules\Mvc\Routing\RequestInterface;
+use App\Modules\Mvc\Routing\ResponseInterface;
 
 class ModuleArgument implements ModuleArgumentInterface
 {
@@ -25,8 +27,13 @@ class ModuleArgument implements ModuleArgumentInterface
         return $this->currentRequest;
     }
 
-    public function getResponse(): ResponseInterface
+    public function getResponse() : ResponseInterface
     {
         // TODO: Implement getResponse() method.
+    }
+
+    public function getActionResult(): ActionResultInterface
+    {
+        // TODO: Implement getActionResult() method.
     }
 }
