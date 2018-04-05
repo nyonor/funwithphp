@@ -14,5 +14,5 @@ use App\Modules\Mvc\View\ViewResultInterface;
 interface ViewRenderInterface extends RenderInterface
 {
     public function getViewResultInterface() : ViewResultInterface;
-    public function set($view_name, $view_model);
+    public function set($view_path, $view_model);
 }

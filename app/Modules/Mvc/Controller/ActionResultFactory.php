@@ -24,7 +24,7 @@ class ActionResultFactory implements ActionResultFactoryInterface
         $this->renders = $renders;
     }
 
-    public function getViewResult($view_name, $view_model): ActionResultInterface
+    public function getViewResult($view_path, $view_model): ActionResultInterface
     {
         $render = $this->findRender(ViewRenderInterface::class);
         if (array_search(ViewResultInterface::class, class_implements($render)) != false) {
@@ -36,7 +36,7 @@ class ActionResultFactory implements ActionResultFactoryInterface
         /**
          * @var $view_result ViewRenderInterface
          */
-        $view_result = Ioc::factoryWithVariadic(ViewResultInterface::class, $view_name, $view_model, $render); //todo первый параметр сомнителен
+        $view_result = Ioc::factoryWithVariadic(ViewResultInterface::class, $view_path, $view_model, $render); //todo первый параметр сомнителен
         return $view_result;
     }
 

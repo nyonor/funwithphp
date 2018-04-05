@@ -46,6 +46,7 @@ class Config
     /*
      * название_сегмента => [
      *  domain_name => имя_домена,
+     *  view_path => путь_ко_вьюхам
      *  autoload_data => [
      *      неймспейс => путь
      *  ]
@@ -54,6 +55,7 @@ class Config
     public static $projectSegments = [
         'backend' => [
             'domain_name' => 'localhost:8080',
+            'view_path' => '/segments/nyo/backend/Views',
             'autoload_data' => [
                 'Segments\Nyo\Backend\\' . SEGMENT_CONTROLLERS_LAST_NAMESPACE => '/segments/nyo/backend/Controllers',
                 'Segments\Nyo\Backend\\' . SEGMENT_VIEWS_LAST_NAMESPACE  => '/segments/nyo/backend/Views',

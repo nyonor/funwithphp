@@ -62,7 +62,8 @@ class MvcModule implements MvcModuleInterface
         //создаем контроллер
         $controller_instance = $this->controllerFactory->createController(
             $controller_class_name,
-            $this->actionResultFactory);
+            $this->actionResultFactory,
+            $route);
 
         //вызываем метод контроллера (экшен)
         /**

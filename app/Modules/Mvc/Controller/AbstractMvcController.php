@@ -10,7 +10,9 @@
 namespace App\Modules\Mvc\Controller;
 
 
+use App\Config\Config;
 use const App\Config\SEGMENT_ACTION_KEYWORD;
+use App\Modules\Mvc\Routing\RouteInterface;
 
 abstract class AbstractMvcController implements MvcControllerInterface
 {
@@ -20,10 +22,12 @@ abstract class AbstractMvcController implements MvcControllerInterface
      */
     private $callChain = [];
     private $actionResultFactory;
+    protected $route;
 
-    public function __construct(ActionResultFactoryInterface $action_result_factory)
+    public function __construct(ActionResultFactoryInterface $action_result_factory, RouteInterface $route)
     {
         $this->actionResultFactory = $action_result_factory;
+        $this->route = $route;
     }
 
     /**
@@ -67,7 +71,8 @@ abstract class AbstractMvcController implements MvcControllerInterface
         if (empty($last_action_method_name)) {
             throw new ControllerException("Ни один экшен не был вызван!"); //todo NEW????
         }
-        return $this->getViewResult($last_action_method_name, null);
+        $view_name = str_replace(SEGMENT_ACTION_KEYWORD, '', $last_action_method_name);
+        return $this->getViewResult($view_name, null);
     }
 
     /**
@@ -79,7 +84,7 @@ abstract class AbstractMvcController implements MvcControllerInterface
     private function getViewResult(string $view_name = null, array $view_model = null) : ActionResultInterface
     {
 
-        return $this->actionResultFactory->getViewResult($view_name, $view_model);
+        return $this->actionResultFactory->getViewResult($this->getViewPath($view_name), $view_model);
     }
 
     /**
@@ -90,5 +95,11 @@ abstract class AbstractMvcController implements MvcControllerInterface
     private function getLastActionMethodName()
     {
         return array_pop($this->callChain)['method_name'];
+    }
+
+    private function getViewPath($view_name)
+    {
+        $view_path = $this->route->getSegment()['view_path'];
+        return $view_path . '/' . $view_name;
     }
 }

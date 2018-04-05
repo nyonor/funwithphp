@@ -26,9 +26,9 @@ final class TwigRender implements TwigRenderInterface
         // TODO: Implement getViewResultInterface() method.
     }
 
-    public function set($view_name, $view_model)
+    public function set($view_path, $view_model)
     {
-        $this->viewName = $view_name;
+        $this->viewName = $view_path;
         $this->viewModel = $view_model;
     }
 }
