@@ -10,6 +10,12 @@
 
 //Инклудим интерфейс автозагрузчика //todo внедрить в систему IOC?
 use App\Ioc\Ioc;
+use App\Modules\Mvc\Controller\ActionResultFactoryInterface;
+use App\Modules\Mvc\Controller\MvcControllerFactoryInterface;
+use App\Modules\Mvc\MvcModuleInterface;
+use App\Modules\Mvc\Routing\RoutingInterface;
+use App\Modules\Mvc\View\Render\ViewRenderInterface;
+use App\Pipeline\PipelineInterface;
 
 require_once("../app/Autoload/AutoloaderInterface.php");
 
@@ -34,14 +40,14 @@ require_once '../vendor/autoload.php';
 
 //регистрация модулей в пайплайне
 /**
- * @var $pipe_line \App\Pipeline\PipelineInterface
+ * @var $pipe_line PipelineInterface
  */
-$pipe_line = Ioc::factory(\App\Pipeline\PipelineInterface::class);
-$action_result_factory = Ioc::factoryWithArgs(\App\Modules\Mvc\Controller\ActionResultFactoryInterface::class,
-    Ioc::factory(\App\Modules\Mvc\View\Render\TwigRenderInterface::class));
-$mvc_module = Ioc::factoryWithVariadic(\App\Modules\Mvc\MvcModuleInterface::class,
-    Ioc::factory(\App\Modules\Mvc\Routing\RoutingInterface::class),
-    Ioc::factory(\App\Modules\Mvc\Controller\MvcControllerFactoryInterface::class),
+$pipe_line = Ioc::factory(PipelineInterface::class);
+$action_result_factory = Ioc::factoryWithArgs(ActionResultFactoryInterface::class,
+    Ioc::factory(ViewRenderInterface::class));
+$mvc_module = Ioc::factoryWithVariadic(MvcModuleInterface::class,
+    Ioc::factory(RoutingInterface::class),
+    Ioc::factory(MvcControllerFactoryInterface::class),
     $action_result_factory);
 $pipe_line->registerModule($mvc_module);
 

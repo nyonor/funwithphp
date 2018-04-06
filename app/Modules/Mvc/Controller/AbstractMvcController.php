@@ -55,7 +55,7 @@ abstract class AbstractMvcController implements MvcControllerInterface
 
     public function getControllerClassName()
     {
-        //TODO Implement
+        return get_class($this);
     }
 
     /**
@@ -71,7 +71,7 @@ abstract class AbstractMvcController implements MvcControllerInterface
         if (empty($last_action_method_name)) {
             throw new ControllerException("Ни один экшен не был вызван!"); //todo NEW????
         }
-        $view_name = str_replace(SEGMENT_ACTION_KEYWORD, '', $last_action_method_name);
+        $view_name = ucfirst(str_replace(SEGMENT_ACTION_KEYWORD, '', $last_action_method_name));
         return $this->getViewResult($view_name, null);
     }
 
@@ -83,8 +83,12 @@ abstract class AbstractMvcController implements MvcControllerInterface
      */
     private function getViewResult(string $view_name = null, array $view_model = null) : ActionResultInterface
     {
-
-        return $this->actionResultFactory->getViewResult($this->getViewPath($view_name), $view_model);
+        $options = [
+            'view_name' => $view_name,
+            'view_model' => $view_model,
+            'templates_path' => $this->getTemplatesPath()
+        ];
+        return $this->actionResultFactory->getViewResult($options);
     }
 
     /**
@@ -97,9 +101,8 @@ abstract class AbstractMvcController implements MvcControllerInterface
         return array_pop($this->callChain)['method_name'];
     }
 
-    private function getViewPath($view_name)
+    private function getTemplatesPath()
     {
-        $view_path = $this->route->getSegment()['view_path'];
-        return $view_path . '/' . $view_name;
+        return $this->route->getSegmentConfig()['view_path'] . '/' . $this->route->getRouteArgument()->getControllerName();
     }
 }

@@ -15,31 +15,32 @@ use stdClass;
 
 final class ViewResult extends AbstractActionResult implements ViewResultInterface
 {
-    private $viewName;
-    private $viewModel;
+    private $options;
     private $render;
 
-    public function __construct(string $view_name, stdClass $view_model = null, ViewRenderInterface $render)
+
+    public function __construct(array $options, ViewRenderInterface $render)
     {
-        $this->viewName = $view_name;
-        $this->viewModel = $view_model;
+        $this->options = $options;
         $this->render = $render;
     }
 
     public function getViewName()
     {
-        return $this->viewName;
+        return $this->options['view_name'];
     }
 
     public function getViewModel()
     {
-        return $this->viewModel;
+        return $this->options['view_model'];
     }
 
     public function getRenderedContent()
     {
         if (empty($this->renderedContent)){
-            $this->render->set($this->viewName, $this->viewModel);
+            $this->render->setTemplatesPath($this->options['templates_path']);
+            $this->render->setViewName($this->options['view_name']);
+            $this->render->setViewModel($this->options['view_model']);
             $this->renderedContent = $this->render->render();
         }
         return $this->renderedContent;

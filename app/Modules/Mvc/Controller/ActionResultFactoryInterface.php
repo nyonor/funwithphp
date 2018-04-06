@@ -15,6 +15,6 @@ use App\Modules\Mvc\View\Render\RenderInterface;
 interface  ActionResultFactoryInterface
 {
     public function __construct(RenderInterface... $renders);
-    public function getViewResult($view_path, $view_model) : ActionResultInterface;
+    public function getViewResult(array $options) : ActionResultInterface;
     public function getJsonResult($to_json_content) : ActionResultInterface;
 }

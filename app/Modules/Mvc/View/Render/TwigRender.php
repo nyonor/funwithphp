@@ -9,26 +9,46 @@
 namespace App\Modules\Mvc\View\Render;
 
 
-use App\Modules\Mvc\View\ViewResultInterface;
+use stdClass;
+use Twig_Environment;
+use Twig_Loader_Filesystem;
 
-final class TwigRender implements TwigRenderInterface
+final class TwigRender implements ViewRenderInterface
 {
+    const VIEW_EXTENSION = '.html';
+
     protected $viewName;
     protected $viewModel;
+    protected $templatesPath;
+
+    protected $twigLoader;
+    protected $twig;
+
+    public function __construct()
+    {
+        $this->twigLoader = new Twig_Loader_Filesystem(null, getcwd().'/..');
+        $this->twig = new Twig_Environment($this->twigLoader);
+    }
 
     public function render()
     {
-        echo 'Doing TWIGRENDER';
+        $this->twigLoader->setPaths(ltrim($this->templatesPath, '/'));
+        $template = $this->twig->load($this->viewName);
+        echo $template->render($this->viewModel ?? []);
     }
 
-    public function getViewResultInterface(): ViewResultInterface
+    public function setViewName($view_name)
     {
-        // TODO: Implement getViewResultInterface() method.
+        $this->viewName = $view_name . self::VIEW_EXTENSION;
     }
 
-    public function set($view_path, $view_model)
+    public function setTemplatesPath($templates_path)
     {
-        $this->viewName = $view_path;
+        $this->templatesPath = $templates_path;
+    }
+
+    public function setViewModel($view_model)
+    {
         $this->viewModel = $view_model;
     }
 }

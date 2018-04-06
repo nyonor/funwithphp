@@ -123,7 +123,7 @@ class Route implements RouteInterface
      * Поиск сегмента в конфиге
      * @return array
      */
-    public function getSegment(): array
+    public function getSegmentConfig(): array
     {
         if (empty($this->segment)) {
             foreach (Config::$projectSegments as $key => $val) {
@@ -143,7 +143,7 @@ class Route implements RouteInterface
     protected function findControllerClassName($controller_name)
     {
         $controller_class_name = null;
-        $segment = $this->getSegment();
+        $segment = $this->getSegmentConfig();
         if (empty($segment)) {
             throw new PipelineException("Сегмент не найден!"); //todo NEW???? сделать через Ioc
         }
@@ -163,5 +163,10 @@ class Route implements RouteInterface
         }
 
         return null;
+    }
+
+    public function getRouteArgument(): RouteArgumentInterface
+    {
+        return $this->routeArgument;
     }
 }

@@ -67,7 +67,7 @@ class Pipeline implements PipelineInterface
         }
 
         foreach ($this->registeredModules as $module) {
-            try{
+//            try{
                 if ($this->result == null) {
                     $args = $this->request;
                 } else {
@@ -77,9 +77,9 @@ class Pipeline implements PipelineInterface
                  * @var $module ModuleInterface
                  */
                 $this->result = $module->process(Ioc::factoryWithArgs(ModuleArgumentInterface::class, $args)); //todo inject throug constructor
-            } catch (Exception $e) {
-                array_push($this->exceptions, $e);
-            }
+//            } catch (Exception $e) {
+//                array_push($this->exceptions, $e);
+//            }
         }
 
         $this->handleResponse($this->result);
@@ -88,14 +88,17 @@ class Pipeline implements PipelineInterface
     public function handleResponse(ModuleArgumentInterface $moduleArgument)
     {
         if (!empty($this->exceptions)){
-            $this->handleExceptions();
+            $this->handleExceptions($this->exceptions);
         }
 
         //TODO вывод результатов
     }
 
-    protected function handleExceptions()
+    protected function handleExceptions(array $exceptions)
     {
+        foreach ($exceptions as $exception) {
+            throw new $exception;
+        }
         //todo
     }
 }

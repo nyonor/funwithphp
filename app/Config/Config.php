@@ -19,9 +19,6 @@ const SEGMENT_CONTROLLERS_LAST_NAMESPACE = "Controllers";
 const SEGMENT_ACTION_KEYWORD = "Action";
 const SEGMENT_VIEWS_LAST_NAMESPACE = "Views";
 
-const CURRENT_VIEW_RENDERER_INTERFACE = TwigRenderInterface::class;
-
-
 class Config
 {
     const ROUTING_DEFAULT_CONTROLLER_NAME = "Home";

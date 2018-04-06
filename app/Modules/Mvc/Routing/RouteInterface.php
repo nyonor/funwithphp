@@ -55,5 +55,7 @@ interface RouteInterface
      * На основании
      * @return array
      */
-    public function getSegment() : array;
+    public function getSegmentConfig() : array;
+
+    public function getRouteArgument() : RouteArgumentInterface;
 }
