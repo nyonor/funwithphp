@@ -71,8 +71,18 @@ abstract class AbstractMvcController implements MvcControllerInterface
         if (empty($last_action_method_name)) {
             throw new ControllerException("Ни один экшен не был вызван!"); //todo NEW????
         }
-        $view_name = ucfirst(str_replace(SEGMENT_ACTION_KEYWORD, '', $last_action_method_name));
+        $view_name = $this->getCurrentViewName($last_action_method_name);
         return $this->getViewResult($view_name, null);
+    }
+
+    public function viewWithModel(array $view_model)
+    {
+        $last_action_method_name = $this->getLastActionMethodName();
+        if (empty($last_action_method_name)) {
+            throw new ControllerException("Ни один экшен не был вызван!"); //todo NEW????
+        }
+        $view_name = $this->getCurrentViewName($last_action_method_name);
+        return $this->getViewResult($view_name, $view_model);
     }
 
     /**
@@ -103,6 +113,14 @@ abstract class AbstractMvcController implements MvcControllerInterface
 
     private function getTemplatesPath()
     {
-        return $this->route->getSegmentConfig()['view_path'] . '/' . $this->route->getRouteArgument()->getControllerName();
+        $current_view_directory = $this->route->getSegmentConfig()['view_path'] . '/' .
+            $this->route->getRouteArgument()->getControllerName();
+        $base_template_directory = $this->route->getSegmentConfig()['view_path'];
+        return [$current_view_directory, $base_template_directory];
+    }
+
+    private function getCurrentViewName($last_action_method_name)
+    {
+        return ucfirst(str_replace(SEGMENT_ACTION_KEYWORD, '', $last_action_method_name));
     }
 }

@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/twig/twig" />
+    </include_path>
+  </component>
   <component name="PhpInterpreters">
     <interpreters>
       <interpreter home="docker-compose://[/home/cadistortion/PhpstormProjects/manufactory/docker-compose.yml]:php/php" id="c904e4b9-4dd8-43a3-ae08-296a65b8d3cd" name="PHP 7.1 Docker-Compose" debugger_id="php.debugger.XDebug">

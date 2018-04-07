@@ -30,6 +30,11 @@ class HomeController extends AbstractMvcController
 
     protected function simpleViewAction(int $x)
     {
-        return $this->View();
+        return $this->view();
+    }
+
+    protected function withViewModelAction($some_arg)
+    {
+        return $this->viewWithModel(['some_arg' => $some_arg, 'and_another' => 'this is another!']);
     }
 }

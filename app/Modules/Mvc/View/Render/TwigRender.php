@@ -9,17 +9,16 @@
 namespace App\Modules\Mvc\View\Render;
 
 
-use stdClass;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 
 final class TwigRender implements ViewRenderInterface
 {
-    const VIEW_EXTENSION = '.html';
+    const VIEW_EXTENSION = '.twig';
 
     protected $viewName;
     protected $viewModel;
-    protected $templatesPath;
+    protected $templatesPath = [];
 
     protected $twigLoader;
     protected $twig;
@@ -32,7 +31,7 @@ final class TwigRender implements ViewRenderInterface
 
     public function render()
     {
-        $this->twigLoader->setPaths(ltrim($this->templatesPath, '/'));
+        $this->twigLoader->setPaths($this->templatesPath);
         $template = $this->twig->load($this->viewName);
         echo $template->render($this->viewModel ?? []);
     }
@@ -42,9 +41,11 @@ final class TwigRender implements ViewRenderInterface
         $this->viewName = $view_name . self::VIEW_EXTENSION;
     }
 
-    public function setTemplatesPath($templates_path)
+    public function setTemplatesPath(array $templates_path)
     {
-        $this->templatesPath = $templates_path;
+        foreach ($templates_path as $path) {
+            array_push($this->templatesPath, ltrim($path, '/'));
+        }
     }
 
     public function setViewModel($view_model)

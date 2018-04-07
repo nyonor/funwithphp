@@ -65,8 +65,8 @@ class Routing implements RoutingInterface
         $supposed_pos_of_q_mark = strripos($other_uri_str, '?') - 1;
         $route_params_arr = array_filter(explode('/', substr($other_uri_str, 0,
             $supposed_pos_of_q_mark == -1 ? strlen($other_uri_str) : $supposed_pos_of_q_mark)));
-        $uri_params_part_str = ltrim(substr($other_uri_str, stripos($other_uri_str, '?'),
-            strlen($other_uri_str)), '?');
+        $uri_params_part_str = $supposed_pos_of_q_mark != -1 ? ltrim(substr($other_uri_str, $supposed_pos_of_q_mark,
+            strlen($other_uri_str)), '?') : null;
         $uri_params_arr = array_filter(explode('&', $uri_params_part_str));
         $form_parameters = array_filter(array_diff($request->getRawParameters(), $uri_params_arr, $route_params_arr)); //todo
 
