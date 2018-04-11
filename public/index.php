@@ -23,18 +23,19 @@ require_once("../app/Autoload/AutoloaderInterface.php");
 require_once("../app/Config/Config.php");
 
 // Инклудим автозагрузчик
-require_once("../app/Autoload/Autoloader.php");
+//require_once("../app/Autoload/Autoloader.php");
+require_once ("../vendor/autoload.php");
 
 //регистрируем автолоадер
-$autoloader = new App\Autoload\Autoloader(App\Config\Config::$appAutoloadArray);
-$autoloader -> register();
+//$autoloader = new App\Autoload\Autoloader(App\Config\Config::$appAutoloadArray);
+//$autoloader -> register();
 
 //регистрируем автолоадер сегментов
 $segment_autoloader = new \App\Autoload\SegmentAutoloader(App\Config\Config::$projectSegments);
 $segment_autoloader->register();
 
 //регистрируем автозагрузчик composer'a
-require_once '../vendor/autoload.php';
+//require_once '../vendor/autoload.php';
 
 //здесь можно зарегистрировать еще автозагрузчики!
 

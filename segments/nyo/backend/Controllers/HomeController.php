@@ -15,7 +15,7 @@ class HomeController extends AbstractMvcController
 {
     protected function indexAction()
     {
-        echo "<h1>HomeController -> IndexAction</h1>";
+        return $this->view();
     }
 
     protected function pageAction(int $x)

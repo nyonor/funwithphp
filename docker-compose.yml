@@ -33,7 +33,7 @@ services:
       - 3306
     environment:
       MYSQL_ROOT_PASSWORD: iddqdidkfa
-      MYSQL_DATABASE: manufactory_db
+      MYSQL_DATABASE: fightstarter_db
       MYSQL_USER: askidans
       MYSQL_PASSWORD: geekbrains
     volumes:

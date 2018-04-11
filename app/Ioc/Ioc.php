@@ -48,7 +48,6 @@ class Ioc
         MvcControllerFactoryInterface::class => MvcControllerFactory::class,
         ActionResultFactoryInterface::class => ActionResultFactory::class,
         ViewRenderInterface::class => TwigRender::class,
-        TwigRenderInterface::class => TwigRender::class,
         ViewResultInterface::class => ViewResult::class
     ];
 
