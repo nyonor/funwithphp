@@ -18,6 +18,7 @@ use App\Modules\ModuleArgumentInterface;
 use App\Modules\Mvc\Controller\ActionResultFactoryInterface;
 use App\Modules\Mvc\Controller\ActionResultInterface;
 use App\Modules\Mvc\Controller\MvcControllerFactoryInterface;
+use App\Modules\Mvc\Routing\RequestInterface;
 use App\Modules\Mvc\Routing\RoutingInterface;
 
 class MvcModule implements MvcModuleInterface
@@ -25,6 +26,7 @@ class MvcModule implements MvcModuleInterface
     protected $routing;
     protected $controllerFactory;
     protected $actionResultFactory;
+    protected $request;
 
 
     public function __construct(RoutingInterface $routing,
@@ -43,6 +45,8 @@ class MvcModule implements MvcModuleInterface
      */
     public function process(ModuleArgumentInterface $argument): ModuleArgumentInterface
     {
+        $this->request = $argument->getRequest();
+
         /**
          * @var $routing RoutingInterface
          */
@@ -63,7 +67,9 @@ class MvcModule implements MvcModuleInterface
         $controller_instance = $this->controllerFactory->createController(
             $controller_class_name,
             $this->actionResultFactory,
-            $route);
+            $route,
+            $this->getRequest()
+        );
 
         //вызываем метод контроллера (экшен)
         /**
@@ -79,5 +85,14 @@ class MvcModule implements MvcModuleInterface
         echo $action_result->getRenderedContent(); //todo
 
         //todo реализовать
+    }
+
+    /**
+     * Возвращает ассоциированый с запросом реквест
+     * @return RequestInterface
+     */
+    public function getRequest(): RequestInterface
+    {
+        return $this->request;
     }
 }

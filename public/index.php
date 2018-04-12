@@ -27,12 +27,12 @@ require_once("../app/Config/Config.php");
 require_once ("../vendor/autoload.php");
 
 //регистрируем автолоадер
-//$autoloader = new App\Autoload\Autoloader(App\Config\Config::$appAutoloadArray);
+//$autoloader = new app\Autoload\Autoloader(app\Config\Config::$appAutoloadArray);
 //$autoloader -> register();
 
 //регистрируем автолоадер сегментов
-$segment_autoloader = new \App\Autoload\SegmentAutoloader(App\Config\Config::$projectSegments);
-$segment_autoloader->register();
+//$segment_autoloader = new \app\Autoload\SegmentAutoloader(app\Config\Config::$projectSegments);
+//$segment_autoloader->register();
 
 //регистрируем автозагрузчик composer'a
 //require_once '../vendor/autoload.php';

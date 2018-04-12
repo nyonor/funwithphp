@@ -10,18 +10,10 @@
     }
   ],
   "autoload": {
-    "psr-4":  {
-      "App\\": "app/",
-      "Segments\\": "segments/"
-    }
+    "psr-4":  {"App\\": "app/", "Segments\\Nyo\\Backend\\": "segments/nyo/backend"}
   },
   "require": {
     "twig/twig": "2.x-dev",
     "phpunit/phpunit": "7.1.x-dev"
-  },
-  "autoload-dev": {
-    "classmap": [
-      "tests/"
-    ]
   }
 }

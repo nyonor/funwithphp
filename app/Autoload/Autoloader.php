@@ -13,7 +13,7 @@ use Exception;
 
 /**
  * Class Autoloader
- * @package App\Autoload
+ * @package app\Autoload
  */
 class Autoloader implements AutoloaderInterface
 {

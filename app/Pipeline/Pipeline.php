@@ -19,7 +19,7 @@ use Exception;
 
 /**
  * Class Pipeline
- * @package App\Pipeline
+ * @package app\Pipeline
  * @property RequestInterface $request
  */
 class Pipeline implements PipelineInterface

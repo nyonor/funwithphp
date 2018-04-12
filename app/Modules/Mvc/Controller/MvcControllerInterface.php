@@ -9,8 +9,15 @@
 namespace App\Modules\Mvc\Controller;
 
 
+use App\Modules\Mvc\Routing\RequestInterface;
+
 interface MvcControllerInterface
 {
     public function getControllerClassName();
-    public function getActionResultFactory(); //todo deprecated
+
+    /**
+     * Возвращает ассоциированный с контроллером реквест
+     * @return RequestInterface
+     */
+    public function getRequest() : RequestInterface;
 }

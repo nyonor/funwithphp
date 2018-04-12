@@ -10,6 +10,8 @@
 namespace App\Modules;
 
 
+use App\Modules\Mvc\Routing\RequestInterface;
+
 interface ModuleInterface
 {
     /**
@@ -18,4 +20,10 @@ interface ModuleInterface
      * @return ModuleArgumentInterface ;
      */
     public function process(ModuleArgumentInterface $argument): ModuleArgumentInterface;
+
+    /**
+     * Возвращает ассоциированый с запросом реквест
+     * @return RequestInterface
+     */
+    public function getRequest() : RequestInterface;
 }

@@ -11,7 +11,6 @@ namespace App\Modules\Mvc\Routing;
 
 
 use App\Config\Config;
-use const App\Config\SEGMENT_ACTION_KEYWORD;
 use const App\Config\SEGMENT_CONTROLLER_KEYWORD;
 use const App\Config\SEGMENT_CONTROLLERS_LAST_NAMESPACE;
 use App\Pipeline\PipelineException;
@@ -98,8 +97,8 @@ class Route implements RouteInterface
     {
         if (empty($this->action)) {
             $this->actionMethodName = $this->routeArgument->getActionName() == Config::ROUTING_DEFAULT_ACTION_NAME ?
-                Config::ROUTING_DEFAULT_ACTION_NAME . SEGMENT_ACTION_KEYWORD :
-                $this->routeArgument->getActionName() . SEGMENT_ACTION_KEYWORD;
+                Config::ROUTING_DEFAULT_ACTION_NAME . Config::SEGMENT_ACTION_KEYWORD :
+                $this->routeArgument->getActionName() . Config::SEGMENT_ACTION_KEYWORD;
         }
 
         return $this->actionMethodName;

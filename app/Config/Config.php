@@ -12,7 +12,7 @@
 
 namespace App\Config;
 
-use App\Modules\Mvc\View\Render\TwigRenderInterface;
+
 const APP_DIR = '/var/www/html';
 const SEGMENT_CONTROLLER_KEYWORD = "Controller";
 const SEGMENT_CONTROLLERS_LAST_NAMESPACE = "Controllers";
@@ -23,21 +23,22 @@ class Config
 {
     const ROUTING_DEFAULT_CONTROLLER_NAME = "Home";
     const ROUTING_DEFAULT_ACTION_NAME = "Index";
+    const SEGMENT_ACTION_KEYWORD = "Action";
 
     /*
      * Массив-связка: неймспейс к базовой директории.
      * конфиг для автозагрузчика Autoloader
      */
     public static $appAutoloadArray = [
-        'App\Autoload' => '/app/Autoload',
-        'App\Ioc' => '/app/Ioc',
-        'App\Pipeline' => '/app/Pipeline',
-        'App\Modules' => '/app/Modules',
-        'App\Modules\Mvc' => '/app/Modules/Mvc',
-        'App\Modules\Mvc\Routing' => '/app/Modules/Mvc/Routing',
-        'App\Modules\Mvc\Controller' => '/app/Modules/Mvc/Controller',
-        'App\Modules\Mvc\View' => '/app/Modules/Mvc/View',
-        'App\Modules\Mvc\View\Render' => '/app/Modules/Mvc/View/Render'
+        'app\Autoload' => '/app/Autoload',
+        'app\Ioc' => '/app/Ioc',
+        'app\Pipeline' => '/app/Pipeline',
+        'app\Modules' => '/app/Modules',
+        'app\Modules\Mvc' => '/app/Modules/Mvc',
+        'app\Modules\Mvc\Routing' => '/app/Modules/Mvc/Routing',
+        'app\Modules\Mvc\Controller' => '/app/Modules/Mvc/Controller',
+        'app\Modules\Mvc\View' => '/app/Modules/Mvc/View',
+        'app\Modules\Mvc\View\Render' => '/app/Modules/Mvc/View/Render'
     ];
 
     /*

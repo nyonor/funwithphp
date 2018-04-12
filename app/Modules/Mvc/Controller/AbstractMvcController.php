@@ -11,7 +11,7 @@ namespace App\Modules\Mvc\Controller;
 
 
 use App\Config\Config;
-use const App\Config\SEGMENT_ACTION_KEYWORD;
+use App\Modules\Mvc\Routing\RequestInterface;
 use App\Modules\Mvc\Routing\RouteInterface;
 
 abstract class AbstractMvcController implements MvcControllerInterface
@@ -23,11 +23,14 @@ abstract class AbstractMvcController implements MvcControllerInterface
     private $callChain = [];
     private $actionResultFactory;
     protected $route;
+    protected $request;
 
-    public function __construct(ActionResultFactoryInterface $action_result_factory, RouteInterface $route)
+    public function __construct(ActionResultFactoryInterface $action_result_factory, RouteInterface $route,
+                                RequestInterface $request)
     {
         $this->actionResultFactory = $action_result_factory;
         $this->route = $route;
+        $this->request = $request;
     }
 
     /**
@@ -35,10 +38,15 @@ abstract class AbstractMvcController implements MvcControllerInterface
      * @param $name
      * @param $arguments
      * @return ActionResultInterface
+     * @throws ControllerException
      */
     public function __call($name, $arguments)
     {
-        if (strrpos($name, SEGMENT_ACTION_KEYWORD) != false) {
+        if (method_exists($this, $name) === false) {
+            throw new ControllerException('Method not exists!');
+        }
+
+        if (strrpos($name, Config::SEGMENT_ACTION_KEYWORD) != false) {
             array_push($this->callChain, [
                 'method_name' => $name,
                 'args' => $arguments
@@ -85,6 +93,11 @@ abstract class AbstractMvcController implements MvcControllerInterface
         return $this->getViewResult($view_name, $view_model);
     }
 
+    public function getRequest(): RequestInterface
+    {
+        return $this->request;
+    }
+
     /**
      * Результат работы экшена в виде вьюхи
      * @param string|null $view_name
@@ -121,6 +134,6 @@ abstract class AbstractMvcController implements MvcControllerInterface
 
     private function getCurrentViewName($last_action_method_name)
     {
-        return ucfirst(str_replace(SEGMENT_ACTION_KEYWORD, '', $last_action_method_name));
+        return ucfirst(str_replace(Config::SEGMENT_ACTION_KEYWORD, '', $last_action_method_name));
     }
 }

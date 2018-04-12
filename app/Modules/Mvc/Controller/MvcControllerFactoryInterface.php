@@ -9,11 +9,12 @@
 namespace App\Modules\Mvc\Controller;
 
 
+use App\Modules\Mvc\Routing\RequestInterface;
 use App\Modules\Mvc\Routing\RouteInterface;
 
 interface MvcControllerFactoryInterface
 {
     public function createController(string $controller_class_name,
                                      ActionResultFactoryInterface $action_result_factory,
-                                     RouteInterface $route) : MvcControllerInterface;
+                                     RouteInterface $route, RequestInterface $request) : MvcControllerInterface;
 }
