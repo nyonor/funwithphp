@@ -10,8 +10,20 @@ namespace App\Modules\Mvc;
 
 
 use App\Modules\ModuleInterface;
+use App\Modules\Mvc\Routing\RequestInterface;
+use App\Modules\Mvc\Routing\ResponseInterface;
 
 interface MvcModuleInterface extends ModuleInterface
 {
-    //public function getRenderer() : RenderInterface;
+    /**
+     * Возвращает ассоциированый с запросом реквест
+     * @return RequestInterface
+     */
+    public function getRequest() : RequestInterface;
+
+    /**
+     * Возвращает ассоциированый с запросом реквест
+     * @return ResponseInterface
+     */
+    public function getResponse() : ResponseInterface;
 }

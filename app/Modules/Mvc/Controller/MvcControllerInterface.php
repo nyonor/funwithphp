@@ -10,6 +10,7 @@ namespace App\Modules\Mvc\Controller;
 
 
 use App\Modules\Mvc\Routing\RequestInterface;
+use App\Modules\Mvc\Routing\ResponseInterface;
 
 interface MvcControllerInterface
 {
@@ -20,4 +21,10 @@ interface MvcControllerInterface
      * @return RequestInterface
      */
     public function getRequest() : RequestInterface;
+
+    /**
+     * Возвращает соответствующий респонс
+     * @return ResponseInterface
+     */
+    public function getResponse() : ResponseInterface;
 }

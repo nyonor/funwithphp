@@ -33,11 +33,10 @@ interface PipelineInterface
      * в этом методе входные параметры будут преобразованы в ModuleArgument
      * и будут переданы в первый зарегистрированный модуль, затем в следующий и так далее
      * пока массив всех модулей не будет пройден.
-     * @param $request_array
      * @throws PipelineException
      * @return void
      */
-    public function go($request_array = null);
+    public function go();
 
     /**
      * todo

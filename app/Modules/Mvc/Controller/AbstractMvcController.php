@@ -12,6 +12,7 @@ namespace App\Modules\Mvc\Controller;
 
 use App\Config\Config;
 use App\Modules\Mvc\Routing\RequestInterface;
+use App\Modules\Mvc\Routing\ResponseInterface;
 use App\Modules\Mvc\Routing\RouteInterface;
 
 abstract class AbstractMvcController implements MvcControllerInterface
@@ -22,15 +23,18 @@ abstract class AbstractMvcController implements MvcControllerInterface
      */
     private $callChain = [];
     private $actionResultFactory;
+
     protected $route;
     protected $request;
+    protected $response;
 
     public function __construct(ActionResultFactoryInterface $action_result_factory, RouteInterface $route,
-                                RequestInterface $request)
+                                RequestInterface $request, ResponseInterface $response)
     {
         $this->actionResultFactory = $action_result_factory;
         $this->route = $route;
         $this->request = $request;
+        $this->response = $response;
     }
 
     /**
@@ -73,7 +77,7 @@ abstract class AbstractMvcController implements MvcControllerInterface
      * @return ActionResultInterface
      * @throws ControllerException
      */
-    public function view() : ActionResultInterface
+    protected function view() : ActionResultInterface
     {
         $last_action_method_name = $this->getLastActionMethodName();
         if (empty($last_action_method_name)) {
@@ -83,7 +87,7 @@ abstract class AbstractMvcController implements MvcControllerInterface
         return $this->getViewResult($view_name, null);
     }
 
-    public function viewWithModel(array $view_model)
+    protected function viewWithModel(array $view_model)
     {
         $last_action_method_name = $this->getLastActionMethodName();
         if (empty($last_action_method_name)) {
@@ -96,6 +100,11 @@ abstract class AbstractMvcController implements MvcControllerInterface
     public function getRequest(): RequestInterface
     {
         return $this->request;
+    }
+
+    public function getResponse(): ResponseInterface
+    {
+        return $this->response;
     }
 
     /**

@@ -15,10 +15,13 @@ namespace App\Modules\Mvc;
 
 use App\Ioc\Ioc;
 use App\Modules\ModuleArgumentInterface;
+use App\Modules\ModuleResult;
+use App\Modules\ModuleResultInterface;
 use App\Modules\Mvc\Controller\ActionResultFactoryInterface;
 use App\Modules\Mvc\Controller\ActionResultInterface;
 use App\Modules\Mvc\Controller\MvcControllerFactoryInterface;
 use App\Modules\Mvc\Routing\RequestInterface;
+use App\Modules\Mvc\Routing\ResponseInterface;
 use App\Modules\Mvc\Routing\RoutingInterface;
 
 class MvcModule implements MvcModuleInterface
@@ -27,6 +30,7 @@ class MvcModule implements MvcModuleInterface
     protected $controllerFactory;
     protected $actionResultFactory;
     protected $request;
+    protected $response;
 
 
     public function __construct(RoutingInterface $routing,
@@ -43,9 +47,10 @@ class MvcModule implements MvcModuleInterface
      * @param ModuleArgumentInterface $argument
      * @return ModuleArgumentInterface ;
      */
-    public function process(ModuleArgumentInterface $argument): ModuleArgumentInterface
+    public function process(ModuleArgumentInterface $argument): ModuleResultInterface
     {
         $this->request = $argument->getRequest();
+        $this->response = $argument->getResponse();
 
         /**
          * @var $routing RoutingInterface
@@ -68,7 +73,8 @@ class MvcModule implements MvcModuleInterface
             $controller_class_name,
             $this->actionResultFactory,
             $route,
-            $this->getRequest()
+            $this->getRequest(),
+            $this->getResponse()
         );
 
         //вызываем метод контроллера (экшен)
@@ -94,5 +100,23 @@ class MvcModule implements MvcModuleInterface
     public function getRequest(): RequestInterface
     {
         return $this->request;
+    }
+
+    /**
+     * Возвращает ассоциированый с запросом реквест
+     * @return ResponseInterface
+     */
+    public function getResponse(): ResponseInterface
+    {
+        return $this->response;
+    }
+
+    /**
+     * Возвращает полное имя модуля
+     * @return string
+     */
+    public function getNameOfModule(): string
+    {
+        return self::class;
     }
 }

@@ -15,25 +15,57 @@ use App\Modules\Mvc\Routing\ResponseInterface;
 
 class ModuleArgument implements ModuleArgumentInterface
 {
-    protected $currentRequest = null;
+    protected $request = null;
+    protected $response = null;
+    protected $moduleResult = null;
 
-    public function __construct(RequestInterface $request)
+    /**
+     * Массив для хранения результатов выполнения
+     * @var array
+     */
+    protected $allResults = [];
+
+    public function __construct(array $request_response_result_assoc_arr)
     {
-        $this->currentRequest = $request;
+        $this->request = $request_response_result_assoc_arr['request'];
+        $this->response = $request_response_result_assoc_arr['response'];
+
+        if (array_key_exists('result', $request_response_result_assoc_arr)) {
+            $this->moduleResult = $request_response_result_assoc_arr['result'];
+        }
     }
 
     public function getRequest(): RequestInterface
     {
-        return $this->currentRequest;
+        return $this->request;
     }
 
     public function getResponse() : ResponseInterface
     {
-        // TODO: Implement getResponse() method.
+        return $this->response;
     }
 
-    public function getActionResult(): ActionResultInterface
+    public function getModuleResult() : ModuleResultInterface
     {
-        // TODO: Implement getActionResult() method.
+        return $this->moduleResult;
+    }
+
+    /**
+     * Добавляет результат выполнеия модуля к объекту
+     * @param ModuleResultInterface $result
+     * @return mixed
+     */
+    public function addResult(ModuleResultInterface $result)
+    {
+        array_push($this->allResults, $result);
+    }
+
+    /**
+     * Возвращает все результаты выполнения
+     * @return array @type ModuleResultInterface
+     */
+    public function getAllResults(): array
+    {
+        return $this->allResults;
     }
 }

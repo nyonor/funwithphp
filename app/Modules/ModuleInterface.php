@@ -15,15 +15,15 @@ use App\Modules\Mvc\Routing\RequestInterface;
 interface ModuleInterface
 {
     /**
-     * Запуск модуля, начало работы и инциализация
+     * Обработка модулем аргумента и возращение результатов
      * @param ModuleArgumentInterface $argument
-     * @return ModuleArgumentInterface ;
+     * @return ModuleResultInterface ;
      */
-    public function process(ModuleArgumentInterface $argument): ModuleArgumentInterface;
+    public function process(ModuleArgumentInterface $argument): ModuleResultInterface;
 
     /**
-     * Возвращает ассоциированый с запросом реквест
-     * @return RequestInterface
+     * Возвращает полное имя модуля
+     * @return string
      */
-    public function getRequest() : RequestInterface;
+    public function getNameOfModule() : string;
 }

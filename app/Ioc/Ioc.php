@@ -20,6 +20,8 @@ use App\Modules\Mvc\MvcModule;
 use App\Modules\Mvc\MvcModuleInterface;
 use App\Modules\Mvc\Routing\Request;
 use App\Modules\Mvc\Routing\RequestInterface;
+use App\Modules\Mvc\Routing\Response;
+use App\Modules\Mvc\Routing\ResponseInterface;
 use App\Modules\Mvc\Routing\Route;
 use App\Modules\Mvc\Routing\RouteArgument;
 use App\Modules\Mvc\Routing\RouteArgumentInterface;
@@ -44,6 +46,7 @@ class Ioc
         RouteInterface::class => Route::class,
         RouteArgumentInterface::class => RouteArgument::class,
         RequestInterface::class => Request::class,
+        ResponseInterface::class => Response::class,
         ModuleArgumentInterface::class => ModuleArgument::class,
         MvcControllerFactoryInterface::class => MvcControllerFactory::class,
         ActionResultFactoryInterface::class => ActionResultFactory::class,

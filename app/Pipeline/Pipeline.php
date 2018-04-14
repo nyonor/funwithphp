@@ -15,6 +15,8 @@ use App\Ioc\Ioc;
 use App\Modules\ModuleArgumentInterface;
 use App\Modules\ModuleInterface;
 use App\Modules\Mvc\Routing\RequestInterface;
+use App\Modules\Mvc\Routing\Response;
+use App\Modules\Mvc\Routing\ResponseInterface;
 use Exception;
 
 /**
@@ -26,12 +28,14 @@ class Pipeline implements PipelineInterface
 {
     protected $registeredModules = [];
     protected $request = null;
+    protected $response = null;
     protected $result = null;
     protected $exceptions = [];
 
     function __construct()
     {
-        $this->request = Ioc::factory(RequestInterface::class); //todo inject throug constructor
+        $this->request = Ioc::factory(RequestInterface::class); //todo inject through constructor
+        $this->response = Ioc::factory(ResponseInterface::class); //todo inject thought constructor
     }
 
     /**
@@ -53,33 +57,24 @@ class Pipeline implements PipelineInterface
 
     /**
      * Запускает обработку запроса через все зарегистрированные модули
-     * в этом методе входные параметры будут преобразованы в ModuleArgument
-     * и будут переданы в первый зарегистрированный модуль, затем в следующий и так далее
+     * в первый зарегистрированный модуль, затем в следующий и так далее
      * пока массив всех модулей не будет пройден.
-     * @param $request_array
      * @return void
      */
-    public function go($request_array = null)
+    public function go()
     {
-        //создаем объект запроса (Request)
-        if ($request_array != null) {
-            $this->request = Ioc::factoryWithArgs(RequestInterface::class, $request_array); //todo inject throug constructor
-        }
-
         foreach ($this->registeredModules as $module) {
-//            try{
-                if ($this->result == null) {
-                    $args = $this->request;
-                } else {
-                    $args = $this->result;
-                }
-                /**
-                 * @var $module ModuleInterface
-                 */
-                $this->result = $module->process(Ioc::factoryWithArgs(ModuleArgumentInterface::class, $args)); //todo inject throug constructor
-//            } catch (Exception $e) {
-//                array_push($this->exceptions, $e);
-//            }
+
+            if ($this->result == null) {
+                $args = ['request' => $this->request, 'response' => $this->response];
+            } else {
+                $args = $this->result;
+            }
+            /**
+             * @var $module ModuleInterface
+             */
+            $this->result = $module->process(Ioc::factoryWithArgs(ModuleArgumentInterface::class, $args)); //todo inject throug constructor
+
         }
 
         $this->handleResponse($this->result);

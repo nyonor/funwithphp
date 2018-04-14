@@ -14,13 +14,26 @@ namespace App\Modules;
 
 
 use App\Modules\Mvc\Controller\ActionResultInterface;
+use App\Modules\Mvc\ModuleResultTest;
 use App\Modules\Mvc\Routing\RequestInterface;
 use App\Modules\Mvc\Routing\ResponseInterface;
 
 interface ModuleArgumentInterface
 {
-    public function __construct(RequestInterface $request);
+    public function __construct(array $request_and_response);
     public function getRequest() : RequestInterface;
     public function getResponse() : ResponseInterface;
-    public function getActionResult() : ActionResultInterface;
+
+    /**
+     * Добавляет результат выполнеия модуля к объекту
+     * @param ModuleResultInterface $result
+     * @return mixed
+     */
+    public function addResult(ModuleResultInterface $result);
+
+    /**
+     * Возвращает все результаты выполнения
+     * @return array @type ModuleResultInterface
+     */
+    public function getAllResults() : array;
 }

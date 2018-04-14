@@ -10,6 +10,7 @@ namespace App\Modules\Mvc\Controller;
 
 
 use App\Modules\Mvc\Routing\RequestInterface;
+use App\Modules\Mvc\Routing\ResponseInterface;
 use App\Modules\Mvc\Routing\RouteInterface;
 use App\Modules\Mvc\View\Render\RenderInterface;
 
@@ -17,8 +18,10 @@ class MvcControllerFactory implements MvcControllerFactoryInterface
 {
     public function createController(string $controller_class_name,
                                      ActionResultFactoryInterface $action_result_factory,
-                                     RouteInterface $route, RequestInterface $request): MvcControllerInterface
+                                     RouteInterface $route,
+                                     RequestInterface $request,
+                                     ResponseInterface $response): MvcControllerInterface
     {
-        return new $controller_class_name($action_result_factory, $route);
+        return new $controller_class_name($action_result_factory, $route, $request, $response);
     }
 }
