@@ -1,6 +1,6 @@
 <?php
 /**
- * Регистрирует порядок подключения модулей
+ * Конвеер обработки запроса
  *
  * Created by PhpStorm.
  * User: NyoNor
@@ -27,16 +27,8 @@ use Exception;
 class Pipeline implements PipelineInterface
 {
     protected $registeredModules = [];
-    protected $request = null;
-    protected $response = null;
-    protected $result = null;
     protected $exceptions = [];
-
-    function __construct()
-    {
-        $this->request = Ioc::factory(RequestInterface::class); //todo inject through constructor
-        $this->response = Ioc::factory(ResponseInterface::class); //todo inject thought constructor
-    }
+    protected $module_argument = null;
 
     /**
      * Регистрирует модуль в пайпе
@@ -59,34 +51,35 @@ class Pipeline implements PipelineInterface
      * Запускает обработку запроса через все зарегистрированные модули
      * в первый зарегистрированный модуль, затем в следующий и так далее
      * пока массив всех модулей не будет пройден.
+     * @param ModuleArgumentInterface $module_argument
      * @return void
      */
-    public function go()
+    public function go(ModuleArgumentInterface $module_argument)
     {
+        $this->module_argument = $module_argument;
+
         foreach ($this->registeredModules as $module) {
 
-            if ($this->result == null) {
-                $args = ['request' => $this->request, 'response' => $this->response];
-            } else {
-                $args = $this->result;
-            }
             /**
              * @var $module ModuleInterface
              */
-            $this->result = $module->process(Ioc::factoryWithArgs(ModuleArgumentInterface::class, $args)); //todo inject throug constructor
-
+            $module_result = $module->process($this->module_argument);
+            $this->module_argument->addResult($module_result);
         }
 
-        $this->handleResponse($this->result);
+        $this->handleResponse();
     }
 
-    public function handleResponse(ModuleArgumentInterface $moduleArgument)
+    /**
+     * Обработка результатов модулей и ответ
+     */
+    protected function handleResponse()
     {
         if (!empty($this->exceptions)){
             $this->handleExceptions($this->exceptions);
         }
 
-        //TODO вывод результатов
+        //todo обработка результатов и ответ
     }
 
     protected function handleExceptions(array $exceptions)

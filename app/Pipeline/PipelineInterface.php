@@ -30,18 +30,8 @@ interface PipelineInterface
 
     /**
      * Запускает обработку запроса через все зарегистрированные модули
-     * в этом методе входные параметры будут преобразованы в ModuleArgument
-     * и будут переданы в первый зарегистрированный модуль, затем в следующий и так далее
-     * пока массив всех модулей не будет пройден.
-     * @throws PipelineException
+     * @param ModuleArgumentInterface $module_argument
      * @return void
      */
-    public function go();
-
-    /**
-     * todo
-     * @param ModuleArgumentInterface $module_argument
-     * @return mixed
-     */
-    public function handleResponse(ModuleArgumentInterface $module_argument);
+    public function go(ModuleArgumentInterface $module_argument);
 }

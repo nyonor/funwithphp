@@ -1,5 +1,9 @@
 <?php
 /**
+ * Используется в качестве аргумента на входе ModuleInterface
+ * будет передаваться всем модулям зарегстрированным в пайпе, последовательно
+ * каждый модуль будет добавлять сюда свои ModuleResult
+ *
  * Created by PhpStorm.
  * User: NyoNor
  * Date: 3/15/2018
@@ -17,7 +21,6 @@ class ModuleArgument implements ModuleArgumentInterface
 {
     protected $request = null;
     protected $response = null;
-    protected $moduleResult = null;
 
     /**
      * Массив для хранения результатов выполнения
@@ -31,23 +34,26 @@ class ModuleArgument implements ModuleArgumentInterface
         $this->response = $request_response_result_assoc_arr['response'];
 
         if (array_key_exists('result', $request_response_result_assoc_arr)) {
-            $this->moduleResult = $request_response_result_assoc_arr['result'];
+            $this->addResult($request_response_result_assoc_arr['result']);
         }
     }
 
+    /**
+     * Возвращает реквест ассоциированый с запросом
+     * @return RequestInterface
+     */
     public function getRequest(): RequestInterface
     {
         return $this->request;
     }
 
+    /**
+     * Возвращает респонс ассоциированый с запросом
+     * @return ResponseInterface
+     */
     public function getResponse() : ResponseInterface
     {
         return $this->response;
-    }
-
-    public function getModuleResult() : ModuleResultInterface
-    {
-        return $this->moduleResult;
     }
 
     /**
@@ -67,5 +73,37 @@ class ModuleArgument implements ModuleArgumentInterface
     public function getAllResults(): array
     {
         return $this->allResults;
+    }
+
+    /**
+     * Возвращает последний результат или null
+     * @return ModuleResultInterface
+     */
+    public function getLastResult(): ?ModuleResultInterface
+    {
+        $result = end($this->allResults);
+        reset($this->allResults);
+        return $result == false ? null : $result;
+    }
+
+    /**
+     * Вернет результат выполнения модуля по имени его класса,
+     * если таковой существует
+     * @param string $module_class_name
+     * @return ModuleResultInterface|null
+     */
+    public function getModuleResult(string $module_class_name): ?ModuleResultInterface
+    {
+        foreach ($this->allResults as $result)
+        {
+            /**
+             * @var $result ModuleResultInterface
+             */
+            if ($result->getSubjectModule()->getNameOfModule() === $module_class_name) {
+                return $result;
+            }
+        }
+
+        return null;
     }
 }

@@ -16,16 +16,19 @@ use App\Modules\Mvc\MvcModule;
 class ModuleResult implements ModuleResultInterface
 {
     protected $module;
+    protected $theResult;
 
     /**
      * На основании модуля, который сгенерировал
      * данный объект
      * ModuleResult constructor.
      * @param ModuleInterface $module
+     * @param $result mixed
      */
-    public function __construct(ModuleInterface $module)
+    public function __construct(ModuleInterface $module, $result)
     {
         $this->module = $module;
+        $this->theResult = $result;
     }
 
     /**
@@ -35,5 +38,14 @@ class ModuleResult implements ModuleResultInterface
     public function getSubjectModule(): ModuleInterface
     {
         return $this->module;
+    }
+
+    /**
+     * Возвращает объект, который модуль передал в качестве результата
+     * @return mixed
+     */
+    public function getTheResult()
+    {
+        return $this->theResult;
     }
 }

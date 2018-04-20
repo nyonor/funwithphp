@@ -18,7 +18,16 @@ class ModuleResultTest extends TestCase
     {
         $module = $this->createMock(MvcModule::class);
         $module->method('getNameOfModule')->willReturn(MvcModule::class);
-        $module_result = new ModuleResult($module);
+        $module_result = new ModuleResult($module, 'some_result_no_matter');
         $this->assertEquals(MvcModule::class, $module_result->getSubjectModule()->getNameOfModule());
+        $this->assertSame($module_result->getSubjectModule(), $module);
+    }
+
+    public function testGetTheResultMethod()
+    {
+        $module = $this->createMock(MvcModule::class);
+        $module->method('getNameOfModule')->willReturn(MvcModule::class);
+        $module_result = new ModuleResult($module, 'some_result_no_matter');
+        $this->assertEquals('some_result_no_matter', $module_result->getTheResult());
     }
 }

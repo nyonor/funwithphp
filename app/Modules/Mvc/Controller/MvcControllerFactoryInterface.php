@@ -20,4 +20,9 @@ interface MvcControllerFactoryInterface
                                      RouteInterface $route,
                                      RequestInterface $request,
                                      ResponseInterface $response) : MvcControllerInterface;
+
+    public function createAndCall(ActionResultFactoryInterface $action_result_factory,
+                                  RouteInterface $route,
+                                  RequestInterface $request,
+                                  ResponseInterface $response) : ActionResultInterface;
 }

@@ -57,20 +57,19 @@ class ModuleArgumentTest extends TestCase
     {
         $this->assertNotNull($argument->getResponse());
         $this->assertNotNull($argument->getRequest());
-        $this->assertTrue(method_exists($argument, 'getModuleResult'));
     }
 
     public function testThatModuleArgumentWillBeConstructedWithModuleResult()
     {
-        $module_result = $this->createMock(ModuleResult::class);
+        $module_result = $this->createMock(ModuleResultInterface::class);
         $module_argument = new ModuleArgument([
             'request' => $this->request,
             'response' => $this->response,
             'result' => $module_result
         ]);
 
-        $this->assertNotNull($module_argument->getModuleResult());
-        $this->assertInstanceOf(ModuleResultInterface::class, $module_argument->getModuleResult());
+        $this->assertNotNull($module_argument->getLastResult());
+        $this->assertInstanceOf(ModuleResultInterface::class, $module_argument->getLastResult());
     }
 
     public function testModuleArgumentWillReturnArrayOfPreviousResults()
@@ -88,9 +87,97 @@ class ModuleArgumentTest extends TestCase
 
         $module_argument->addResult($module_result);
 
-        $this->assertEquals(1, count($module_argument->getAllResults()));
+        $this->assertEquals(2, count($module_argument->getAllResults()));
         $this->assertEquals(MvcModule::class, $module_argument->getAllResults()[0]->getSubjectModule()->getNameOfModule());
     }
 
 
+    public function testGetLastResultMethodReturnsLastModuleResult()
+    {
+        $subject_module = $this->createMock(MvcModule::class);
+        $subject_module->method('getNameOfModule')->willReturn(MvcModule::class);
+        $module_result = $this->createMock(ModuleResultInterface::class);
+        $module_result->method('getSubjectModule')->willReturn($subject_module);
+
+        $module_argument = new ModuleArgument([
+            'request' => $this->request,
+            'response' => $this->response,
+            'result' => $module_result
+        ]);
+
+        $module_argument->addResult($module_result);
+
+        $another_module_result = $this
+            ->getMockBuilder(ModuleResultInterface::class)
+            ->setMethods(['getNameOfModule', 'getSubjectModule', 'getTheResult'])
+            ->getMock();
+        $another_subject_module = $this->createMock(ModuleInterface::class);
+        $another_subject_module
+            ->method('getNameOfModule')
+            ->willReturn('LastModule');
+        $another_module_result
+            ->method('getSubjectModule')
+            ->willReturn($another_subject_module);
+
+        $module_argument->addResult($another_module_result);
+
+        $this->assertEquals('LastModule',
+            $module_argument->getLastResult()
+                            ->getSubjectModule()
+                            ->getNameOfModule()
+        );
+    }
+
+    public function testGetLastResultMethodReturnsNullIfNoModuleResultsWasAdded()
+    {
+        $module_argument = new ModuleArgument([
+            'request' => $this->request,
+            'response' => $this->response,
+        ]);
+
+        $this->assertNull($module_argument->getLastResult());
+    }
+
+    public function testMethodGetModuleResultByModuleWillReturnModuleResultByModuleClassNameIfExists()
+    {
+        $subject_module = $this->createMock(MvcModule::class);
+        $subject_module->method('getNameOfModule')->willReturn(MvcModule::class);
+        $module_result = $this->createMock(ModuleResultInterface::class);
+        $module_result->method('getSubjectModule')->willReturn($subject_module);
+
+        $module_argument = new ModuleArgument([
+            'request' => $this->request,
+            'response' => $this->response,
+            'result' => $module_result
+        ]);
+
+        $module_argument->addResult($module_result);
+
+        $another_module_result = $this
+            ->getMockBuilder(ModuleResultInterface::class)
+            ->setMethods(['getNameOfModule', 'getSubjectModule', 'getTheResult'])
+            ->getMock();
+        $another_subject_module = $this->createMock(ModuleInterface::class);
+        $another_subject_module
+            ->method('getNameOfModule')
+            ->willReturn('LastModule');
+        $another_module_result
+            ->method('getSubjectModule')
+            ->willReturn($another_subject_module);
+
+        $module_argument->addResult($another_module_result);
+
+        $this->assertEquals('LastModule',
+            $module_argument->getLastResult()
+                ->getSubjectModule()
+                ->getNameOfModule()
+        );
+
+        $this->assertSame($another_module_result, $module_argument->getModuleResult('LastModule'));
+        $this->assertEquals(MvcModule::class, $module_argument
+            ->getModuleResult(MvcModule::class)
+            ->getSubjectModule()
+            ->getNameOfModule());
+        $this->assertNull($module_argument->getModuleResult('SomeClassThatNeverExisted'));
+    }
 }

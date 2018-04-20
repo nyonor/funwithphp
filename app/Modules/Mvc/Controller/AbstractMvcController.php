@@ -94,7 +94,8 @@ abstract class AbstractMvcController implements MvcControllerInterface
             throw new ControllerException("Ни один экшен не был вызван!"); //todo NEW????
         }
         $view_name = $this->getCurrentViewName($last_action_method_name);
-        return $this->getViewResult($view_name, $view_model);
+        $view_result = $this->getViewResult($view_name, $view_model);
+        return $view_result;
     }
 
     public function getRequest(): RequestInterface

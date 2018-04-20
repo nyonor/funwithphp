@@ -16,4 +16,10 @@ interface ModuleResultInterface
      * @return ModuleInterface
      */
     public function getSubjectModule() : ModuleInterface;
+
+    /**
+     * Возвращает объект, который модуль передал в качестве результата
+     * @return mixed
+     */
+    public function getTheResult();
 }

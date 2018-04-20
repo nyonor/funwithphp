@@ -21,7 +21,16 @@ use App\Modules\Mvc\Routing\ResponseInterface;
 interface ModuleArgumentInterface
 {
     public function __construct(array $request_and_response);
+    /**
+     * Возвращает ассоциированый с запросом реквест
+     * @return RequestInterface
+     */
     public function getRequest() : RequestInterface;
+
+    /**
+     * Возвращает ассоциированый с запросом реквест
+     * @return ResponseInterface
+     */
     public function getResponse() : ResponseInterface;
 
     /**
@@ -36,4 +45,18 @@ interface ModuleArgumentInterface
      * @return array @type ModuleResultInterface
      */
     public function getAllResults() : array;
+
+    /**
+     * Возвращает последний результат выполнения
+     * @return ModuleResultInterface
+     */
+    public function getLastResult() : ?ModuleResultInterface;
+
+    /**
+     * Вернет результат выполнения модуля по имени его класса,
+     * если таковой существует
+     * @param string $module_class_name
+     * @return ModuleResultInterface|null
+     */
+    public function getModuleResult(string $module_class_name) : ?ModuleResultInterface;
 }

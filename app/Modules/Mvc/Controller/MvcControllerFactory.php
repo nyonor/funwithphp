@@ -24,4 +24,36 @@ class MvcControllerFactory implements MvcControllerFactoryInterface
     {
         return new $controller_class_name($action_result_factory, $route, $request, $response);
     }
+
+    public function createAndCall(ActionResultFactoryInterface $action_result_factory,
+                                  RouteInterface $route,
+                                  RequestInterface $request,
+                                  ResponseInterface $response): ActionResultInterface
+    {
+        //получаем контоллер
+        $controller_class_name = $route->getControllerClassName();
+
+        //экшн
+        $action_method_name = $route->getActionMethodName();
+
+        //параметры
+        $route_and_url_args = $route->getParameters();;
+
+        //создаем контроллер
+        $controller_instance = $this->createController(
+            $controller_class_name,
+            $action_result_factory,
+            $route,
+            $request,
+            $response
+        );
+
+        //вызываем метод контроллера (экшен)
+        /**
+         * @var $action_result ActionResultInterface
+         */
+        $action_result = call_user_func_array([$controller_instance, $action_method_name], $route_and_url_args);
+
+        return $action_result;
+    }
 }

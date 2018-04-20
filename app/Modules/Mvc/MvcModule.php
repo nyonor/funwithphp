@@ -13,7 +13,6 @@
 namespace App\Modules\Mvc;
 
 
-use App\Ioc\Ioc;
 use App\Modules\ModuleArgumentInterface;
 use App\Modules\ModuleResult;
 use App\Modules\ModuleResultInterface;
@@ -26,13 +25,44 @@ use App\Modules\Mvc\Routing\RoutingInterface;
 
 class MvcModule implements MvcModuleInterface
 {
+    /**
+     * @var RoutingInterface
+     */
     protected $routing;
+
+    /**
+     * @var MvcControllerFactoryInterface
+     */
     protected $controllerFactory;
+
+    /**
+     * @var ActionResultFactoryInterface
+     */
     protected $actionResultFactory;
-    protected $request;
-    protected $response;
 
+    /**
+     * @var ModuleArgumentInterface
+     */
+    protected $moduleArgument;
 
+    /**
+     * Результат отработки ->process
+     * @var
+     */
+    protected $processResult;
+
+    /**
+     * Результат выполнения контроллер->экшн
+     * @var ActionResultInterface
+     */
+    protected $actionResult;
+
+    /**
+     * MvcModule constructor.
+     * @param RoutingInterface $routing
+     * @param MvcControllerFactoryInterface $controller_factory
+     * @param ActionResultFactoryInterface $action_result_factory
+     */
     public function __construct(RoutingInterface $routing,
                                 MvcControllerFactoryInterface $controller_factory,
                                 ActionResultFactoryInterface $action_result_factory)
@@ -45,12 +75,15 @@ class MvcModule implements MvcModuleInterface
     /**
      * Запуск модуля, начало работы и инциализация
      * @param ModuleArgumentInterface $argument
-     * @return ModuleArgumentInterface ;
+     * @return ModuleResultInterface ;
      */
     public function process(ModuleArgumentInterface $argument): ModuleResultInterface
     {
-        $this->request = $argument->getRequest();
-        $this->response = $argument->getResponse();
+        if (isset($this->processResult)) {
+            return $this->processResult;
+        }
+
+        $this->moduleArgument = $argument;
 
         /**
          * @var $routing RoutingInterface
@@ -59,38 +92,19 @@ class MvcModule implements MvcModuleInterface
         $routing = $this->routing; //todo
         $route = $routing->getRoute($argument->getRequest());
 
-        //получаем контоллер
-        $controller_class_name = $route->getControllerClassName();
-
-        //экшн
-        $action_method_name = $route->getActionMethodName();
-
-        //параметры
-        $route_and_url_args = $route->getParameters();
-
-        //создаем контроллер
-        $controller_instance = $this->controllerFactory->createController(
-            $controller_class_name,
+        //создается контроллер и вызывается экшен с соответствующими параметрами
+        $this->actionResult = $this->controllerFactory->createAndCall(
             $this->actionResultFactory,
             $route,
             $this->getRequest(),
             $this->getResponse()
         );
 
-        //вызываем метод контроллера (экшен)
-        /**
-         * @var $action_result ActionResultInterface
-         */
-        $action_result = call_user_func_array([$controller_instance, $action_method_name], $route_and_url_args);
+        $module_result = new ModuleResult($this, $this->actionResult); //todo refactor to factory instance
 
-        //если пусто
-        if (empty($action_result)) {
-            Ioc::factory(ModuleArgumentInterface::class);
-        }
+        $this->processResult = $module_result;
 
-        echo $action_result->getRenderedContent(); //todo
-
-        //todo реализовать
+        return $this->processResult;
     }
 
     /**
@@ -99,7 +113,7 @@ class MvcModule implements MvcModuleInterface
      */
     public function getRequest(): RequestInterface
     {
-        return $this->request;
+        return $this->getArgument()->getRequest();
     }
 
     /**
@@ -108,7 +122,7 @@ class MvcModule implements MvcModuleInterface
      */
     public function getResponse(): ResponseInterface
     {
-        return $this->response;
+        return $this->getArgument()->getResponse();
     }
 
     /**
@@ -118,5 +132,24 @@ class MvcModule implements MvcModuleInterface
     public function getNameOfModule(): string
     {
         return self::class;
+    }
+
+    /**
+     * Возвращает аргумент переданный в модуль
+     * @return ModuleArgumentInterface
+     */
+    public function getArgument(): ModuleArgumentInterface
+    {
+        return $this->moduleArgument;
+    }
+
+    /**
+     * Возвращает последний ActionResultInterface
+     * полученный при выполнении контроллер->экшн
+     * @return ActionResultInterface
+     */
+    public function getActionResult(): ActionResultInterface
+    {
+        return $this->actionResult;
     }
 }

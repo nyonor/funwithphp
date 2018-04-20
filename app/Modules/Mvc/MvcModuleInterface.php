@@ -9,21 +9,22 @@
 namespace App\Modules\Mvc;
 
 
+use App\Modules\ModuleArgumentInterface;
 use App\Modules\ModuleInterface;
-use App\Modules\Mvc\Routing\RequestInterface;
-use App\Modules\Mvc\Routing\ResponseInterface;
+use App\Modules\Mvc\Controller\ActionResultInterface;
 
 interface MvcModuleInterface extends ModuleInterface
 {
     /**
-     * Возвращает ассоциированый с запросом реквест
-     * @return RequestInterface
+     * Возвращает переданный аргумент
+     * @return ModuleArgumentInterface
      */
-    public function getRequest() : RequestInterface;
+    public function getArgument() : ModuleArgumentInterface;
 
     /**
-     * Возвращает ассоциированый с запросом реквест
-     * @return ResponseInterface
+     * Возвращает последний ActionResultInterface
+     * полученный при выполнении контроллер->экшн
+     * @return ActionResultInterface
      */
-    public function getResponse() : ResponseInterface;
+    public function getActionResult() : ActionResultInterface;
 }
