@@ -22,6 +22,7 @@ use App\Modules\Mvc\Controller\MvcControllerFactoryInterface;
 use App\Modules\Mvc\Routing\RequestInterface;
 use App\Modules\Mvc\Routing\ResponseInterface;
 use App\Modules\Mvc\Routing\RoutingInterface;
+use Closure;
 
 class MvcModule implements MvcModuleInterface
 {
@@ -100,7 +101,10 @@ class MvcModule implements MvcModuleInterface
             $this->getResponse()
         );
 
+        $result_closure = Closure::fromCallable($this->resultClosure());
+
         $module_result = new ModuleResult($this, $this->actionResult); //todo refactor to factory instance
+        $module_result->setResultClosure($result_closure);
 
         $this->processResult = $module_result;
 
@@ -151,5 +155,12 @@ class MvcModule implements MvcModuleInterface
     public function getActionResult(): ActionResultInterface
     {
         return $this->actionResult;
+    }
+
+    public function resultClosure()
+    {
+        return function() {
+            return $this->actionResult->getRenderedContent();
+        };
     }
 }

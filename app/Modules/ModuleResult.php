@@ -12,6 +12,7 @@ namespace App\Modules;
 
 
 use App\Modules\Mvc\MvcModule;
+use Closure;
 
 class ModuleResult implements ModuleResultInterface
 {
@@ -19,12 +20,17 @@ class ModuleResult implements ModuleResultInterface
     protected $theResult;
 
     /**
-     * На основании модуля, который сгенерировал
-     * данный объект
-     * ModuleResult constructor.
-     * @param ModuleInterface $module
-     * @param $result mixed
+     * @var Closure
      */
+    protected $resultClosure;
+
+        /**
+         * На основании модуля, который сгенерировал
+         * данный объект
+         * ModuleResult constructor.
+         * @param ModuleInterface $module
+         * @param $result mixed
+         */
     public function __construct(ModuleInterface $module, $result)
     {
         $this->module = $module;
@@ -47,5 +53,26 @@ class ModuleResult implements ModuleResultInterface
     public function getTheResult()
     {
         return $this->theResult;
+    }
+
+    /**
+     * Устанавливает функцию которую можно будте выполнить для получения результатов
+     * @param Closure $result_closure
+     * @return void
+     */
+    public function setResultClosure(Closure $result_closure): void
+    {
+        $this->resultClosure = $result_closure;
+    }
+
+    /**
+     * Вызывав результат данного метода можно получить результат
+     * выполнения модуля. Используется для lazy получения результатов
+     * работы модуля
+     * @return Closure
+     */
+    public function getResultClosure(): Closure
+    {
+        return $this->resultClosure;
     }
 }

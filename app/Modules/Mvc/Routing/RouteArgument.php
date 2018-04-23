@@ -34,7 +34,7 @@ class RouteArgument implements RouteArgumentInterface
      */
     public function __construct(array $init_vals)
     {
-        var_dump($init_vals);
+        //var_dump($init_vals);
         $this->template = $init_vals['template'];
         $this->controllerName = $init_vals['controller'];
         $this->actionName = $init_vals['action'];

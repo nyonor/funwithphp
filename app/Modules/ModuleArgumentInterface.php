@@ -28,7 +28,7 @@ interface ModuleArgumentInterface
     public function getRequest() : RequestInterface;
 
     /**
-     * Возвращает ассоциированый с запросом реквест
+     * Возвращает ассоциированый с запросом респонс
      * @return ResponseInterface
      */
     public function getResponse() : ResponseInterface;

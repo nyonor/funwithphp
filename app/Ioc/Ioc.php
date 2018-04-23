@@ -34,6 +34,8 @@ use App\Modules\Mvc\View\Render\ViewRenderInterface;
 use App\Modules\Mvc\View\ViewResult;
 use App\Modules\Mvc\View\ViewResultInterface;
 use App\Pipeline\Pipeline;
+use App\Pipeline\PipelineHandler;
+use App\Pipeline\PipelineHandlerInterface;
 use App\Pipeline\PipelineInterface;
 
 class Ioc
@@ -41,6 +43,7 @@ class Ioc
     //todo видимо это должно быть вынесено в конфиг?
     protected static $autoloadBinds = [
         PipelineInterface::class => Pipeline::class,
+        PipelineHandlerInterface::class => PipelineHandler::class,
         MvcModuleInterface::class => MvcModule::class,
         RoutingInterface::class => Routing::class,
         RouteInterface::class => Route::class,

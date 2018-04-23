@@ -9,6 +9,8 @@
 namespace App\Modules;
 
 
+use Closure;
+
 interface ModuleResultInterface
 {
     /**
@@ -22,4 +24,19 @@ interface ModuleResultInterface
      * @return mixed
      */
     public function getTheResult();
+
+    /**
+     * Устанавливает функцию которую можно будте выполнить для получения результатов
+     * @param Closure $result_closure
+     * @return void
+     */
+    public function setResultClosure(Closure $result_closure) : void;
+
+    /**
+     * Вызывав результат данного метода можно получить результат
+     * выполнения модуля. Используется для lazy получения результатов
+     * работы модуля
+     * @return Closure
+     */
+    public function getResultClosure() : Closure;
 }

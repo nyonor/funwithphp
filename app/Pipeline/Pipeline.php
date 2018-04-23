@@ -31,18 +31,31 @@ class Pipeline implements PipelineInterface
     protected $module_argument = null;
 
     /**
+     * @var PipelineHandlerInterface
+     */
+    protected $pipelineHandler;
+
+    public function __construct(PipelineHandlerInterface $pipeline_handler)
+    {
+        $this->pipelineHandler = $pipeline_handler;
+    }
+
+    /**
      * Регистрирует модуль в пайпе
      * @param ModuleInterface $module
      * @return $this
      * @throws PipelineException
      */
-    function registerModule(ModuleInterface $module)
+    public function registerModule(ModuleInterface $module)
     {
         $foundModuleKey = array_search($module, $this->registeredModules);
-        $foundModule = $this->registeredModules[$foundModuleKey];
-        if (isset($foundModule) && get_class($module) == get_class($foundModule)) {
-            throw new PipelineException("Модуль уже зарегистрирован в пайплайне!");
+        if ($foundModuleKey != false) {
+            $foundModule = $this->registeredModules[$foundModuleKey];
+            if (isset($foundModule) && get_class($module) == get_class($foundModule)) {
+                throw new PipelineException("Модуль уже зарегистрирован в пайплайне!");
+            }
         }
+
         $this->registeredModules[get_class($module)] = $module;
         return $this;
     }
@@ -75,9 +88,7 @@ class Pipeline implements PipelineInterface
      */
     protected function handleResponse()
     {
-        if (!empty($this->exceptions)){
-            $this->handleExceptions($this->exceptions);
-        }
+        $this->pipelineHandler->handle($this->module_argument);
 
         //todo обработка результатов и ответ
     }

@@ -51,12 +51,12 @@ class Routing implements RoutingInterface
         $uri_splitted_arr = explode('/', ltrim($current_uri, '/'));
         $template_splitted_arr = explode('/', ltrim($template, '/'));
 
-        if (count($uri_splitted_arr) != count($template_splitted_arr)) {
-            echo 'NEXT <br/>';
-            return null;
-        }
-
-        echo 'THIS ONE <br/>';
+//        if (count($uri_splitted_arr) != count($template_splitted_arr)) {
+//            echo 'NEXT <br/>';
+//            return null;
+//        }
+//
+//        echo 'THIS ONE <br/>';
 
         $controller_uri_str = $uri_splitted_arr[0];
         $action_uri_str = lcfirst($uri_splitted_arr[1]);
