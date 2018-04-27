@@ -11,8 +11,8 @@ namespace unit\app\Modules\Mvc\Controller;
 
 use App\Modules\Mvc\Controller\AbstractMvcController;
 use App\Modules\Mvc\Controller\ActionResultFactoryInterface;
-use App\Modules\Mvc\Routing\RequestInterface;
-use App\Modules\Mvc\Routing\ResponseInterface;
+use App\Http\RequestInterface;
+use App\Http\ResponseInterface;
 use App\Modules\Mvc\Routing\RouteInterface;
 use PHPUnit\Framework\TestCase;
 

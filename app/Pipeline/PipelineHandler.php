@@ -1,5 +1,7 @@
 <?php
 /**
+ * Результат работы Pipeline
+ *
  * Created by PhpStorm.
  * User: cadistortion
  * Date: 4/23/18

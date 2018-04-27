@@ -11,8 +11,8 @@ namespace App\Modules\Mvc\Controller;
 
 
 use App\Config\Config;
-use App\Modules\Mvc\Routing\RequestInterface;
-use App\Modules\Mvc\Routing\ResponseInterface;
+use App\Http\RequestInterface;
+use App\Http\ResponseInterface;
 use App\Modules\Mvc\Routing\RouteInterface;
 
 abstract class AbstractMvcController implements MvcControllerInterface

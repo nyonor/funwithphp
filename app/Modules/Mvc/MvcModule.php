@@ -19,8 +19,8 @@ use App\Modules\ModuleResultInterface;
 use App\Modules\Mvc\Controller\ActionResultFactoryInterface;
 use App\Modules\Mvc\Controller\ActionResultInterface;
 use App\Modules\Mvc\Controller\MvcControllerFactoryInterface;
-use App\Modules\Mvc\Routing\RequestInterface;
-use App\Modules\Mvc\Routing\ResponseInterface;
+use App\Http\RequestInterface;
+use App\Http\ResponseInterface;
 use App\Modules\Mvc\Routing\RoutingInterface;
 use Closure;
 

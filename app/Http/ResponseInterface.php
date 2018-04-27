@@ -6,7 +6,7 @@
  * Time: 8:51 PM
  */
 
-namespace App\Modules\Mvc\Routing;
+namespace App\Http;
 
 
 interface ResponseInterface

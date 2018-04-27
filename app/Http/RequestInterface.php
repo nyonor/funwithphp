@@ -7,10 +7,12 @@
  * Time: 2:52 PM
  */
 
-namespace App\Modules\Mvc\Routing;
+namespace App\Http;
 
 
-interface RequestInterface
+use Psr\Http\Message\MessageInterface;
+
+interface RequestInterface extends MessageInterface
 {
     public function getMethod();
     public function getUri();

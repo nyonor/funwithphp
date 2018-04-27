@@ -13,10 +13,8 @@
 namespace App\Modules;
 
 
-use App\Modules\Mvc\Controller\ActionResultInterface;
-use App\Modules\Mvc\ModuleResultTest;
-use App\Modules\Mvc\Routing\RequestInterface;
-use App\Modules\Mvc\Routing\ResponseInterface;
+use App\Http\RequestInterface;
+use App\Http\ResponseInterface;
 
 interface ModuleArgumentInterface
 {

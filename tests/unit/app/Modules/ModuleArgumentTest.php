@@ -9,9 +9,8 @@
 namespace App\Modules;
 
 use App\Modules\Mvc\MvcModule;
-use App\Modules\Mvc\Routing\Request;
-use App\Modules\Mvc\Routing\RequestInterface;
-use App\Modules\Mvc\Routing\Response;
+use App\Http\Request;
+use App\Http\Response;
 use Closure;
 use PHPUnit\Framework\TestCase;
 

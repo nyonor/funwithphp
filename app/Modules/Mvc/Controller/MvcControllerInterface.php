@@ -9,8 +9,8 @@
 namespace App\Modules\Mvc\Controller;
 
 
-use App\Modules\Mvc\Routing\RequestInterface;
-use App\Modules\Mvc\Routing\ResponseInterface;
+use App\Http\RequestInterface;
+use App\Http\ResponseInterface;
 
 interface MvcControllerInterface
 {

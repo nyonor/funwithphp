@@ -6,7 +6,7 @@
  * Time: 12:59 PM
  */
 
-namespace App\Modules\Mvc\Routing;
+namespace App\Http;
 
 
 class Response implements ResponseInterface
