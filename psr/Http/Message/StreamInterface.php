@@ -83,7 +83,7 @@ interface StreamInterface
      * Seek to a position in the stream.
      *
      * @see http://www.php.net/manual/en/function.fseek.php
-     * @param int $offset Stream offset
+     * @param int $offset StringStream offset
      * @param int $whence Specifies how the cursor position will be calculated
      *     based on the seek offset. Valid values are identical to the built-in
      *     PHP $whence values for `fseek()`.  SEEK_SET: Set position equal to

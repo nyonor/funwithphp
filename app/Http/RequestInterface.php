@@ -12,7 +12,7 @@ namespace App\Http;
 
 use Psr\Http\Message\MessageInterface;
 
-interface RequestInterface extends MessageInterface
+interface RequestInterface extends \Psr\Http\Message\RequestInterface
 {
     public function getMethod();
     public function getUri();

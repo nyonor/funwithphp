@@ -11,12 +11,12 @@ namespace App\Http;
 
 use Psr\Http\Message\StreamInterface;
 
-class Stream implements StreamInterface
+class StringStream implements StreamInterface
 {
     private $resource;
 
     /**
-     * Stream constructor.
+     * StringStream constructor.
      * @param mixed $resource
      */
     public function __construct($resource)
@@ -40,7 +40,7 @@ class Stream implements StreamInterface
      */
     public function __toString()
     {
-        // TODO: Implement __toString() method.
+        return $this->resource;
     }
 
     /**
@@ -50,7 +50,7 @@ class Stream implements StreamInterface
      */
     public function close()
     {
-        // TODO: Implement close() method.
+        // nothing to do
     }
 
     /**
@@ -62,7 +62,7 @@ class Stream implements StreamInterface
      */
     public function detach()
     {
-        // TODO: Implement detach() method.
+        return $this->resource;
     }
 
     /**
@@ -72,7 +72,7 @@ class Stream implements StreamInterface
      */
     public function getSize()
     {
-        // TODO: Implement getSize() method.
+        return strlen($this->resource);
     }
 
     /**
@@ -83,7 +83,7 @@ class Stream implements StreamInterface
      */
     public function tell()
     {
-        // TODO: Implement tell() method.
+        throw new \RuntimeException('StringStream cant use tell() method');
     }
 
     /**
@@ -93,7 +93,7 @@ class Stream implements StreamInterface
      */
     public function eof()
     {
-        // TODO: Implement eof() method.
+        throw new \RuntimeException('StringStream cant use eof() method');
     }
 
     /**
@@ -103,14 +103,14 @@ class Stream implements StreamInterface
      */
     public function isSeekable()
     {
-        // TODO: Implement isSeekable() method.
+        return false;
     }
 
     /**
      * Seek to a position in the stream.
      *
      * @see http://www.php.net/manual/en/function.fseek.php
-     * @param int $offset Stream offset
+     * @param int $offset StringStream offset
      * @param int $whence Specifies how the cursor position will be calculated
      *     based on the seek offset. Valid values are identical to the built-in
      *     PHP $whence values for `fseek()`.  SEEK_SET: Set position equal to
@@ -120,7 +120,7 @@ class Stream implements StreamInterface
      */
     public function seek($offset, $whence = SEEK_SET)
     {
-        // TODO: Implement seek() method.
+        throw new \RuntimeException('StringStream cant use seek() method');
     }
 
     /**
@@ -135,7 +135,7 @@ class Stream implements StreamInterface
      */
     public function rewind()
     {
-        // TODO: Implement rewind() method.
+        throw new \RuntimeException('StringStream cant use rewind() method');
     }
 
     /**
@@ -145,7 +145,7 @@ class Stream implements StreamInterface
      */
     public function isWritable()
     {
-        // TODO: Implement isWritable() method.
+        return true;
     }
 
     /**
@@ -157,7 +157,7 @@ class Stream implements StreamInterface
      */
     public function write($string)
     {
-        // TODO: Implement write() method.
+        $this->resource .= $string;
     }
 
     /**
@@ -167,7 +167,7 @@ class Stream implements StreamInterface
      */
     public function isReadable()
     {
-        // TODO: Implement isReadable() method.
+        return true;
     }
 
     /**
@@ -182,7 +182,7 @@ class Stream implements StreamInterface
      */
     public function read($length)
     {
-        // TODO: Implement read() method.
+        throw new \RuntimeException('StringStream read() method not implemented');
     }
 
     /**
@@ -194,7 +194,7 @@ class Stream implements StreamInterface
      */
     public function getContents()
     {
-        // TODO: Implement getContents() method.
+        return $this->resource;
     }
 
     /**
@@ -211,6 +211,6 @@ class Stream implements StreamInterface
      */
     public function getMetadata($key = null)
     {
-        // TODO: Implement getMetadata() method.
+        return $this->resource;
     }
 }

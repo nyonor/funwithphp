@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Request;
-use App\Http\Stream;
+use App\Http\StringStream;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -143,7 +143,7 @@ class RequestTest extends TestCase
             Request::HEADERS => $headers_stub,
             Request::PROTOCOL_VERSION => '1.1',
             Request::METHOD => 'POST'
-        ], new Stream("some string"));
+        ], new StringStream("some string"));
 
         $new_request = $request->withHeader('header1', 'h1n');
 
@@ -167,7 +167,7 @@ class RequestTest extends TestCase
             Request::HEADERS => $headers_stub,
             Request::PROTOCOL_VERSION => '1.1',
             Request::METHOD => 'POST'
-        ], new Stream("some string"));
+        ], new StringStream("some string"));
 
         $this->assertEquals($request->getHeader('header1')[0], 'h1');
 
@@ -191,7 +191,7 @@ class RequestTest extends TestCase
             Request::HEADERS => $headers_stub,
             Request::PROTOCOL_VERSION => '1.1',
             Request::METHOD => 'POST'
-        ], new Stream("some string"));
+        ], new StringStream("some string"));
 
         $new_req = $request->withoutHeader('header1');
         $this->assertEquals(0, count($new_req->getHeader('HeadeR1')));
@@ -204,5 +204,41 @@ class RequestTest extends TestCase
         $this->assertNotSame($request, $new_req);
     }
 
+    public function testGetBodyMethod()
+    {
+        $headers_stub = [
+            'header1' => 'h1',
+            'header2' => 'h2',
+            'header3' => [
+                'h31', 'h32', 'h33'
+            ]
+        ];
 
+        $request = new Request([
+            Request::HEADERS => $headers_stub,
+            Request::PROTOCOL_VERSION => '1.1',
+            Request::METHOD => 'POST'
+        ], new StringStream("some string"));
+
+        $this->assertEquals('some string', $request->getBody());
+    }
+
+    public function testGetRequestTarget()
+    {
+        $headers_stub = [
+            'header1' => 'h1',
+            'header2' => 'h2',
+            'header3' => [
+                'h31', 'h32', 'h33'
+            ]
+        ];
+
+        $request = new Request([
+            Request::HEADERS => $headers_stub,
+            Request::PROTOCOL_VERSION => '1.1',
+            Request::METHOD => 'POST'
+        ], new StringStream("some string"));
+
+        $this->assertEquals('some string', $request->getBody());
+    }
 }
