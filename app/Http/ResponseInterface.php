@@ -9,6 +9,6 @@
 namespace App\Http;
 
 
-interface ResponseInterface
+interface ResponseInterface extends \Psr\Http\Message\ResponseInterface
 {
 }

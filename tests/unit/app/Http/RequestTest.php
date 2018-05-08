@@ -1,7 +1,10 @@
 <?php
 
+namespace App\Http;
+
 use App\Http\Request;
 use App\Http\StringStream;
+use App\Http\Uri;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -139,10 +142,12 @@ class RequestTest extends TestCase
             ]
         ];
 
-        $request = new Request([
+        $request = new Request();
+        $request->init([
             Request::HEADERS => $headers_stub,
             Request::PROTOCOL_VERSION => '1.1',
-            Request::METHOD => 'POST'
+            Request::METHOD => 'POST',
+            Request::URI => new Uri(),
         ], new StringStream("some string"));
 
         $new_request = $request->withHeader('header1', 'h1n');
@@ -163,10 +168,12 @@ class RequestTest extends TestCase
             ]
         ];
 
-        $request = new Request([
+        $request = new Request();
+        $request->init([
             Request::HEADERS => $headers_stub,
             Request::PROTOCOL_VERSION => '1.1',
-            Request::METHOD => 'POST'
+            Request::METHOD => 'POST',
+            Request::URI => new Uri(),
         ], new StringStream("some string"));
 
         $this->assertEquals($request->getHeader('header1')[0], 'h1');
@@ -187,10 +194,12 @@ class RequestTest extends TestCase
             ]
         ];
 
-        $request = new Request([
+        $request = new Request();
+        $request->init([
             Request::HEADERS => $headers_stub,
             Request::PROTOCOL_VERSION => '1.1',
-            Request::METHOD => 'POST'
+            Request::METHOD => 'POST',
+            Request::URI => new Uri(),
         ], new StringStream("some string"));
 
         $new_req = $request->withoutHeader('header1');
@@ -214,10 +223,12 @@ class RequestTest extends TestCase
             ]
         ];
 
-        $request = new Request([
+        $request = new Request();
+        $request->init([
             Request::HEADERS => $headers_stub,
             Request::PROTOCOL_VERSION => '1.1',
-            Request::METHOD => 'POST'
+            Request::METHOD => 'POST',
+            Request::URI => new Uri(),
         ], new StringStream("some string"));
 
         $this->assertEquals('some string', $request->getBody());
@@ -233,10 +244,12 @@ class RequestTest extends TestCase
             ]
         ];
 
-        $request = new Request([
+        $request = new Request();
+        $request->init([
             Request::HEADERS => $headers_stub,
             Request::PROTOCOL_VERSION => '1.1',
-            Request::METHOD => 'POST'
+            Request::METHOD => 'POST',
+            Request::URI => new Uri()
         ], new StringStream("some string"));
 
         $this->assertEquals('some string', $request->getBody());

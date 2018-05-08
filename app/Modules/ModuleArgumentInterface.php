@@ -32,6 +32,12 @@ interface ModuleArgumentInterface
     public function getResponse() : ResponseInterface;
 
     /**
+     * Устанавливает новый респонс
+     * @param ResponseInterface $new_response_instance
+     */
+    public function setResponse(ResponseInterface $new_response_instance) : void;
+
+    /**
      * Добавляет результат выполнеия модуля к объекту
      * @param ModuleResultInterface $result
      * @return mixed

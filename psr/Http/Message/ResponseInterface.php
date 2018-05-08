@@ -2,18 +2,29 @@
 /**
  * Created by PhpStorm.
  * User: cadistortion
- * Date: 4/5/18
- * Time: 12:59 PM
+ * Date: 4/29/18
+ * Time: 11:25 AM
  */
 
-namespace App\Http;
+namespace Psr\Http\Message;
 
-
-class Response extends AbstractMessage implements ResponseInterface
+/**
+ * Representation of an outgoing, server-side response.
+ *
+ * Per the HTTP specification, this interface includes properties for
+ * each of the following:
+ *
+ * - Protocol version
+ * - Status code and reason phrase
+ * - Headers
+ * - Message body
+ *
+ * Responses are considered immutable; all methods that might change state MUST
+ * be implemented such that they retain the internal state of the current
+ * message and return an instance that contains the changed state.
+ */
+interface ResponseInterface extends MessageInterface
 {
-    protected $statusCode   = 0;
-    protected $reasonPhrase = '';
-
     /**
      * Gets the response status code.
      *
@@ -22,10 +33,7 @@ class Response extends AbstractMessage implements ResponseInterface
      *
      * @return int Status code.
      */
-    public function getStatusCode()
-    {
-        return $this->statusCode;
-    }
+    public function getStatusCode();
 
     /**
      * Return an instance with the specified status code and, optionally, reason phrase.
@@ -47,13 +55,7 @@ class Response extends AbstractMessage implements ResponseInterface
      * @return static
      * @throws \InvalidArgumentException For invalid status code arguments.
      */
-    public function withStatus($code, $reasonPhrase = '')
-    {
-        $cloned = clone $this;
-        $cloned->statusCode = $code;
-        $cloned->reasonPhrase = $reasonPhrase;
-        return $cloned;
-    }
+    public function withStatus($code, $reasonPhrase = '');
 
     /**
      * Gets the response reason phrase associated with the status code.
@@ -68,20 +70,5 @@ class Response extends AbstractMessage implements ResponseInterface
      * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      * @return string Reason phrase; must return an empty string if none present.
      */
-    public function getReasonPhrase()
-    {
-        $reason_phrase_to_return = '';
-
-        if (empty($this->reasonPhrase)) {
-            switch($this->statusCode):
-                case (200):
-                    $reason_phrase_to_return = 'OK';
-                    break;
-            endswitch;
-        } else {
-            $reason_phrase_to_return = $this->reasonPhrase;
-        }
-
-        return $reason_phrase_to_return;
-    }
+    public function getReasonPhrase();
 }

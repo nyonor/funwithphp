@@ -13,4 +13,6 @@ namespace App\Modules\Mvc\Controller;
 interface ActionResultInterface
 {
     public function getRenderedContent();
+
+    public function isSuccessful() : bool;
 }

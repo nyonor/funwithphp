@@ -4,8 +4,9 @@ use App\Modules\ModuleArgumentInterface;
 use App\Modules\ModuleInterface;
 use App\Modules\ModuleResultInterface;
 use App\Pipeline\Pipeline;
-use App\Pipeline\PipelineHandler;
-use App\Pipeline\PipelineHandlerInterface;
+use App\Pipeline\ModuleArgumentHandler;
+use App\Pipeline\ModuleArgumentHandlerInterface;
+use App\Pipeline\ResponseHandlerInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,9 +20,10 @@ class PipelineHandlerTest extends TestCase
 {
     public function testPipelineHandlerInterfaceIsExistingAndImplemented()
     {
-        $pipeline_handler = $this->createMock(PipelineHandler::class);
-        $pipeline = new Pipeline($pipeline_handler);
-        $this->assertInstanceOf(PipelineHandlerInterface::class, $pipeline_handler);
+        $pipeline_handler = $this->createMock(ModuleArgumentHandler::class);
+        $response_handler = $this->createMock(ResponseHandlerInterface::class);
+        $pipeline = new Pipeline($pipeline_handler, $response_handler);
+        $this->assertInstanceOf(ModuleArgumentHandlerInterface::class, $pipeline_handler);
         $this->assertNotNull($pipeline);
     }
 }

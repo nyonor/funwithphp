@@ -105,4 +105,13 @@ class ModuleArgument implements ModuleArgumentInterface
 
         return null;
     }
+
+    /**
+     * Устанавливает новый респонс
+     * @param ResponseInterface $new_response_instance
+     */
+    public function setResponse(ResponseInterface $new_response_instance): void
+    {
+        $this->response = $new_response_instance;
+    }
 }

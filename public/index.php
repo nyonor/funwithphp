@@ -17,8 +17,9 @@ use App\Http\RequestInterface;
 use App\Http\ResponseInterface;
 use App\Modules\Mvc\Routing\RoutingInterface;
 use App\Modules\Mvc\View\Render\ViewRenderInterface;
-use App\Pipeline\PipelineHandlerInterface;
+use App\Pipeline\ModuleArgumentHandlerInterface;
 use App\Pipeline\PipelineInterface;
+use App\Pipeline\ResponseHandlerInterface;
 
 require_once("../app/Autoload/AutoloaderInterface.php");
 
@@ -34,8 +35,9 @@ require_once ("../vendor/autoload.php");
 /**
  * @var $pipe_line PipelineInterface
  */
-$pipeline_handler = Ioc::factory(PipelineHandlerInterface::class);
-$pipe_line = Ioc::factoryWithArgs(PipelineInterface::class, $pipeline_handler);
+$pipeline_handler = Ioc::factory(ModuleArgumentHandlerInterface::class);
+$response_handler = Ioc::factory(ResponseHandlerInterface::class);
+$pipe_line = Ioc::factoryWithVariadic(PipelineInterface::class, $pipeline_handler, $response_handler);
 $view_renderer = Ioc::factory(ViewRenderInterface::class);
 $action_result_factory = Ioc::factoryWithArgs(ActionResultFactoryInterface::class, $view_renderer);
 $routing = Ioc::factory(RoutingInterface::class);

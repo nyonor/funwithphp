@@ -33,7 +33,7 @@ final class TwigRender implements ViewRenderInterface
     {
         $this->twigLoader->setPaths($this->templatesPath);
         $template = $this->twig->load($this->viewName);
-        echo $template->render($this->viewModel ?? []);
+        return $template->render($this->viewModel ?? []);
     }
 
     public function setViewName($view_name)

@@ -13,6 +13,8 @@
 namespace App\Modules\Mvc;
 
 
+use App\Http\Response;
+use App\Http\StringStream;
 use App\Modules\ModuleArgumentInterface;
 use App\Modules\ModuleResult;
 use App\Modules\ModuleResultInterface;
@@ -48,7 +50,7 @@ class MvcModule implements MvcModuleInterface
 
     /**
      * Результат отработки ->process
-     * @var
+     * @var ModuleResultInterface
      */
     protected $processResult;
 
@@ -71,6 +73,44 @@ class MvcModule implements MvcModuleInterface
         $this->routing = $routing;
         $this->controllerFactory = $controller_factory;
         $this->actionResultFactory = $action_result_factory;
+    }
+
+    /**
+     * @return Closure
+     */
+    protected function resultClosure()
+    {
+        return function() {
+            return $this->actionResult->getRenderedContent();
+        };
+    }
+
+    /**
+     * На основе action_result устанавливает респонс
+     *
+     * todo должно быть реализовано в отдельном классе
+     * @return void
+     */
+    protected function setResponse()
+    {
+        $set_response_function = function () {
+
+            $empty_response = new Response();
+
+            $rendered_content = $this->actionResult->getRenderedContent();
+
+            if ($this->actionResult->isSuccessful() == false) {
+                $response_with_500 = $empty_response->withStatus(500, 'Internal Server Error!');
+                $this->moduleArgument->setResponse($response_with_500);
+                return;
+            }
+
+            $response_with_200 = $empty_response->withStatus(200, 'OK')
+                                                ->withBody(new StringStream($rendered_content));
+            $this->moduleArgument->setResponse($response_with_200);
+        };
+
+        $this->processResult->setModifiedResponseClosure(Closure::fromCallable($set_response_function));
     }
 
     /**
@@ -101,12 +141,14 @@ class MvcModule implements MvcModuleInterface
             $this->getResponse()
         );
 
+        //todo deprecated?
         $result_closure = Closure::fromCallable($this->resultClosure());
 
         $module_result = new ModuleResult($this, $this->actionResult); //todo refactor to factory instance
         $module_result->setResultClosure($result_closure);
-
         $this->processResult = $module_result;
+
+        $this->setResponse();
 
         return $this->processResult;
     }
@@ -155,12 +197,5 @@ class MvcModule implements MvcModuleInterface
     public function getActionResult(): ActionResultInterface
     {
         return $this->actionResult;
-    }
-
-    public function resultClosure()
-    {
-        return function() {
-            return $this->actionResult->getRenderedContent();
-        };
     }
 }

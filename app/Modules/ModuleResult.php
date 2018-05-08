@@ -20,17 +20,27 @@ class ModuleResult implements ModuleResultInterface
     protected $theResult;
 
     /**
-     * @var Closure
+     * @var $resultClosure Closure
      */
     protected $resultClosure;
 
-        /**
-         * На основании модуля, который сгенерировал
-         * данный объект
-         * ModuleResult constructor.
-         * @param ModuleInterface $module
-         * @param $result mixed
-         */
+    /**
+     * @var $modifiedResponseClosure Closure
+     */
+    protected $modifiedResponseClosure;
+
+    /**
+     * @var $modifiedRequestClosure Closure
+     */
+    protected $modifiedRequestClosure;
+
+    /**
+     * На основании модуля, который сгенерировал
+     * данный объект
+     * ModuleResult constructor.
+     * @param ModuleInterface $module
+     * @param $result mixed
+     */
     public function __construct(ModuleInterface $module, $result)
     {
         $this->module = $module;
@@ -74,5 +84,47 @@ class ModuleResult implements ModuleResultInterface
     public function getResultClosure(): Closure
     {
         return $this->resultClosure;
+    }
+
+    /**
+     * Получить модифицированный модулем объект респонс
+     * через клозюр
+     * @return Closure
+     */
+    public function getModifiedResponseClosure()
+    {
+        return $this->modifiedResponseClosure;
+    }
+
+    /**
+     * Устанавливает модифицированный модулем объект респонс
+     * через клозюр
+     * @param Closure $modify_response_closure
+     * @return void
+     */
+    public function setModifiedResponseClosure(Closure $modify_response_closure)
+    {
+        $this->modifiedResponseClosure = $modify_response_closure;
+    }
+
+    /**
+     * Получить модифицированный модулем объект реквест
+     * через клозюр
+     * @return Closure
+     */
+    public function getModifiedRequestClosure()
+    {
+        return $this->modifiedRequestClosure;
+    }
+
+    /**
+     * Устанавливает модифицированный модулем объект реквест
+     * через клозюр
+     * @param Closure $modify_request_closure
+     * @return void
+     */
+    public function setModifiedRequestClosure(Closure $modify_request_closure)
+    {
+        $this->modifiedRequestClosure = $modify_request_closure;
     }
 }

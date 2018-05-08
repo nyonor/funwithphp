@@ -11,33 +11,33 @@
 namespace App\Pipeline;
 
 
-use App\Ioc\Ioc;
 use App\Modules\ModuleArgumentInterface;
 use App\Modules\ModuleInterface;
-use App\Modules\Mvc\Routing\RequestInterface;
-use App\Modules\Mvc\Routing\Response;
-use App\Modules\Mvc\Routing\ResponseInterface;
-use Exception;
+use App\Http\RequestInterface;
 
 /**
  * Class Pipeline
  * @package app\Pipeline
  * @property RequestInterface $request
+ * @property ResponseHandlerInterface $responseHandler
  */
 class Pipeline implements PipelineInterface
 {
     protected $registeredModules = [];
     protected $exceptions = [];
-    protected $module_argument = null;
+    protected $moduleArgument = null;
+    protected $responseHandler;
 
     /**
-     * @var PipelineHandlerInterface
+     * @var ModuleArgumentHandlerInterface
      */
-    protected $pipelineHandler;
+    protected $moduleArgumentHandler;
 
-    public function __construct(PipelineHandlerInterface $pipeline_handler)
+    public function __construct(ModuleArgumentHandlerInterface $module_argument_handler,
+                                ResponseHandlerInterface $response_handler)
     {
-        $this->pipelineHandler = $pipeline_handler;
+        $this->moduleArgumentHandler = $module_argument_handler;
+        $this->responseHandler = $response_handler;
     }
 
     /**
@@ -69,28 +69,25 @@ class Pipeline implements PipelineInterface
      */
     public function go(ModuleArgumentInterface $module_argument)
     {
-        $this->module_argument = $module_argument;
+        $this->moduleArgument = $module_argument;
 
         foreach ($this->registeredModules as $module) {
 
+            //выполняется логика модуля
             /**
              * @var $module ModuleInterface
              */
-            $module_result = $module->process($this->module_argument);
-            $this->module_argument->addResult($module_result);
+            $module_result = $module->process($this->moduleArgument);
+
+            //добавление результата
+            $this->moduleArgument->addResult($module_result);
+
+            //логика модуля на исполнение
+            $this->moduleArgumentHandler->handle($this->moduleArgument);
         }
 
-        $this->handleResponse();
-    }
-
-    /**
-     * Обработка результатов модулей и ответ
-     */
-    protected function handleResponse()
-    {
-        $this->pipelineHandler->handle($this->module_argument);
-
-        //todo обработка результатов и ответ
+        //все рисуем ответ пользователю
+        $this->responseHandler->handle($this->moduleArgument->getResponse());
     }
 
     protected function handleExceptions(array $exceptions)

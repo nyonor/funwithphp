@@ -33,25 +33,28 @@ use App\Modules\Mvc\View\Render\ViewRenderInterface;
 use App\Modules\Mvc\View\ViewResult;
 use App\Modules\Mvc\View\ViewResultInterface;
 use App\Pipeline\Pipeline;
-use App\Pipeline\PipelineHandler;
-use App\Pipeline\PipelineHandlerInterface;
+use App\Pipeline\ModuleArgumentHandler;
+use App\Pipeline\ModuleArgumentHandlerInterface;
 use App\Pipeline\PipelineInterface;
+use App\Pipeline\ResponseHandler;
+use App\Pipeline\ResponseHandlerInterface;
 
 class Ioc
 {
     //todo видимо это должно быть вынесено в конфиг?
     protected static $autoloadBinds = [
-        PipelineInterface::class => Pipeline::class,
-        PipelineHandlerInterface::class => PipelineHandler::class,
+        ActionResultFactoryInterface::class => ActionResultFactory::class,
+        ModuleArgumentHandlerInterface::class => ModuleArgumentHandler::class,
+        ModuleArgumentInterface::class => ModuleArgument::class,
+        MvcControllerFactoryInterface::class => MvcControllerFactory::class,
         MvcModuleInterface::class => MvcModule::class,
+        PipelineInterface::class => Pipeline::class,
         RoutingInterface::class => Routing::class,
         RouteInterface::class => Route::class,
         RouteArgumentInterface::class => RouteArgument::class,
         RequestInterface::class => Request::class,
         ResponseInterface::class => Response::class,
-        ModuleArgumentInterface::class => ModuleArgument::class,
-        MvcControllerFactoryInterface::class => MvcControllerFactory::class,
-        ActionResultFactoryInterface::class => ActionResultFactory::class,
+        ResponseHandlerInterface::class => ResponseHandler::class,
         ViewRenderInterface::class => TwigRender::class,
         ViewResultInterface::class => ViewResult::class
     ];

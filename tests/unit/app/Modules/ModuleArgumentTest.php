@@ -97,7 +97,16 @@ class ModuleArgumentTest extends TestCase
         $subject_module = $this->createMock(MvcModule::class);
         $subject_module->method('getNameOfModule')->willReturn(MvcModule::class);
         $module_result = $this->getMockBuilder(ModuleResultInterface::class)
-            ->setMethods(['getResultClosure', 'setResultClosure', 'getSubjectModule', 'getTheResult'])
+            ->setMethods([
+                'getResultClosure',
+                'setResultClosure',
+                'getSubjectModule',
+                'getTheResult',
+                'getModifiedResponseClosure',
+                'setModifiedResponseClosure',
+                'getModifiedRequestClosure',
+                'setModifiedRequestClosure'
+            ])
             ->getMock();
         $module_result->expects($this->any())
             ->method('getResultClosure')
@@ -122,7 +131,16 @@ class ModuleArgumentTest extends TestCase
 
         $another_module_result = $this
             ->getMockBuilder(ModuleResultInterface::class)
-            ->setMethods(['getNameOfModule', 'getSubjectModule', 'getTheResult','getResultClosure', 'setResultClosure'])
+            ->setMethods([
+                'getResultClosure',
+                'setResultClosure',
+                'getSubjectModule',
+                'getTheResult',
+                'getModifiedResponseClosure',
+                'setModifiedResponseClosure',
+                'getModifiedRequestClosure',
+                'setModifiedRequestClosure'
+            ])
             ->getMock();
         $another_subject_module = $this->createMock(ModuleInterface::class);
         $another_subject_module
@@ -156,7 +174,16 @@ class ModuleArgumentTest extends TestCase
         $subject_module = $this->createMock(MvcModule::class);
         $subject_module->method('getNameOfModule')->willReturn(MvcModule::class);
         $module_result = $this->getMockBuilder(ModuleResultInterface::class)
-            ->setMethods(['getNameOfModule', 'getSubjectModule', 'getTheResult','getResultClosure', 'setResultClosure'])
+            ->setMethods([
+                'getResultClosure',
+                'setResultClosure',
+                'getSubjectModule',
+                'getTheResult',
+                'getModifiedResponseClosure',
+                'setModifiedResponseClosure',
+                'getModifiedRequestClosure',
+                'setModifiedRequestClosure'
+            ])
             ->getMock();
         $module_result->method('getSubjectModule')->willReturn($subject_module);
 
@@ -170,7 +197,16 @@ class ModuleArgumentTest extends TestCase
 
         $another_module_result = $this
             ->getMockBuilder(ModuleResultInterface::class)
-            ->setMethods(['getNameOfModule', 'getSubjectModule', 'getTheResult','getResultClosure', 'setResultClosure'])
+            ->setMethods([
+                'getResultClosure',
+                'setResultClosure',
+                'getSubjectModule',
+                'getTheResult',
+                'getModifiedResponseClosure',
+                'setModifiedResponseClosure',
+                'getModifiedRequestClosure',
+                'setModifiedRequestClosure'
+            ])
             ->getMock();
         $another_subject_module = $this->createMock(ModuleInterface::class);
         $another_subject_module

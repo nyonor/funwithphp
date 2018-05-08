@@ -8,6 +8,7 @@
 
 namespace App\Pipeline;
 
+
 use Exception;
 
 class PipelineException extends Exception

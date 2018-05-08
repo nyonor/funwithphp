@@ -9,6 +9,7 @@
 namespace App\Http;
 
 
+use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
 
 class Uri implements UriInterface
@@ -61,7 +62,27 @@ class Uri implements UriInterface
      */
     public function getAuthority()
     {
-        return $this->authority;
+        $authority = '';
+
+        $user_info = $this->getUserInfo();
+
+        if (empty($user_info) == false) {
+            $authority .= $user_info . '@';
+        }
+
+        $host = $this->getHost();
+
+        if (empty($host) == false) {
+            $authority .= $host;
+        }
+
+        $port = $this->getPort();
+
+        if (empty($port) == false) {
+            $authority .= ':' . $port;
+        }
+
+        return $authority;
     }
 
     /**
@@ -81,7 +102,7 @@ class Uri implements UriInterface
      */
     public function getUserInfo()
     {
-        $this->userInfo;
+        return $this->userInfo;
     }
 
     /**
@@ -147,7 +168,12 @@ class Uri implements UriInterface
      */
     public function getPath()
     {
-        return $this->path;
+        //если строка была передана уже закодированной
+        if (urlencode(urldecode($this->path)) == $this->path) {
+            return $this->path;
+        } else {
+            return urlencode($this->path);
+        }
     }
 
     /**
@@ -209,8 +235,8 @@ class Uri implements UriInterface
      *
      * @param string $scheme The scheme to use with the new instance.
      * @return static A new instance with the specified scheme.
-     * @throws \InvalidArgumentException for invalid schemes.
-     * @throws \InvalidArgumentException for unsupported schemes.
+     * @throws InvalidArgumentException for invalid schemes.
+     * @throws InvalidArgumentException for unsupported schemes.
      */
     public function withScheme($scheme)
     {
@@ -236,7 +262,7 @@ class Uri implements UriInterface
     public function withUserInfo($user, $password = null)
     {
         $cloned = clone $this;
-        $cloned->userInfo = $user . ':' . $password;
+        $cloned->userInfo = empty($password) ? $user : $user . ':' . $password;
         return $cloned;
     }
 
@@ -250,10 +276,16 @@ class Uri implements UriInterface
      *
      * @param string $host The hostname to use with the new instance.
      * @return static A new instance with the specified host.
-     * @throws \InvalidArgumentException for invalid hostnames.
+     * @throws InvalidArgumentException for invalid hostnames.
      */
     public function withHost($host)
     {
+        if (stristr($host, ':') !== false)
+        {
+            throw new InvalidArgumentException
+            ('Host cannot contain port! Use "withPort" method instead!');
+        }
+
         $cloned = clone $this;
         $cloned->host = $host;
         return $cloned;
@@ -274,7 +306,7 @@ class Uri implements UriInterface
      * @param null|int $port The port to use with the new instance; a null value
      *     removes the port information.
      * @return static A new instance with the specified port.
-     * @throws \InvalidArgumentException for invalid ports.
+     * @throws InvalidArgumentException for invalid ports.
      */
     public function withPort($port)
     {
@@ -303,7 +335,7 @@ class Uri implements UriInterface
      *
      * @param string $path The path to use with the new instance.
      * @return static A new instance with the specified path.
-     * @throws \InvalidArgumentException for invalid paths.
+     * @throws InvalidArgumentException for invalid paths.
      */
     public function withPath($path)
     {
@@ -325,7 +357,7 @@ class Uri implements UriInterface
      *
      * @param string $query The query string to use with the new instance.
      * @return static A new instance with the specified query string.
-     * @throws \InvalidArgumentException for invalid query strings.
+     * @throws InvalidArgumentException for invalid query strings.
      */
     public function withQuery($query)
     {

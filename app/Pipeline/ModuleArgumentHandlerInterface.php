@@ -11,7 +11,7 @@ namespace App\Pipeline;
 
 use App\Modules\ModuleArgumentInterface;
 
-interface PipelineHandlerInterface
+interface ModuleArgumentHandlerInterface
 {
     /**
      * Финальная обработка

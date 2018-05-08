@@ -10,6 +10,8 @@
 namespace App\Modules\Mvc\Routing;
 
 
+use App\Http\RequestInterface;
+
 interface RoutingInterface
 {
     /**

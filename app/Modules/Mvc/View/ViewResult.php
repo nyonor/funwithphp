@@ -11,13 +11,14 @@ namespace App\Modules\Mvc\View;
 
 use App\Modules\Mvc\Controller\AbstractActionResult;
 use App\Modules\Mvc\View\Render\ViewRenderInterface;
+use Exception;
 use stdClass;
 
 final class ViewResult extends AbstractActionResult implements ViewResultInterface
 {
     private $options;
     private $render;
-
+    private $isSuccessful = false;
 
     public function __construct(array $options, ViewRenderInterface $render)
     {
@@ -37,12 +38,28 @@ final class ViewResult extends AbstractActionResult implements ViewResultInterfa
 
     public function getRenderedContent()
     {
-        if (empty($this->renderedContent)){
-            $this->render->setTemplatesPath($this->options['templates_path']);
-            $this->render->setViewName($this->options['view_name']);
-            $this->render->setViewModel($this->options['view_model']);
-            $this->renderedContent = $this->render->render();
+        try {
+
+            if (empty($this->renderedContent)){
+                $this->render->setTemplatesPath($this->options['templates_path']);
+                $this->render->setViewName($this->options['view_name']);
+                $this->render->setViewModel($this->options['view_model']);
+                $this->renderedContent = $this->render->render();
+            }
+
+            $this->isSuccessful = true;
+
+            return $this->renderedContent;
+
+        } catch (Exception $e) {
+            $this->isSuccessful = false;
+        } finally {
+            return $this->renderedContent;
         }
-        return $this->renderedContent;
+    }
+
+    public function isSuccessful(): bool
+    {
+        return $this->isSuccessful;
     }
 }
