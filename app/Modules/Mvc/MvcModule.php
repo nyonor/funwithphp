@@ -88,7 +88,7 @@ class MvcModule implements MvcModuleInterface
     /**
      * На основе action_result устанавливает респонс
      *
-     * todo должно быть реализовано в отдельном классе
+     * todo должно быть реализовано в отдельном классе - ActionResultHandler
      * @return void
      */
     protected function setResponse()

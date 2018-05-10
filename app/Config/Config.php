@@ -67,5 +67,18 @@ class Config
         '{controller}/{action}/{parameter:id}',
         '{controller}/{action}/{parameter:some_string}/{parameter:some_other_parameter}'
     ];
+
+    public static function getDbConnectionSettings($db_type)
+    {
+        if ($db_type == 'MYSQL') {
+            return [
+                'pdo' => [
+                    'dsn' => 'mysql:host=localhost;dbname=fightstarter_db',
+                    'username' => 'askidans',
+                    'password' => 'geekbrains',
+                ],
+            ];
+        }
+    }
     //todo конфиг приложения в виде констант?
 }

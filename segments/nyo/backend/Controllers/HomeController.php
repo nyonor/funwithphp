@@ -15,6 +15,7 @@ class HomeController extends AbstractMvcController
 {
     protected function indexAction()
     {
+
         return $this->view();
     }
 

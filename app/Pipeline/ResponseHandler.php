@@ -22,6 +22,7 @@ class ResponseHandler implements ResponseHandlerInterface
             header($header_name . ':' . $header_value, true, $response->getStatusCode());
         }
 
+        //body
         echo $response->getBody();
     }
 }
