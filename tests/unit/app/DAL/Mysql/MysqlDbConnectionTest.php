@@ -9,6 +9,7 @@
 namespace App\DAL\Mysql;
 
 use App\Config\Config;
+use App\DAL\DbConnector;
 use PHPUnit\Framework\TestCase;
 
 class MysqlDbConnectionTest extends TestCase
@@ -16,7 +17,8 @@ class MysqlDbConnectionTest extends TestCase
 
     public function testQueryList()
     {
-        $mysql_con = new MysqlDbConnection(Config::getDbConnectionSettings('MYSQL')['pdo']);
+        $connector = new DbConnector();
+        $mysql_con = $connector->getConnection('MYSQL');
         $this->assertNotNull($mysql_con);
     }
 }

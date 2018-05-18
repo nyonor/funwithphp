@@ -13,8 +13,10 @@ use App\DAL\AbstractDbConnection;
 
 class MysqlDbConnection extends AbstractDbConnection implements MysqlDbConnectionInterface
 {
+    const CONNECTION_NAME = 'MYSQL';
+
     public function __construct(array $connection_settings)
     {
-        parent::__construct($connection_settings);
+        parent::__construct($connection_settings, self::CONNECTION_NAME);
     }
 }

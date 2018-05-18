@@ -15,9 +15,11 @@ class AbstractDbConnection implements DbConnectionInterface
 {
     protected $connectionSettings;
     protected $pdoConnection;
+    protected $connectionName;
 
-    protected function __construct(array $connection_settings)
+    protected function __construct(array $connection_settings, string $connection_name)
     {
+        $this->connectionName = $connection_name;
         $this->connectionSettings = $connection_settings;
 
         $username = $this->connectionSettings['username'];

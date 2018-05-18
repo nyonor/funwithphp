@@ -10,6 +10,10 @@
 
 namespace App\Ioc;
 
+use App\DAL\Mysql\MysqlDbConnection;
+use App\DAL\Mysql\MysqlDbConnectionInterface;
+use App\Helpers\Path;
+use App\Helpers\PathHelperInterface;
 use App\Modules\ModuleArgument;
 use App\Modules\ModuleArgumentInterface;
 use App\Modules\Mvc\Controller\ActionResultFactory;
@@ -48,6 +52,7 @@ class Ioc
         ModuleArgumentInterface::class => ModuleArgument::class,
         MvcControllerFactoryInterface::class => MvcControllerFactory::class,
         MvcModuleInterface::class => MvcModule::class,
+        PathHelperInterface::class => Path::class,
         PipelineInterface::class => Pipeline::class,
         RoutingInterface::class => Routing::class,
         RouteInterface::class => Route::class,
@@ -56,7 +61,8 @@ class Ioc
         ResponseInterface::class => Response::class,
         ResponseHandlerInterface::class => ResponseHandler::class,
         ViewRenderInterface::class => TwigRender::class,
-        ViewResultInterface::class => ViewResult::class
+        ViewResultInterface::class => ViewResult::class,
+        MysqlDbConnectionInterface::class => MysqlDbConnection::class
     ];
 
     /**

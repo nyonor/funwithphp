@@ -6,7 +6,7 @@
  * Time: 1:23 PM
  */
 
-namespace Segments\Nyo\Backend\Controllers;
+namespace Segments\Nyo\Web\Controllers;
 
 
 use App\Modules\Mvc\Controller\AbstractMvcController;
@@ -15,7 +15,6 @@ class HomeController extends AbstractMvcController
 {
     protected function indexAction()
     {
-
         return $this->view();
     }
 
@@ -34,8 +33,8 @@ class HomeController extends AbstractMvcController
         return $this->view();
     }
 
-    protected function withViewModelAction($some_arg)
+    protected function withViewModelAction($some_arg = null)
     {
-        return $this->viewWithModel(['some_arg' => $some_arg, 'and_another' => 'this is another!']);
+        return $this->viewWithModel(['some_arg' => $some_arg, 'and_another' => 1]);
     }
 }

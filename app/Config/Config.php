@@ -51,12 +51,12 @@ class Config
      * ]
      */
     public static $projectSegments = [
-        'backend' => [
+        'web' => [
             'domain_name' => 'localhost:8080',
-            'view_path' => '/segments/nyo/backend/Views',
+            'view_path' => '/segments/nyo/web/Views',
             'autoload_data' => [
-                'Segments\Nyo\Backend\\' . SEGMENT_CONTROLLERS_LAST_NAMESPACE => '/segments/nyo/backend/Controllers',
-                'Segments\Nyo\Backend\\' . SEGMENT_VIEWS_LAST_NAMESPACE  => '/segments/nyo/backend/Views',
+                'Segments\Nyo\Web\\' . SEGMENT_CONTROLLERS_LAST_NAMESPACE => '/segments/nyo/backend/Controllers',
+                'Segments\Nyo\Web\\' . SEGMENT_VIEWS_LAST_NAMESPACE  => '/segments/nyo/backend/Views',
             ],
         ]
     ];
@@ -68,12 +68,16 @@ class Config
         '{controller}/{action}/{parameter:some_string}/{parameter:some_other_parameter}'
     ];
 
+    public static $assets = [
+        'bootstrap' => '/assets/bootstrap'
+    ];
+
     public static function getDbConnectionSettings($db_type)
     {
         if ($db_type == 'MYSQL') {
             return [
                 'pdo' => [
-                    'dsn' => 'mysql:host=localhost;dbname=fightstarter_db',
+                    'dsn' => 'mysql:host=127.0.0.1:3306;dbname=fightstarter_db',
                     'username' => 'askidans',
                     'password' => 'geekbrains',
                 ],

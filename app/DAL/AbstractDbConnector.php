@@ -25,7 +25,7 @@ class AbstractDbConnector implements DbConnectorInterface
             case('MYSQL'):
                 $mysql_connection = Ioc::factoryWithArgs (
                     MysqlDbConnectionInterface::class,
-                    Config::getDbConnectionSettings($db_type)
+                    Config::getDbConnectionSettings($db_type)['pdo']
                 );
                 return $mysql_connection;
                 break;
