@@ -153,7 +153,7 @@ class Route implements RouteInterface
             if (SEGMENT_CONTROLLERS_LAST_NAMESPACE != $last_namespace){ //todo сомнительно конечно
                 continue;
             }
-            $supposed_class_name = $namespace . '\\' . $controller_name . SEGMENT_CONTROLLER_KEYWORD;
+            $supposed_class_name = $namespace . '\\' . ucfirst($controller_name) . SEGMENT_CONTROLLER_KEYWORD;
             $exists = class_exists($supposed_class_name, true);
             if ($exists == true) {
                 $controller_class_name = $supposed_class_name;

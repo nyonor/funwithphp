@@ -18,8 +18,9 @@ use App\Http\StringStream;
 use App\Modules\ModuleArgumentInterface;
 use App\Modules\ModuleResult;
 use App\Modules\ModuleResultInterface;
-use App\Modules\Mvc\Controller\ActionResultFactoryInterface;
-use App\Modules\Mvc\Controller\ActionResultInterface;
+use App\Modules\Mvc\Controller\ActionResult\ActionResultFactoryInterface;
+use App\Modules\Mvc\Controller\ActionResult\ActionResultInterface;
+use App\Modules\Mvc\Controller\ActionResult\RedirectResultInterface;
 use App\Modules\Mvc\Controller\MvcControllerFactoryInterface;
 use App\Http\RequestInterface;
 use App\Http\ResponseInterface;
@@ -88,7 +89,7 @@ class MvcModule implements MvcModuleInterface
     /**
      * На основе action_result устанавливает респонс
      *
-     * todo должно быть реализовано в отдельном классе - ActionResultHandler
+     * todo Реализовать в отдельном классе! - ActionResultHandler
      * @return void
      */
     protected function setResponse()
@@ -102,6 +103,19 @@ class MvcModule implements MvcModuleInterface
             if ($this->actionResult->isSuccessful() == false) {
                 $response_with_500 = $empty_response->withStatus(500, 'Internal Server Error!');
                 $this->moduleArgument->setResponse($response_with_500);
+                return;
+            }
+
+            $is_redirect = is_subclass_of($this->actionResult, RedirectResultInterface::class);
+            if ($is_redirect) {
+                /**
+                 * @var $redirect_result RedirectResultInterface
+                 */
+                $redirect_result = $this->actionResult;
+                $response_with_301 = $empty_response->withStatus(301);
+                $response_with_301 = $response_with_301->withHeader('Location', '/' . $redirect_result->getControllerName() . '/' .
+                    $redirect_result->getActionName());
+                $this->moduleArgument->setResponse($response_with_301);
                 return;
             }
 

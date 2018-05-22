@@ -7,10 +7,9 @@
  * Time: 1:12 PM
  */
 
-namespace App\Modules\Mvc\View;
+namespace App\Modules\Mvc\Controller\ActionResult;
 
 
-use App\Modules\Mvc\Controller\ActionResultInterface;
 use App\Modules\Mvc\View\Render\ViewRenderInterface;
 
 interface ViewResultInterface extends ActionResultInterface

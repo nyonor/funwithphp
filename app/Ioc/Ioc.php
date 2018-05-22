@@ -16,8 +16,10 @@ use App\Helpers\Path;
 use App\Helpers\PathHelperInterface;
 use App\Modules\ModuleArgument;
 use App\Modules\ModuleArgumentInterface;
-use App\Modules\Mvc\Controller\ActionResultFactory;
-use App\Modules\Mvc\Controller\ActionResultFactoryInterface;
+use App\Modules\Mvc\Controller\ActionResult\ActionResultFactory;
+use App\Modules\Mvc\Controller\ActionResult\ActionResultFactoryInterface;
+use App\Modules\Mvc\Controller\ActionResult\ViewResult;
+use App\Modules\Mvc\Controller\ActionResult\ViewResultInterface;
 use App\Modules\Mvc\Controller\MvcControllerFactory;
 use App\Modules\Mvc\Controller\MvcControllerFactoryInterface;
 use App\Modules\Mvc\MvcModule;
@@ -34,14 +36,14 @@ use App\Modules\Mvc\Routing\Routing;
 use App\Modules\Mvc\Routing\RoutingInterface;
 use App\Modules\Mvc\View\Render\TwigRender;
 use App\Modules\Mvc\View\Render\ViewRenderInterface;
-use App\Modules\Mvc\View\ViewResult;
-use App\Modules\Mvc\View\ViewResultInterface;
 use App\Pipeline\Pipeline;
 use App\Pipeline\ModuleArgumentHandler;
 use App\Pipeline\ModuleArgumentHandlerInterface;
 use App\Pipeline\PipelineInterface;
 use App\Pipeline\ResponseHandler;
 use App\Pipeline\ResponseHandlerInterface;
+use Segments\Nyo\Model\Services\Authorization\Vk\VkAuthorizationService;
+use Segments\Nyo\Model\Services\Authorization\Vk\VkAuthorizationServiceInterface;
 
 class Ioc
 {
@@ -62,7 +64,9 @@ class Ioc
         ResponseHandlerInterface::class => ResponseHandler::class,
         ViewRenderInterface::class => TwigRender::class,
         ViewResultInterface::class => ViewResult::class,
-        MysqlDbConnectionInterface::class => MysqlDbConnection::class
+        MysqlDbConnectionInterface::class => MysqlDbConnection::class,
+
+        VkAuthorizationServiceInterface::class => VkAuthorizationService::class,
     ];
 
     /**

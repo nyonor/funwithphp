@@ -11,5 +11,6 @@ namespace App\Helpers;
 
 interface PathHelperInterface
 {
-    public function getAsset(string $asset_name);
+    public function getAssetDir(string $asset_name);
+    public function getAssetFile(string $asset_name, string $file_name);
 }

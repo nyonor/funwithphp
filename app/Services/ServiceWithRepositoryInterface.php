@@ -11,7 +11,7 @@ namespace App\Services;
 
 use App\DAL\RepositoryInterface;
 
-interface ServiceInterface
+interface ServiceWithRepositoryInterface
 {
     /**
      * @param string $repository_name

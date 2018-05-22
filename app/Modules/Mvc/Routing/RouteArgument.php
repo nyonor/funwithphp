@@ -59,7 +59,7 @@ class RouteArgument implements RouteArgumentInterface
      */
     public function getControllerName() : string
     {
-        return $this->controllerName;
+        return ucfirst($this->controllerName);
     }
 
     /**
@@ -68,7 +68,7 @@ class RouteArgument implements RouteArgumentInterface
      */
     public function getActionName() : string
     {
-        return $this->actionName;
+        return ucfirst($this->actionName);
     }
 
     /**

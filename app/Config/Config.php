@@ -69,7 +69,9 @@ class Config
     ];
 
     public static $assets = [
-        'bootstrap' => '/assets/bootstrap'
+        'bootstrap' => '/assets/bootstrap',
+        'images' => '/assets/images',
+        'icons' => '/assets/images/icons',
     ];
 
     public static function getDbConnectionSettings($db_type)

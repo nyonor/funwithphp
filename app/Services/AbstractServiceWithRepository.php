@@ -12,7 +12,7 @@ namespace App\Services;
 use App\DAL\RepositoryFactoryInterface;
 use App\DAL\RepositoryInterface;
 
-class AbstractService implements ServiceInterface
+class AbstractServiceWithRepository implements ServiceWithRepositoryInterface
 {
     /**
      * @var $repositoryFactory RepositoryFactoryInterface

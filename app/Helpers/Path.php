@@ -13,10 +13,15 @@ use App\Config\Config;
 /**
  * @property array assets
  */
-class Path
+class Path implements PathHelperInterface
 {
-    public function getAsset($asset_name)
+    public function getAssetDir(string $asset_name)
     {
         return Config::$assets[$asset_name];
+    }
+
+    public function getAssetFile(string $asset_name, string $file_name)
+    {
+        return Config::$assets[$asset_name] . '/' . $file_name;
     }
 }

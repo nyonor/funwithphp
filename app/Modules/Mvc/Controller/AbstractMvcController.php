@@ -13,6 +13,8 @@ namespace App\Modules\Mvc\Controller;
 use App\Config\Config;
 use App\Http\RequestInterface;
 use App\Http\ResponseInterface;
+use App\Modules\Mvc\Controller\ActionResult\ActionResultFactoryInterface;
+use App\Modules\Mvc\Controller\ActionResult\ActionResultInterface;
 use App\Modules\Mvc\Routing\RouteInterface;
 
 abstract class AbstractMvcController implements MvcControllerInterface
@@ -96,6 +98,16 @@ abstract class AbstractMvcController implements MvcControllerInterface
         $view_name = $this->getCurrentViewName($last_action_method_name);
         $view_result = $this->getViewResult($view_name, $view_model);
         return $view_result;
+    }
+
+    protected function redirect(string $controller_name, string $action_name, array $parameters = null)
+    {
+        return $this->actionResultFactory->getRedirectResult($controller_name, $action_name, $parameters);
+    }
+
+    protected function redirectToUrl(string $url)
+    {
+        return $this->actionResultFactory->getRedirectResultToUrl($url);
     }
 
     public function getRequest(): RequestInterface

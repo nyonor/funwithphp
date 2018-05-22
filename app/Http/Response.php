@@ -77,6 +77,15 @@ class Response extends AbstractMessage implements ResponseInterface
                 case (200):
                     $reason_phrase_to_return = 'OK';
                     break;
+                case (500):
+                    $reason_phrase_to_return = 'Internal Server Error';
+                    break;
+                case (301):
+                    $reason_phrase_to_return = 'Moved Permanently';
+                    break;
+                case (303):
+                    $reason_phrase_to_return = 'See Other';
+                    break;
             endswitch;
         } else {
             $reason_phrase_to_return = $this->reasonPhrase;

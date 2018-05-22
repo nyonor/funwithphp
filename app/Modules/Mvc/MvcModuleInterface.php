@@ -13,7 +13,7 @@ namespace App\Modules\Mvc;
 
 use App\Modules\ModuleArgumentInterface;
 use App\Modules\ModuleInterface;
-use App\Modules\Mvc\Controller\ActionResultInterface;
+use App\Modules\Mvc\Controller\ActionResult\ActionResultInterface;
 
 interface MvcModuleInterface extends ModuleInterface
 {

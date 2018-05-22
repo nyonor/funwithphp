@@ -7,11 +7,12 @@
  * Time: 12:45 PM
  */
 
-namespace App\Modules\Mvc\Controller;
+namespace App\Modules\Mvc\Controller\ActionResult;
 
 
 interface ActionResultInterface
 {
+    //todo перенести в интерфейс ViewResultInterface
     public function getRenderedContent();
 
     public function isSuccessful() : bool;

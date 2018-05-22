@@ -6,19 +6,17 @@
  * Time: 7:26 PM
  */
 
-namespace App\Modules\Mvc\View;
+namespace App\Modules\Mvc\Controller\ActionResult;
 
 
-use App\Modules\Mvc\Controller\AbstractActionResult;
 use App\Modules\Mvc\View\Render\ViewRenderInterface;
 use Exception;
-use stdClass;
 
 final class ViewResult extends AbstractActionResult implements ViewResultInterface
 {
     private $options;
     private $render;
-    private $isSuccessful = false;
+    private $renderedContent;
 
     public function __construct(array $options, ViewRenderInterface $render)
     {

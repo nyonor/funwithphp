@@ -10,7 +10,7 @@
 
 use App\Ioc\Ioc;
 use App\Modules\ModuleArgumentInterface;
-use App\Modules\Mvc\Controller\ActionResultFactoryInterface;
+use App\Modules\Mvc\Controller\ActionResult\ActionResultFactoryInterface;
 use App\Modules\Mvc\Controller\MvcControllerFactoryInterface;
 use App\Modules\Mvc\MvcModuleInterface;
 use App\Http\RequestInterface;

@@ -1,19 +1,17 @@
 <?php
 /**
- * //todo вероятно этот класс лишний
  * Created by PhpStorm.
  * User: cadistortion
  * Date: 4/4/18
  * Time: 4:35 PM
  */
 
-namespace App\Modules\Mvc\Controller;
+namespace App\Modules\Mvc\Controller\ActionResult;
 
 
 use App\Ioc\Ioc;
 use App\Modules\Mvc\View\Render\RenderInterface;
 use App\Modules\Mvc\View\Render\ViewRenderInterface;
-use App\Modules\Mvc\View\ViewResultInterface;
 
 class ActionResultFactory implements ActionResultFactoryInterface
 {
@@ -53,5 +51,15 @@ class ActionResultFactory implements ActionResultFactoryInterface
                 return $render;
             }
         }
+    }
+
+    public function getRedirectResult(string $controller_name, string $action_name, array $parameters_array = null)
+    {
+        return new RedirectResult($controller_name, $action_name, $parameters_array);
+    }
+
+    public function getRedirectResultToUrl($url)
+    {
+        return new RedirectToUrlResult($url);
     }
 }

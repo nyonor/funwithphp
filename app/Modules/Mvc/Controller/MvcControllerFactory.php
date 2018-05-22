@@ -11,8 +11,9 @@ namespace App\Modules\Mvc\Controller;
 
 use App\Http\RequestInterface;
 use App\Http\ResponseInterface;
+use App\Modules\Mvc\Controller\ActionResult\ActionResultFactoryInterface;
+use App\Modules\Mvc\Controller\ActionResult\ActionResultInterface;
 use App\Modules\Mvc\Routing\RouteInterface;
-use App\Modules\Mvc\View\Render\RenderInterface;
 
 class MvcControllerFactory implements MvcControllerFactoryInterface
 {

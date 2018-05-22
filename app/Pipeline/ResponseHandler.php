@@ -16,13 +16,16 @@ class ResponseHandler implements ResponseHandlerInterface
 
     public function handle(ResponseInterface $response)
     {
-        //headers
+        $start_line = "HTTP" . "/" . $response->getProtocolVersion() . " " . $response->getStatusCode()
+            . " " . $response->getReasonPhrase();
+
+        header($start_line, true, $response->getStatusCode());
+
         foreach ($response->getHeaders() as $header_name => $header_value)
         {
-            header($header_name . ':' . $header_value, true, $response->getStatusCode());
+            header ($header_name . ':' . $header_value);
         }
 
-        //body
         echo $response->getBody();
     }
 }
