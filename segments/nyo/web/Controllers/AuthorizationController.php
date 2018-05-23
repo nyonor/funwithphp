@@ -11,18 +11,26 @@ namespace Segments\Nyo\Web\Controllers;
 
 use App\Ioc\Ioc;
 use App\Modules\Mvc\Controller\AbstractMvcController;
-use Segments\Nyo\Model\Services\Authorization\Vk\VkAuthorizationServiceInterface;
 use Segments\Nyo\Model\Services\Authorization\Vk\VkAuthorizationService;
+use Segments\Nyo\Model\Services\Authorization\Vk\VkAuthorizationServiceInterface;
 
 class AuthorizationController extends AbstractMvcController
 {
-    protected function vkAction($state = null)
+    protected function vkAction($code = null, $state = null)
     {
         /**
          * @var $vk_auth_service VkAuthorizationService
          */
         $vk_auth_service = Ioc::factory(VkAuthorizationServiceInterface::class);
-        return $this->redirect('Home','index');
+
+        //начальный этап - авторизация пользователя и получение code
+        if (empty($state)) {
+            return $this->redirectToUrl($vk_auth_service->getAuthorizationDialogUrl());
+        }
+
+        if ($state == 'authorized') {
+
+        }
     }
 
 }

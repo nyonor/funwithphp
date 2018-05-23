@@ -9,7 +9,7 @@
 namespace App\Modules\Mvc\Controller\ActionResult;
 
 
-class RedirectResult extends AbstractActionResult implements RedirectResultInterface
+class RedirectToRouteResult extends AbstractActionResult implements RedirectToRouteResultInterface
 {
     protected $controllerName;
     protected $actionName;
@@ -22,9 +22,23 @@ class RedirectResult extends AbstractActionResult implements RedirectResultInter
         $this->parametersArray = $parameters;
     }
 
-    public function getRenderedContent()
+    public function getResult()
     {
-        // TODO: Implement getRenderedContent() method.
+        $result = '/';
+
+        if (empty($this->controllerName) == false) {
+            $result .= $this->controllerName;
+        }
+
+        if (empty($this->actionName) == false) {
+            $result .= $this->actionName;
+        }
+
+        if (empty($this->parametersArray) == false && count($this->parametersArray) > 0) {
+            $result .= http_build_query($this->parametersArray);
+        }
+
+        return $result;
     }
 
     public function getControllerName(): string

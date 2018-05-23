@@ -9,7 +9,7 @@
 namespace App\Modules\Mvc\Controller\ActionResult;
 
 
-interface RedirectResultInterface extends ActionResultInterface
+interface RedirectToRouteResultInterface extends RedirectToUrlResultInterface
 {
     public function getControllerName() : string;
     public function getActionName() : string;

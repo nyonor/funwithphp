@@ -13,6 +13,7 @@ namespace App\Modules\Mvc\Routing;
 
 
 use App\Config\Config;
+use App\Http\RequestInterface;
 use App\Ioc\Ioc;
 
 class Routing implements RoutingInterface
@@ -28,7 +29,7 @@ class Routing implements RoutingInterface
     {
         $templates = Config::$routeTemplates;
         foreach ($templates as $template) {
-            $mapping_result = $this->Map($template, $request);
+            $mapping_result = $this->map($template, $request);
 
             if ($mapping_result == null) {
                 continue;
@@ -48,39 +49,111 @@ class Routing implements RoutingInterface
     public function map($template, $request)
     {
         $current_uri = $request->getUri();
-        $uri_splitted_arr = explode('/', ltrim($current_uri, '/'));
-        $template_splitted_arr = explode('/', ltrim($template, '/'));
 
-//        if (count($uri_splitted_arr) != count($template_splitted_arr)) {
-//            echo 'NEXT <br/>';
-//            return null;
-//        }
-//
-//        echo 'THIS ONE <br/>';
+        $template_parts = explode('/', $template);
+        $uri_parts = explode('/', $current_uri);
 
-        $controller_uri_str = $uri_splitted_arr[0];
-        $action_uri_str = lcfirst($uri_splitted_arr[1]);
-        $other_uri_arr = array_slice($uri_splitted_arr, 2, count($uri_splitted_arr));
-        $other_uri_str = implode('/', $other_uri_arr);
-        $supposed_pos_of_q_mark = strripos($other_uri_str, '?') - 1;
-        $route_params_arr = array_filter(explode('/', substr($other_uri_str, 0,
-            $supposed_pos_of_q_mark == -1 ? strlen($other_uri_str) : $supposed_pos_of_q_mark)));
-        $uri_params_part_str = $supposed_pos_of_q_mark != -1 ? ltrim(substr($other_uri_str, $supposed_pos_of_q_mark,
-            strlen($other_uri_str)), '?') : null;
-        $uri_params_arr = array_filter(explode('&', $uri_params_part_str));
-        $form_parameters = array_filter(array_diff($request->getRawParameters(), $uri_params_arr, $route_params_arr)); //todo
+        if (count($template_parts) != count($uri_parts)){
+            return null;
+        }
+
+        $uri_parts = array_values(array_filter($uri_parts));
+
+        $controller = null;
+        $action = null;
+        $route_params_arr = [];
+        $uri_assoc_arr = null;
+        $form_parameters_assoc_arr = [];
+        foreach ($template_parts as $template_part) {
+
+            if (strstr($template_part, 'controller') != false)
+            {
+                $controller = $this->getControllerNameFromUriString($current_uri);
+                if (empty($controller)) {
+                    $controller = Config::ROUTING_DEFAULT_CONTROLLER_NAME;
+                }
+            }
+
+            if (strstr($template_part, 'action') != false)
+            {
+                $action = $this->getActionNameFromExplodedUriString($uri_parts);
+
+                if (empty($action)) {
+                    $action = Config::ROUTING_DEFAULT_ACTION_NAME;
+                }
+            }
+
+            if (strstr($template_part, 'parameter') != false) {
+                $route_params_arr = $this->getRouteParametersFromExplodedUriString($uri_parts, $template_parts);
+            }
+        }
+
+        $uri_assoc_arr = $this->getUriParametersPartFromUriString($current_uri) ?? [];
 
         $arg = [
             'template' => $template,
-            'controller' => !empty($controller_uri_str) ? $controller_uri_str : Config::ROUTING_DEFAULT_CONTROLLER_NAME,
-            'action' => !empty($action_uri_str) ? $action_uri_str : Config::ROUTING_DEFAULT_ACTION_NAME,
+            'controller' => $controller,
+            'action' => $action,
             'route_parameters' => $route_params_arr,
-            'uri_parameters' => $uri_params_arr,
-            'form_parameters' => $form_parameters, //todo,
+            'uri_parameters' => $uri_assoc_arr,
+            'form_parameters' => $form_parameters_assoc_arr, //todo,
             'domain_name' => $request->getDomain()
         ];
 
         $route_argument = Ioc::factoryWithArgs(RouteArgumentInterface::class, $arg);
         return $route_argument;
+    }
+
+    protected function getControllerNameFromUriString($uri)
+    {
+        $controller_value = substr($uri, 1, stripos(ltrim($uri, '/'), '/'));
+        if (empty($controller_value) == false) {
+            return $controller_value;
+        }
+    }
+
+    protected function getActionNameFromExplodedUriString(array $exploded_uri)
+    {
+        $q_mark_pos = stripos($exploded_uri[1], '?');
+        $action_value = $q_mark_pos == false ? $exploded_uri[1] : substr($exploded_uri[1], 0, $q_mark_pos);
+        if (empty($action_value) == false) {
+            return $action_value;
+        }
+    }
+
+    protected function getRouteParametersFromExplodedUriString(array $exploded_uri, $exploded_route_parttern)
+    {
+        $offset = null;
+        for ($i = 0; $i < count($exploded_route_parttern); $i++) {
+            $pattern_part = $exploded_route_parttern[$i];
+            if (strstr($pattern_part, 'controller') || strstr($pattern_part, 'action')) {
+                continue;
+            }
+            $offset = $i;
+        }
+
+        $result = array_slice($exploded_uri, $offset);
+
+        return $result;
+    }
+
+    protected function getUriParametersPartFromUriString($uri)
+    {
+        $result_assoc_arr = null;
+
+        $q_mark_pos = stripos($uri, '?');
+
+        if ($q_mark_pos == false)
+            return null;
+
+        $uri_params_string = substr($uri, $q_mark_pos + 1);
+        $uri_params_arr = array_filter(explode('&', $uri_params_string));
+
+        foreach ($uri_params_arr as $param_pare_string) {
+            $exploded = explode('=', $param_pare_string);
+            $result_assoc_arr[$exploded[0]] = $exploded[1];
+        }
+
+        return $result_assoc_arr;
     }
 }

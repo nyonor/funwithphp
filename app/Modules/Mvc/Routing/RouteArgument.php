@@ -68,7 +68,7 @@ class RouteArgument implements RouteArgumentInterface
      */
     public function getActionName() : string
     {
-        return ucfirst($this->actionName);
+        return lcfirst($this->actionName);
     }
 
     /**

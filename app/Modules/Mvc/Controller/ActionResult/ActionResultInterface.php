@@ -10,10 +10,11 @@
 namespace App\Modules\Mvc\Controller\ActionResult;
 
 
+use Exception;
+
 interface ActionResultInterface
 {
-    //todo перенести в интерфейс ViewResultInterface
-    public function getRenderedContent();
-
+    public function getResult();
+    public function getException();
     public function isSuccessful() : bool;
 }

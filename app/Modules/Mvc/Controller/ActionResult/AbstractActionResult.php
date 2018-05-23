@@ -11,7 +11,7 @@ namespace App\Modules\Mvc\Controller\ActionResult;
 
 use Exception;
 
-abstract class AbstractActionResult implements ActionResultInterface
+abstract class AbstractActionResult
 {
     protected $isSuccessful = false;
 
@@ -23,5 +23,10 @@ abstract class AbstractActionResult implements ActionResultInterface
     public function isSuccessful(): bool
     {
         return empty($this->exception);
+    }
+
+    public function getException()
+    {
+        return $this->exception;
     }
 }

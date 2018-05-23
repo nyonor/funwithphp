@@ -86,6 +86,9 @@ class Response extends AbstractMessage implements ResponseInterface
                 case (303):
                     $reason_phrase_to_return = 'See Other';
                     break;
+                case (307):
+                    $reason_phrase_to_return = 'Temporary Redirect';
+                    break;
             endswitch;
         } else {
             $reason_phrase_to_return = $this->reasonPhrase;

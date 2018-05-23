@@ -43,6 +43,16 @@ class ActionResultFactory implements ActionResultFactoryInterface
         // TODO: Implement getJsonResult() method.
     }
 
+    public function getRedirectResult(string $controller_name, string $action_name, array $parameters_array = null)
+    {
+        return new RedirectToRouteResult($controller_name, $action_name, $parameters_array);
+    }
+
+    public function getRedirectResultToUrl($url)
+    {
+        return new RedirectToUrlResult($url);
+    }
+
     protected function findRender($render_interface) : RenderInterface
     {
         foreach ($this->renders as $render) {
@@ -51,15 +61,5 @@ class ActionResultFactory implements ActionResultFactoryInterface
                 return $render;
             }
         }
-    }
-
-    public function getRedirectResult(string $controller_name, string $action_name, array $parameters_array = null)
-    {
-        return new RedirectResult($controller_name, $action_name, $parameters_array);
-    }
-
-    public function getRedirectResultToUrl($url)
-    {
-        return new RedirectToUrlResult($url);
     }
 }

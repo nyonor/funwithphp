@@ -6,8 +6,10 @@
  * Time: 7:57 PM
  */
 
-namespace App\Modules\Mvc\Controller;
+namespace App\Modules\Mvc\Controller\ActionResult;
 
+
+use App\Modules\Mvc\Controller\ActionResult\AbstractActionResult;
 
 class RedirectToUrlResult extends AbstractActionResult implements RedirectToUrlResultInterface
 {
@@ -18,12 +20,7 @@ class RedirectToUrlResult extends AbstractActionResult implements RedirectToUrlR
         $this->url = $url_to_redirect;
     }
 
-    public function getRenderedContent()
-    {
-        // TODO: Implement getRenderedContent() method.
-    }
-
-    public function getUrl()
+    public function getResult()
     {
         return $this->url;
     }

@@ -13,6 +13,7 @@
 namespace App\Modules\Mvc;
 
 
+use App\Config\Config;
 use App\Http\Response;
 use App\Http\StringStream;
 use App\Modules\ModuleArgumentInterface;
@@ -20,7 +21,8 @@ use App\Modules\ModuleResult;
 use App\Modules\ModuleResultInterface;
 use App\Modules\Mvc\Controller\ActionResult\ActionResultFactoryInterface;
 use App\Modules\Mvc\Controller\ActionResult\ActionResultInterface;
-use App\Modules\Mvc\Controller\ActionResult\RedirectResultInterface;
+use App\Modules\Mvc\Controller\ActionResult\RedirectToRouteResultInterface;
+use App\Modules\Mvc\Controller\ActionResult\RedirectToUrlResultInterface;
 use App\Modules\Mvc\Controller\MvcControllerFactoryInterface;
 use App\Http\RequestInterface;
 use App\Http\ResponseInterface;
@@ -82,7 +84,7 @@ class MvcModule implements MvcModuleInterface
     protected function resultClosure()
     {
         return function() {
-            return $this->actionResult->getRenderedContent();
+            return $this->actionResult->getResult();
         };
     }
 
@@ -98,7 +100,13 @@ class MvcModule implements MvcModuleInterface
 
             $empty_response = new Response();
 
-            $rendered_content = $this->actionResult->getRenderedContent();
+            if (Config::getCurrentEnv() == Config::ENV_DEBUG) {
+                if (empty($this->actionResult->getException()) == false) {
+                    $empty_response = $empty_response->withBody(new StringStream((string)$this->actionResult->getException()));
+                }
+            }
+
+            $rendered_content = $this->actionResult->getResult();
 
             if ($this->actionResult->isSuccessful() == false) {
                 $response_with_500 = $empty_response->withStatus(500, 'Internal Server Error!');
@@ -106,16 +114,15 @@ class MvcModule implements MvcModuleInterface
                 return;
             }
 
-            $is_redirect = is_subclass_of($this->actionResult, RedirectResultInterface::class);
+            $is_redirect = is_subclass_of($this->actionResult, RedirectToUrlResultInterface::class);
             if ($is_redirect) {
                 /**
-                 * @var $redirect_result RedirectResultInterface
+                 * @var $redirect_result RedirectToUrlResultInterface
                  */
                 $redirect_result = $this->actionResult;
-                $response_with_301 = $empty_response->withStatus(301);
-                $response_with_301 = $response_with_301->withHeader('Location', '/' . $redirect_result->getControllerName() . '/' .
-                    $redirect_result->getActionName());
-                $this->moduleArgument->setResponse($response_with_301);
+                $response_with_307 = $empty_response->withStatus(307);
+                $response_with_307 = $response_with_307->withHeader('Location', $redirect_result->getResult());
+                $this->moduleArgument->setResponse($response_with_307);
                 return;
             }
 

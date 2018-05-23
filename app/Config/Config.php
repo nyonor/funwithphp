@@ -25,6 +25,11 @@ class Config
     const ROUTING_DEFAULT_ACTION_NAME = "Index";
     const SEGMENT_ACTION_KEYWORD = "Action";
 
+    const ENV_DEBUG = 'Debug';
+    const ENV_PRODUCTION = 'Production';
+
+    const CURRENT_ENV = self::ENV_DEBUG;
+
     /*
      * Массив-связка: неймспейс к базовой директории.
      * конфиг для автозагрузчика Autoloader
@@ -87,4 +92,9 @@ class Config
         }
     }
     //todo конфиг приложения в виде констант?
+
+    public static function getCurrentEnv()
+    {
+        return self::CURRENT_ENV;
+    }
 }

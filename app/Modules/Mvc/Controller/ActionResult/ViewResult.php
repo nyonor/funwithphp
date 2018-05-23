@@ -34,7 +34,7 @@ final class ViewResult extends AbstractActionResult implements ViewResultInterfa
         return $this->options['view_model'];
     }
 
-    public function getRenderedContent()
+    public function getResult()
     {
         try {
 
