@@ -9,6 +9,7 @@
 namespace App\Modules\Mvc\Controller\ActionResult;
 
 
+use function App\Helpers\Globals\container;
 use App\Ioc\Ioc;
 use App\Modules\Mvc\View\Render\RenderInterface;
 use App\Modules\Mvc\View\Render\ViewRenderInterface;
@@ -22,6 +23,13 @@ class ActionResultFactory implements ActionResultFactoryInterface
         $this->renders = $renders;
     }
 
+    /**
+     * Возвращает результат работы контроллера в виде ViewResultInterface
+     *
+     * @param array $options
+     * @return ActionResultInterface
+     * @throws ActionResultException
+     */
     public function getViewResult(array $options): ActionResultInterface
     {
         $render = $this->findRender(ViewRenderInterface::class);
@@ -32,9 +40,9 @@ class ActionResultFactory implements ActionResultFactoryInterface
         //todo проверка на совпадение установленного рендерера в конфиге с найденным...
 
         /**
-         * @var $view_result ViewRenderInterface
+         * @var $view_result ActionResultInterface
          */
-        $view_result = Ioc::factoryWithVariadic(ViewResultInterface::class, $options, $render); //todo первый параметр сомнителен
+        $view_result = container()->create(ViewResultInterface::class, $options, $render); //todo первый параметр сомнителен
         return $view_result;
     }
 

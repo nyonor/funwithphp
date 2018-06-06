@@ -10,17 +10,19 @@
     }
   ],
   "autoload": {
+    "files": ["app/Helpers/Globals/Functions.php"],
     "psr-4":  {
       "App\\": "app/",
-      "Segments\\Nyo\\Web\\": "segments/nyo/web",
-      "Segments\\Nyo\\Backend\\": "segments/nyo/backend",
-      "Segments\\Nyo\\Model\\": "segments/nyo/model",
+      "Segments\\Nyo\\": "segments/nyo",
+      "Segments\\Nyo\\Web\\": "segments/nyo/Web",
+      "Segments\\Nyo\\Model\\": "segments/nyo/Model",
       "Psr\\": "psr/"
     }
   },
   "require": {
     "twig/twig": "2.x-dev",
-    "twbs/bootstrap": "4.1.1"
+    "twbs/bootstrap": "4.1.1",
+    "vkcom/vk-php-sdk": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "7.1.x-dev"

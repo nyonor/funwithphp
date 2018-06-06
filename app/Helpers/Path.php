@@ -13,7 +13,7 @@ use App\Config\Config;
 /**
  * @property array assets
  */
-class Path implements PathHelperInterface
+class Path implements PathInterface
 {
     public function getAssetDir(string $asset_name)
     {

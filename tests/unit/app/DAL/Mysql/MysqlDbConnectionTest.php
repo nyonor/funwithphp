@@ -18,7 +18,7 @@ class MysqlDbConnectionTest extends TestCase
     public function testQueryList()
     {
         $connector = new DbConnector();
-        $mysql_con = $connector->getConnection('MYSQL');
+        $mysql_con = $connector->getConnection('MYSQL_PDO');
         $this->assertNotNull($mysql_con);
     }
 }

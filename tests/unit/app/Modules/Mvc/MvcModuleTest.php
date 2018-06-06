@@ -8,12 +8,11 @@
 
 namespace App\Modules\Mvc;
 
-use App\Modules\ModuleArgument;
+
 use App\Modules\ModuleArgumentInterface;
-use App\Modules\ModuleResult;
 use App\Modules\ModuleResultInterface;
-use App\Modules\Mvc\Controller\ActionResultFactoryInterface;
-use App\Modules\Mvc\Controller\ActionResultInterface;
+use App\Modules\Mvc\Controller\ActionResult\ActionResultFactoryInterface;
+use App\Modules\Mvc\Controller\ActionResult\ActionResultInterface;
 use App\Modules\Mvc\Controller\MvcControllerFactory;
 use App\Modules\Mvc\Controller\MvcControllerFactoryInterface;;
 use App\Modules\Mvc\Routing\RoutingInterface;

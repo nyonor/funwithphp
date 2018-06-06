@@ -9,7 +9,8 @@
 namespace App\Modules\Mvc\View\Render;
 
 
-use App\Helpers\PathHelperInterface;
+use function App\Helpers\Globals\container;
+use App\Helpers\PathInterface;
 use App\Ioc\Ioc;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
@@ -31,7 +32,7 @@ final class TwigRender implements ViewRenderInterface
         $this->twig = new Twig_Environment($this->twigLoader);
 
         //регистрируем глобалы
-        $this->twig->addGlobal('path', Ioc::factory(PathHelperInterface::class));
+        $this->twig->addGlobal('path', container()->create(PathInterface::class));
     }
 
     public function render()

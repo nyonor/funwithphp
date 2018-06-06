@@ -13,10 +13,4 @@ use App\DAL\RepositoryInterface;
 
 interface ServiceWithRepositoryInterface
 {
-    /**
-     * @param string $repository_name
-     * @param string $connection_name
-     * @return RepositoryInterface
-     */
-    public function getRepository(string $repository_name, string $connection_name) : RepositoryInterface;
 }

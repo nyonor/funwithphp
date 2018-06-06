@@ -9,7 +9,54 @@
 namespace App\DAL;
 
 
+use Exception;
+use PDO;
+
 interface DbConnectionInterface
 {
-    public function queryList($sql, $args);
+
+    /**
+     * @param $sql
+     * @return $this
+     */
+    public function setQuery($sql);
+
+    /**
+     * @return $this
+     */
+    public function beginTransaction();
+
+    /**
+     * @return $this
+     */
+    public function commitTransaction();
+
+    /**
+     * @return $this
+     */
+    public function rollbackTransaction();
+
+    /**
+     * @param array $parameters_for_query_assoc_array
+     * @return $this
+     */
+    public function setParameters(array $parameters_for_query_assoc_array);
+
+    /**
+     * @param array|null $options
+     * @return $this
+     */
+    public function prepareQueryAndExecute(array $options = null);
+
+    /**
+     * @param $class_to_map
+     * @return array
+     */
+    public function getAsArrayOf($class_to_map);
+
+    /**
+     * @param $class_to_map
+     * @return mixed
+     */
+    public function getOneAs($class_to_map);
 }

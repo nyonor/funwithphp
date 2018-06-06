@@ -11,6 +11,7 @@ namespace App\Services;
 
 use App\DAL\RepositoryFactoryInterface;
 use App\DAL\RepositoryInterface;
+use App\Ioc\Ioc;
 
 class AbstractServiceWithRepository implements ServiceWithRepositoryInterface
 {
@@ -26,16 +27,5 @@ class AbstractServiceWithRepository implements ServiceWithRepositoryInterface
     public function __construct(RepositoryFactoryInterface $repository_factory)
     {
         $this->repositoryFactory = $repository_factory;
-    }
-
-
-    /**
-     * @param string $repository_name
-     * @param string $connection_name
-     * @return RepositoryInterface
-     */
-    public function getRepository(string $repository_name, string $connection_name): RepositoryInterface
-    {
-        return $this->repositoryFactory->create($repository_name, $connection_name);
     }
 }

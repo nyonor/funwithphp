@@ -27,8 +27,9 @@ class Config
 
     const ENV_DEBUG = 'Debug';
     const ENV_PRODUCTION = 'Production';
-
     const CURRENT_ENV = self::ENV_DEBUG;
+
+    const SALT_GLOBAL = '8**#2№№пш`]]Nasty';
 
     /*
      * Массив-связка: неймспейс к базовой директории.
@@ -56,12 +57,12 @@ class Config
      * ]
      */
     public static $projectSegments = [
-        'web' => [
+        'Web' => [
             'domain_name' => 'localhost:8080',
-            'view_path' => '/segments/nyo/web/Views',
+            'view_path' => '/segments/nyo/Web/Views',
             'autoload_data' => [
-                'Segments\Nyo\Web\\' . SEGMENT_CONTROLLERS_LAST_NAMESPACE => '/segments/nyo/backend/Controllers',
-                'Segments\Nyo\Web\\' . SEGMENT_VIEWS_LAST_NAMESPACE  => '/segments/nyo/backend/Views',
+                'Segments\Nyo\Web\\' . SEGMENT_CONTROLLERS_LAST_NAMESPACE => '/segments/nyo/Web/Controllers',
+                'Segments\Nyo\Web\\' . SEGMENT_VIEWS_LAST_NAMESPACE  => '/segments/nyo/Web/Views',
             ],
         ]
     ];
@@ -81,7 +82,7 @@ class Config
 
     public static function getDbConnectionSettings($db_type)
     {
-        if ($db_type == 'MYSQL') {
+        if ($db_type == 'MYSQL_PDO') {
             return [
                 'pdo' => [
                     'dsn' => 'mysql:host=127.0.0.1:3306;dbname=fightstarter_db',
