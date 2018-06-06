@@ -16,6 +16,7 @@ namespace Segments\Nyo\DAL\Repository;
 
 use App\DAL\RepositoryInterface;
 use Segments\Nyo\Model\UserModel;
+use Segments\Nyo\Services\Authorization\AuthorizationService;
 use Segments\Nyo\Services\Authorization\AuthorizationTypeEnum;
 
 interface UserRepositoryInterface extends RepositoryInterface
@@ -29,4 +30,13 @@ interface UserRepositoryInterface extends RepositoryInterface
      * @return UserModel
      */
     public function getUserById(int $id, AuthorizationTypeEnum $auth_type) : UserModel;
+
+    /**
+     * Добавить нового пользователя по типу авторизации
+     *
+     * @param AuthorizationTypeEnum $auth_type
+     * @param array $user_data
+     * @return UserModel
+     */
+    public function addUser(AuthorizationTypeEnum $auth_type, array $user_data) : UserModel;
 }

@@ -13,6 +13,7 @@ use App\Config\Config;
 use App\Helpers\KeyValueStorageInterface;
 use App\Ioc\Ioc;
 use App\Services\ServiceException;
+use Segments\Nyo\DAL\Repository\UserRepository;
 use Segments\Nyo\DAL\Repository\UserRepositoryInterface;
 use Segments\Nyo\Model\UserModel;
 
@@ -28,30 +29,32 @@ class AuthorizationService implements AuthorizationServiceInterface
      */
     protected $storage;
 
-    public function __construct(KeyValueStorageInterface $storage)
+    /** @var UserRepositoryInterface $userRepository */
+    protected $userRepository;
+
+    public function __construct(KeyValueStorageInterface $storage, UserRepositoryInterface $userRepository)
     {
         $this->storage = $storage;
+        $this->userRepository = $userRepository;
     }
 
     /**
      * @param int $user_id
      * @param AuthorizationTypeEnum $auth_type
+     * @return mixed
      * @throws ServiceException
      */
-    public function authorizeByUserId(int $user_id, AuthorizationTypeEnum $auth_type)
+    public function authorizeByUserId(int $user_id, AuthorizationTypeEnum $auth_type) : UserModel
     {
-        /** @var UserRepositoryInterface $user_repo */
-        $user_repo = Ioc::factory(UserRepositoryInterface::class);
-
         //пользователь найден в бд
-        $user_found = $user_repo->getUserById($user_id, $auth_type);
+        $user_found = $this->userRepository->getUserById($user_id, $auth_type);
         if (empty($user_found)) {
-            throw new ServiceException('User is not registered!');
+            throw new AuthorizationException('User is not registered!');
         }
 
         //проверим авторизован ли пользователь уже - если пользователь уже авторизован - бросаем ошибку
         if (empty($this->storage->get(self::USER_MODEL_KEY)) === false) {
-            throw new ServiceException('User already authorized!');
+            throw new AuthorizationException('User already authorized!');
         }
 
         //иначе сохраняем user_model в переданное хранилище(storage)
@@ -59,6 +62,8 @@ class AuthorizationService implements AuthorizationServiceInterface
 
         //обновляем сессию
         self::regenerateSession();
+
+        return $user_found;
     }
 
     /**

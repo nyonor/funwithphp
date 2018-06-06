@@ -13,6 +13,7 @@ namespace App\Modules\Mvc\Routing;
 
 
 use App\Config\Config;
+use function App\Helpers\Globals\container;
 use App\Http\RequestInterface;
 use App\Ioc\Ioc;
 
@@ -35,7 +36,7 @@ class Routing implements RoutingInterface
                 continue;
             }
 
-            $new_route = Ioc::factoryWithArgs(RouteInterface::class, $mapping_result);
+            $new_route = container()->create(RouteInterface::class, $mapping_result);
             return $new_route;
         }
     }
@@ -100,7 +101,7 @@ class Routing implements RoutingInterface
             'domain_name' => $request->getDomain()
         ];
 
-        $route_argument = Ioc::factoryWithArgs(RouteArgumentInterface::class, $arg);
+        $route_argument = container()->create(RouteArgumentInterface::class, $arg);
         return $route_argument;
     }
 

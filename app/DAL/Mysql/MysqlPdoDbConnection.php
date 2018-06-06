@@ -9,6 +9,7 @@
 namespace App\DAL\Mysql;
 
 
+use App\DAL\DbConnectionException;
 use Exception;
 use PDO;
 
@@ -100,6 +101,37 @@ class MysqlPdoDbConnection implements MysqlPdoDbConnectionInterface
         $query_subject = $this->getQuerySubject();
         $result = $query_subject->fetchObject($class_to_map);
         return $result;
+    }
+
+    /**
+     * @param string $table_name
+     * @return mixed
+     * @throws Exception
+     */
+    public function insert(string $table_name)
+    {
+        //формируем строку для перечисления полей
+        $fields = array_keys($this->queryParameters);
+        array_walk($fields, function($value, $index, $fields) {
+            $fields[$index] = "'".trim($value, ':')."''";
+        });
+        $fields = implode(',', $fields);
+
+        //формирование строки для перечисления значений
+        $values = implode(',', array_values($this->queryParameters));
+
+        //если строки для запросов не сформированы - бросаем исключения
+        if (empty($fields)) {
+            throw new DbConnectionException('Fields are empty! Cannot fabricate the query!');
+        }
+
+        if (empty($values)) {
+            throw new DbConnectionException('Values are empty! Cannot fabricate the query!');
+        }
+
+        //формируем запрос и выполняем команду
+        $this->setQuery('INSERT INTO ' . $table_name . ' (' . $fields . ') VALUE (' . $values . ')');
+        $this->prepareQueryAndExecute();
     }
 
     /**

@@ -35,9 +35,37 @@ $container
     ->bind(\App\Modules\Mvc\View\Render\ViewRenderInterface::class, \App\Modules\Mvc\View\Render\TwigRender::class)
     ->bind(\App\Modules\Mvc\Controller\ActionResult\ViewResultInterface::class, \App\Modules\Mvc\Controller\ActionResult\ViewResult::class)
     ->bind(\App\DAL\Mysql\MysqlPdoDbConnectionInterface::class, \App\DAL\Mysql\MysqlPdoDbConnection::class)
-    ->bind(\Segments\Nyo\Services\Authorization\AuthorizationServiceInterface::class, \Segments\Nyo\Services\Authorization\AuthorizationService::class)
-    ->bind(\Segments\Nyo\Services\Authorization\Vk\VkAuthorizationServiceInterface::class, \Segments\Nyo\Services\Authorization\Vk\VkAuthorizationService::class)
-    ->bind(\Segments\Nyo\Services\Registration\UserRegistrationServiceInterface::class, \Segments\Nyo\Services\Registration\UserRegistrationService::class);
+    ->bind(\App\Modules\Mvc\MvcModuleInterface::class, \App\Modules\Mvc\MvcModule::class)
+    ->bind(\App\DAL\DbConnectorInterface::class, \App\DAL\DbConnector::class)
+    ->bind(\App\Http\SessionInterface::class, function () {
+        return \App\Http\Session::getInstance();
+    })
+
+    //todo не системные бинды, перенести в сегменты
+    ->bind('registration_service', \Segments\Nyo\Services\Registration\UserRegistrationService::class)
+    ->bind('authorization_service', function () use ($container) {
+
+        $container->bind('user_repository', function() use ($container){
+            return new \Segments\Nyo\DAL\Repository\UserRepository();
+        });
+
+        return new \Segments\Nyo\Services\Authorization\AuthorizationService(
+            $container->create(\App\Http\SessionInterface::class),
+            $container->create('user_repository')
+        );
+    })
+    ->bind('vk_authorization_service', function () use ($container) {
+        $container
+            ->bind(\VK\OAuth\VKOAuth::class, \VK\OAuth\VKOAuth::class)
+            ->bind(\VK\Client\VKApiClient::class, \VK\Client\VKApiClient::class)
+            ->bind(\Segments\Nyo\Services\Authorization\Vk\VkAuthorizationServiceInterface::class,
+                \Segments\Nyo\Services\Authorization\Vk\VkAuthorizationService::class);
+
+        return $container->create(\Segments\Nyo\Services\Authorization\Vk\VkAuthorizationServiceInterface::class,
+            $container->create(\VK\Client\VKApiClient::class),
+            $container->create(\VK\OAuth\VKOAuth::class)
+        );
+    });
 
 //создание пайплайна, модулей, регистрация модулей в пайплайне
 /**

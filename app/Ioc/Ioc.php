@@ -11,74 +11,11 @@
 namespace App\Ioc;
 
 
-use App\DAL\DbConnectionInterface;
-use App\DAL\Mysql\MysqlPdoDbConnection;
-use App\DAL\Mysql\MysqlPdoDbConnectionInterface;
-use App\Helpers\Path;
-use App\Helpers\PathInterface;
 use App\Helpers\SingletonTrait;
-use App\Modules\ModuleArgument;
-use App\Modules\ModuleArgumentInterface;
-use App\Modules\Mvc\Controller\ActionResult\ActionResultFactory;
-use App\Modules\Mvc\Controller\ActionResult\ActionResultFactoryInterface;
-use App\Modules\Mvc\Controller\ActionResult\ViewResult;
-use App\Modules\Mvc\Controller\ActionResult\ViewResultInterface;
-use App\Modules\Mvc\Controller\MvcControllerFactory;
-use App\Modules\Mvc\Controller\MvcControllerFactoryInterface;
-use App\Modules\Mvc\MvcModule;
-use App\Modules\Mvc\MvcModuleInterface;
-use App\Http\Request;
-use App\Http\RequestInterface;
-use App\Http\Response;
-use App\Http\ResponseInterface;
-use App\Modules\Mvc\Routing\Route;
-use App\Modules\Mvc\Routing\RouteArgument;
-use App\Modules\Mvc\Routing\RouteArgumentInterface;
-use App\Modules\Mvc\Routing\RouteInterface;
-use App\Modules\Mvc\Routing\Routing;
-use App\Modules\Mvc\Routing\RoutingInterface;
-use App\Modules\Mvc\View\Render\TwigRender;
-use App\Modules\Mvc\View\Render\ViewRenderInterface;
-use App\Pipeline\Pipeline;
-use App\Pipeline\ModuleArgumentHandler;
-use App\Pipeline\ModuleArgumentHandlerInterface;
-use App\Pipeline\PipelineInterface;
-use App\Pipeline\ResponseHandler;
-use App\Pipeline\ResponseHandlerInterface;
-use Segments\Nyo\Services\Authorization\AuthorizationService;
-use Segments\Nyo\Services\Authorization\AuthorizationServiceInterface;
-use Segments\Nyo\Services\Authorization\Vk\VkAuthorizationService;
-use Segments\Nyo\Services\Authorization\Vk\VkAuthorizationServiceInterface;
-use Segments\Nyo\Services\Registration\UserRegistrationService;
-use Segments\Nyo\Services\Registration\UserRegistrationServiceInterface;
 
 class Ioc implements IocInterface
 {
     use SingletonTrait;
-
-    //todo видимо это должно быть вынесено в конфиг?
-    /*protected static $autoloadBinds = [
-        ActionResultFactoryInterface::class => ActionResultFactory::class,
-        ModuleArgumentHandlerInterface::class => ModuleArgumentHandler::class,
-        ModuleArgumentInterface::class => ModuleArgument::class,
-        MvcControllerFactoryInterface::class => MvcControllerFactory::class,
-        MvcModuleInterface::class => MvcModule::class,
-        PathInterface::class => Path::class,
-        PipelineInterface::class => Pipeline::class,
-        RoutingInterface::class => Routing::class,
-        RouteInterface::class => Route::class,
-        RouteArgumentInterface::class => RouteArgument::class,
-        RequestInterface::class => Request::class,
-        ResponseInterface::class => Response::class,
-        ResponseHandlerInterface::class => ResponseHandler::class,
-        ViewRenderInterface::class => TwigRender::class,
-        ViewResultInterface::class => ViewResult::class,
-        MysqlPdoDbConnectionInterface::class => MysqlPdoDbConnection::class,
-
-        AuthorizationServiceInterface::class => AuthorizationService::class,
-        VkAuthorizationServiceInterface::class => VkAuthorizationService::class,
-        UserRegistrationServiceInterface::class => UserRegistrationService::class
-    ];*/
 
     /** @var array $bindings */
     protected static $bindings = array();
@@ -98,17 +35,30 @@ class Ioc implements IocInterface
 
         //если не нашли - бросаем исключение
         if ($found === false) {
-            throw new IocException('No bindings found for provided key!');
+            throw new IocException('No bindings found for provided "'.$ioc_key.'" key!');
         }
 
-        //иначе создадим инстанс и вернем в качестве ответа
+        $subject = self::$bindings[$ioc_key];
+
+        $parameters_qty = count($parameter);
+
+        //если это функция
+        if (is_callable($subject)) {
+            if ($parameters_qty == 0) {
+                return $subject();
+            }
+
+            if ($parameters_qty > 0) {
+                return $subject(... $parameter);
+            }
+        }
+
+        //иначе создадим экземпляр и вернем в качестве ответа
         $instance = null;
-        if (count($parameter) > 1) {
-            $instance = new self::$bindings[$ioc_key](... $parameter);
-        } else if (count($parameter) == 1){
-            $instance = new self::$bindings[$ioc_key]($parameter);
+        if ($parameters_qty >= 1) {
+            $instance = new $subject(... $parameter);
         } else {
-            $instance = new self::$bindings[$ioc_key]();
+            $instance = new $subject();
         }
 
         return $instance;

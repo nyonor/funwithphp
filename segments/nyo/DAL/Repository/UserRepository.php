@@ -10,6 +10,7 @@ namespace Segments\Nyo\DAL\Repository;
 
 
 use App\DAL\AbstractRepository;
+use App\DAL\RepositoryException;
 use Segments\Nyo\Model\UserModel;
 use Segments\Nyo\Services\Authorization\AuthorizationTypeEnum;
 
@@ -34,8 +35,8 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
         $user_table_pk = $user_table_name . '_id';
 
         $this->dbConnection
-            ->setQuery('SELECT * FROM ' . $user_table_name . ' WHERE ' . $user_table_pk . ' = :user_id')
-            ->setParameters([':user_id' => $id]);
+                ->setQuery('SELECT * FROM ' . $user_table_name . ' WHERE ' . $user_table_pk . ' = :user_id')
+                ->setParameters([':user_id' => $id]);
 
         /** @var UserModel $db_result */
         $db_result = $this->dbConnection->getOneAs(UserModel::class);
@@ -59,5 +60,23 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
             default;
                 return null;
         }
+    }
+
+    /**
+     * Добавить нового пользователя по типу авторизации
+     *
+     * @param AuthorizationTypeEnum $auth_type
+     * @param array $user_data
+     * @return UserModel
+     */
+    public function addUser(AuthorizationTypeEnum $auth_type, array $user_data): UserModel
+    {
+        if ($auth_type->getValue() == AuthorizationTypeEnum::EXTERNAL_VK) {
+            $this->addExternalUserData();
+        }
+
+        $this->dbConnection->beginTransaction();
+
+        $this->dbConnection->setQuery('INSERT INTO ' . self::INTERNAL_USER_TABLE_NAME . '(:registration_date)VALUE()');
     }
 }

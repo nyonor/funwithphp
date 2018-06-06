@@ -13,6 +13,7 @@ namespace App\DAL;
 
 
 use App\DAL\Mysql\MysqlPdoDbConnection;
+use function App\Helpers\Globals\container;
 use App\Ioc\Ioc;
 
 abstract class AbstractRepository
@@ -42,7 +43,7 @@ abstract class AbstractRepository
         {
             $this->dbConnection = $db_connection;
         } else {
-            $this->dbConnector = Ioc::factory(DbConnectorInterface::class);
+            $this->dbConnector = container()->create(DbConnectorInterface::class);
             $this->dbConnection = $this->dbConnector->getConnection(MysqlPdoDbConnection::CONNECTION_NAME);
         }
     }

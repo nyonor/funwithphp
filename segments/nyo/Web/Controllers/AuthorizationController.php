@@ -9,7 +9,9 @@
 namespace Segments\Nyo\Web\Controllers;
 
 
+use function App\Helpers\Globals\container;
 use App\Http\Session;
+use App\Http\SessionInterface;
 use App\Ioc\Ioc;
 use App\Modules\Mvc\Controller\AbstractMvcController;
 use App\Services\ServiceException;
@@ -36,8 +38,8 @@ class AuthorizationController extends AbstractMvcController
         /**
          * @var $vk_auth_service VkAuthorizationService
          */
-        $vk_auth_service = Ioc::factoryWithVariadic(VkAuthorizationServiceInterface::class, Ioc::call(SessionInterface::class, 'getInstance'),
-            new VKOAuth());
+        $container = container();
+        $vk_auth_service = $container->create('vk_authorization_service');
 
         //начальный этап - авторизация пользователя и получение code
         if (empty($state)) {
@@ -59,6 +61,7 @@ class AuthorizationController extends AbstractMvcController
          *  array['access_token', 'user_id']
          * @var array $access_token_and_user_id_assoc_array
          */
+
         try {
             $access_token_and_user_id_assoc_array = $vk_auth_service->getAccessTokenAndUserId($code);
         } catch (ServiceException $e) {
@@ -68,14 +71,22 @@ class AuthorizationController extends AbstractMvcController
 
         //авторизуемся по user_id от VK.com
         /** @var AuthorizationServiceInterface $auth_service */
-        $auth_service = Ioc::factory(AuthorizationServiceInterface::class);
+        $auth_service = $container->create('authorization_service');
         $auth_type = new AuthorizationTypeEnum(AuthorizationTypeEnum::EXTERNAL_VK);
-        $user_authorized = $auth_service->authorizeByUserId($access_token_and_user_id_assoc_array['user_id'], $auth_type);
+        try {
+            $user_authorized = $auth_service->authorizeByUserId($access_token_and_user_id_assoc_array['user_id'], $auth_type);
+        } catch (ServiceException $e) {
+
+        }
+
 
         //если это новый пользователь, то зарегистрируем его
-        if (empty($user_authorized)) {
+        if ($user_authorized->userId == 0) {
             /** @var UserRegistrationServiceInterface $registration_service */
-            $registration_service = Ioc::factory(UserRegistrationServiceInterface::class);
+            $registration_service = $container->create('registration_service');
+
+            $user_authorized->pictureMiniPath =
+
             $registered_user = $registration_service
                                     ->registerAsVkUser(
                                         $access_token_and_user_id_assoc_array['user_id'],

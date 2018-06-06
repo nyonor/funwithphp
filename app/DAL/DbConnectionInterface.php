@@ -22,6 +22,12 @@ interface DbConnectionInterface
     public function setQuery($sql);
 
     /**
+     * @param string $table_name
+     * @return mixed
+     */
+    public function insert(string $table_name);
+
+    /**
      * @return $this
      */
     public function beginTransaction();

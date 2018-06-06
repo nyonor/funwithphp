@@ -151,10 +151,7 @@ class VkAuthorizationService implements VkAuthorizationServiceInterface
             throw new ServiceException('Cannot get access_token!');
         }
 
-        return [
-            'access_token'  => $answer->access_token,
-            'user_id'       => $answer->user_id
-        ];
+        return $answer;
     }
 
     /**
