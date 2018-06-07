@@ -77,6 +77,11 @@ class MysqlPdoDbConnection implements MysqlPdoDbConnectionInterface
         return $this;
     }
 
+    /**
+     * @param array|null $options
+     * @return $this
+     * @throws Exception
+     */
     public function prepareQueryAndExecute(array $options = null)
     {
         if (empty($this->sql)) {
@@ -132,6 +137,11 @@ class MysqlPdoDbConnection implements MysqlPdoDbConnectionInterface
         //формируем запрос и выполняем команду
         $this->setQuery('INSERT INTO ' . $table_name . ' (' . $fields . ') VALUE (' . $values . ')');
         $this->prepareQueryAndExecute();
+
+        //очищаем запросы и параметры
+        $this->reset();
+
+        return $this->connection->lastInsertId();
     }
 
     /**
@@ -149,5 +159,10 @@ class MysqlPdoDbConnection implements MysqlPdoDbConnectionInterface
         }
 
         return $query_subject;
+    }
+
+    protected function reset()
+    {
+        unset($this->sql, $this->queryParameters);
     }
 }

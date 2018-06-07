@@ -11,9 +11,9 @@
 namespace App\DAL;
 
 
-use Exception;
+use App\Helpers\Exceptions\AbstractStrictlyTypedException;
 
-class RepositoryException extends Exception
+class RepositoryException extends AbstractStrictlyTypedException
 {
 
 }

@@ -15,6 +15,8 @@ use App\Http\SessionInterface;
 use App\Ioc\Ioc;
 use App\Modules\Mvc\Controller\AbstractMvcController;
 use App\Services\ServiceException;
+use Segments\Nyo\Services\Authorization\AuthorizationException;
+use Segments\Nyo\Services\Authorization\AuthorizationExceptionCause;
 use Segments\Nyo\Services\Authorization\AuthorizationService;
 use Segments\Nyo\Services\Authorization\AuthorizationServiceInterface;
 use Segments\Nyo\Services\Authorization\AuthorizationTypeEnum;
@@ -72,20 +74,22 @@ class AuthorizationController extends AbstractMvcController
         //авторизуемся по user_id от VK.com
         /** @var AuthorizationServiceInterface $auth_service */
         $auth_service = $container->create('authorization_service');
-        $auth_type = new AuthorizationTypeEnum(AuthorizationTypeEnum::EXTERNAL_VK);
+
+        $auth_type = new AuthorizationTypeEnum(AuthorizationTypeEnum::EXTERNAL_VK());
+
         try {
             $user_authorized = $auth_service->authorizeByUserId($access_token_and_user_id_assoc_array['user_id'], $auth_type);
-        } catch (ServiceException $e) {
-
+        } catch (AuthorizationException $e) {
+            //если пользователь уже авторизован
+            if ($e->getCause() === AuthorizationExceptionCause::ALREADY_AUTHORIZED) {
+                return $this->redirect('Home', 'index');
+            }
         }
-
 
         //если это новый пользователь, то зарегистрируем его
         if ($user_authorized->userId == 0) {
             /** @var UserRegistrationServiceInterface $registration_service */
             $registration_service = $container->create('registration_service');
-
-            $user_authorized->pictureMiniPath =
 
             $registered_user = $registration_service
                                     ->registerAsVkUser(

@@ -35,8 +35,8 @@ interface UserRepositoryInterface extends RepositoryInterface
      * Добавить нового пользователя по типу авторизации
      *
      * @param AuthorizationTypeEnum $auth_type
-     * @param array $user_data
+     * @param UserModel $user_model
      * @return UserModel
      */
-    public function addUser(AuthorizationTypeEnum $auth_type, array $user_data) : UserModel;
+    public function addUser(AuthorizationTypeEnum $auth_type, UserModel $user_model) : UserModel;
 }

@@ -9,13 +9,8 @@
 namespace App\Services;
 
 
-use Exception;
-use Throwable;
+use App\Helpers\Exceptions\AbstractStrictlyTypedException;
 
-class ServiceException extends Exception
+class ServiceException extends AbstractStrictlyTypedException
 {
-    public function __construct(string $message = "", int $code = 0, Throwable $previous = null)
-    {
-        parent::__construct($message, $code, $previous);
-    }
 }

@@ -42,19 +42,19 @@ class AuthorizationService implements AuthorizationServiceInterface
      * @param int $user_id
      * @param AuthorizationTypeEnum $auth_type
      * @return mixed
-     * @throws ServiceException
+     * @throws AuthorizationException
      */
     public function authorizeByUserId(int $user_id, AuthorizationTypeEnum $auth_type) : UserModel
     {
         //пользователь найден в бд
         $user_found = $this->userRepository->getUserById($user_id, $auth_type);
         if (empty($user_found)) {
-            throw new AuthorizationException('User is not registered!');
+            throw new AuthorizationException(AuthorizationExceptionCause::NOT_REGISTERED());
         }
 
         //проверим авторизован ли пользователь уже - если пользователь уже авторизован - бросаем ошибку
         if (empty($this->storage->get(self::USER_MODEL_KEY)) === false) {
-            throw new AuthorizationException('User already authorized!');
+            throw new AuthorizationException(AuthorizationExceptionCause::ALREADY_AUTHORIZED());
         }
 
         //иначе сохраняем user_model в переданное хранилище(storage)

@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * Модель пользователя
  *
  * Created by PhpStorm.
  * User: cadistortion
@@ -14,7 +14,12 @@ namespace Segments\Nyo\Model;
 class UserModel
 {
     public $userId;
-    public $userVkId;
+    public $vkUserId;
+    public $registrationDate;
+    public $vkRegistrationDate;
     public $pictureMiniPath;
+    public $firstName;
+    public $secondName;
     public $nickName;
+    public $email;
 }

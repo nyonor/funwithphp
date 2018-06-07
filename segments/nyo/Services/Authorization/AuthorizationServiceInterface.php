@@ -35,6 +35,7 @@ interface AuthorizationServiceInterface
      * @param int $user_id
      * @param AuthorizationTypeEnum $auth_type
      * @return mixed
+     * @throws AuthorizationException
      */
     public function authorizeByUserId(int $user_id, AuthorizationTypeEnum $auth_type) : UserModel;
 }

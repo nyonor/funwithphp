@@ -1,5 +1,8 @@
 <?php
 /**
+ * Исключения, возникающие при авторизации
+ * пользователей в системе
+ *
  * Created by PhpStorm.
  * User: cadistortion
  * Date: 6/6/18
@@ -9,25 +12,17 @@
 namespace Segments\Nyo\Services\Authorization;
 
 
-use App\Services\ServiceException;
+use App\Helpers\Exceptions\AbstractStrictlyTypedException;
 use Throwable;
 
-class AuthorizationException extends ServiceException
+class AuthorizationException extends AbstractStrictlyTypedException
 {
-    const CAUSE_NOT_REGISTERED = 'User is not registered!';
-    const CAUSE_ALREADY_AUTHORIZED = 'User already authorized!';
-
     protected $currentCause;
 
-    public function __construct(string $cause, string $message = "", int $code = 0, Throwable $previous = null)
+    public function __construct(AuthorizationExceptionCause $cause, Throwable $previous = null)
     {
-        parent::__construct($message ?? $cause, $code, $previous);
+        parent::__construct($cause, $previous);
 
         $this->currentCause = $cause;
-    }
-
-    protected function getCause()
-    {
-        return $this->currentCause;
     }
 }

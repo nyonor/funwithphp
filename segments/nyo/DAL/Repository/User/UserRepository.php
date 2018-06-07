@@ -10,7 +10,9 @@ namespace Segments\Nyo\DAL\Repository;
 
 
 use App\DAL\AbstractRepository;
+use App\DAL\DbConnectionException;
 use App\DAL\RepositoryException;
+use App\DAL\RepositoryExceptionCause;
 use Segments\Nyo\Model\UserModel;
 use Segments\Nyo\Services\Authorization\AuthorizationTypeEnum;
 
@@ -47,6 +49,13 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
         return $result;
     }
 
+    /**
+     * Возвращает название таблицы в бд по переданному
+     * типу авторизации пользователя
+     *
+     * @param AuthorizationTypeEnum $auth_type
+     * @return null|string
+     */
     protected function getUserTableNameByAuthType(AuthorizationTypeEnum $auth_type)
     {
         switch ($auth_type->getValue())
@@ -66,17 +75,48 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
      * Добавить нового пользователя по типу авторизации
      *
      * @param AuthorizationTypeEnum $auth_type
-     * @param array $user_data
+     * @param UserModel $user_model
      * @return UserModel
+     * @throws RepositoryException
      */
-    public function addUser(AuthorizationTypeEnum $auth_type, array $user_data): UserModel
+    public function addUser(AuthorizationTypeEnum $auth_type, UserModel $user_model) : UserModel
     {
-        if ($auth_type->getValue() == AuthorizationTypeEnum::EXTERNAL_VK) {
-            $this->addExternalUserData();
+        try{
+            //проверка все ли нужные поля находятся в модели
+            if (!empty($user_model->userId)) {
+                throw new RepositoryException(RepositoryExceptionCause::ENTITY_ALREADY_EXISTS());
+                //todo
+            }
+
+            //стартуем транзакцию
+            $this->dbConnection->beginTransaction();
+
+            //создаем нового пользователя
+            $user_id = $this->dbConnection->insert('user');
+
+            //добавим данные по вк, если есть
+            if ($auth_type->getValue() == AuthorizationTypeEnum::EXTERNAL_VK) {
+                $this->dbConnection
+                        ->setParameters([':user_id' => $user_id])
+                        ->insert('user_vk');
+            }
+
+            //добавим данные в user_details
+            $user_details_id = $this->dbConnection
+                    ->setParameters([
+                        ':user_id' => $user_id,
+                        ':picture_mini_path' => $user_model->pictureMiniPath,
+                        ':first_name' => $user_model->firstName,
+                        ':second_name' => $user_model->secondName,
+                        ':email' => $user_model->email
+                    ])
+                    ->insert('user_details');
+
+            //коммитим транзакцию
+            $this->dbConnection->commitTransaction();
+        } catch (DbConnectionException $e) {
+            //если перехватываем ошибку - откатываем транзакцию
+            $this->dbConnection->rollbackTransaction();
         }
-
-        $this->dbConnection->beginTransaction();
-
-        $this->dbConnection->setQuery('INSERT INTO ' . self::INTERNAL_USER_TABLE_NAME . '(:registration_date)VALUE()');
     }
 }

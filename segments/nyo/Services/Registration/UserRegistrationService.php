@@ -10,6 +10,7 @@ namespace Segments\Nyo\Services\Registration;
 
 
 use App\DAL\RepositoryInterface;
+use function App\Helpers\Globals\container;
 use App\Ioc\Ioc;
 use App\Services\ServiceException;
 use App\Services\ServiceWithRepositoryInterface;
@@ -18,41 +19,8 @@ use Segments\Nyo\Model\UserModel;
 use Segments\Nyo\Services\Authorization\AuthorizationTypeEnum;
 use Segments\Nyo\Services\Authorization\Vk\VkAuthorizationServiceInterface;
 
-class UserRegistrationService implements UserRegistrationServiceInterface, ServiceWithRepositoryInterface
+class UserRegistrationService implements UserRegistrationServiceInterface
 {
-
-    /**
-     * @param string $authorization_type
-     * @param int|null $user_id
-     * @return UserModel
-     * @throws \Exception
-     */
-
-    /** @var AuthorizationTypeEnum $currentAuthorizationType */
-    protected $currentAuthorizationType;
-
-    /**
-     * Регистрирует пользователя в системе.
-     * Передавая
-     *
-     * @param string $authorization_type
-     * @param int $user_id
-     * @return UserModel
-     * @throws ServiceException
-     */
-    public function register(string $authorization_type, int $user_id = null): UserModel
-    {
-        $this->currentAuthorizationType = $authorization_type;
-
-        //если пользователь регистрируется через ВК
-        if ($authorization_type == AuthorizationTypeEnum::EXTERNAL_VK) {
-            $user_model = $this->registerAsVkUser($user_id);
-            return $user_model;
-        }
-
-        throw new ServiceException('Not supported authorization type!');
-    }
-
     /**
      * Регистрирует пользователя с помощью vk_client_id - идентификатора
      * пользователя соц. сети ВКОНТАКТЕ. и access_token - идентификатора для запросов
@@ -62,26 +30,32 @@ class UserRegistrationService implements UserRegistrationServiceInterface, Servi
      * @param $access_token
      * @param VkAuthorizationServiceInterface $vk_auth_service
      * @return UserModel
-     * @throws ServiceException
+     * @throws UserRegistrationException
      */
-    public function registerAsVkUser($vk_client_id, $access_token, VkAuthorizationServiceInterface $vk_auth_service) : UserModel
+    public function registerAsVkUser($vk_client_id,
+                                     $access_token,
+                                     VkAuthorizationServiceInterface $vk_auth_service) : UserModel
     {
+        $vk_auth_type = AuthorizationTypeEnum::EXTERNAL_VK();
+
         //найдем такого пользователя по id
         /** @var UserRepositoryInterface $user_repository */
-        $user_repository = Ioc::factory(UserRepositoryInterface::class);
-        $registered_user_model = $user_repository->getUserById($vk_client_id, $this->currentAuthorizationType);
+        $user_repository = container()->create('user_repository');
+        $user_model = $user_repository->getUserById($vk_client_id, $vk_auth_type);
 
         //если такой пользователь уже зарегистрирован, бросаем исключение
-        if (empty($registered_user_model) == false) {
-            throw new ServiceException('VK user with provided id is already registered!');
+        if (empty($user_model) == false) {
+            throw new UserRegistrationException(UserRegistrationExceptionCause::ALREADY_REGISTRED());
         }
 
         //проверим валидность переданных аргументов
         $vk_data_is_valid = $vk_auth_service->checkIsValid($vk_client_id, $access_token);
-
         if ($vk_data_is_valid == false) {
-            throw new ServiceException('Vk data for registration is not valid!');
+            throw new UserRegistrationException(UserRegistrationExceptionCause::DATA_IS_NOT_VALID());
         }
+
+        //получим все данные для регистрации
+        $registered_user_model = $user_repository->addUser($vk_auth_type, $user_model);
 
         return $registered_user_model;
     }
