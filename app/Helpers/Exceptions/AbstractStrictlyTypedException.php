@@ -33,10 +33,14 @@ abstract class AbstractStrictlyTypedException extends Exception
      * @param AbstractCause $cause
      * @param null|Throwable $previous
      */
-    public function __construct(AbstractCause $cause, Throwable $previous = null)
+    public function __construct(AbstractCause $cause = null, Throwable $previous = null)
     {
         $this->cause = $cause;
-        parent::__construct($this->cause->getValue(), $this->cause->getKey(), $previous);
+
+        $message = $this->cause != null ? $cause->getValue() : null;
+        $code = $this->cause != null ? $cause->getKey() : null;
+
+        parent::__construct($message, $code, $previous);
     }
 
     /**

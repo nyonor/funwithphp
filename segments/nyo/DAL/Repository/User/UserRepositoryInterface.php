@@ -11,12 +11,11 @@
  * Time: 6:32 PM
  */
 
-namespace Segments\Nyo\DAL\Repository;
+namespace Segments\Nyo\DAL\Repository\User;
 
 
 use App\DAL\RepositoryInterface;
-use Segments\Nyo\Model\UserModel;
-use Segments\Nyo\Services\Authorization\AuthorizationService;
+use Segments\Nyo\Model\User\UserModel;
 use Segments\Nyo\Services\Authorization\AuthorizationTypeEnum;
 
 interface UserRepositoryInterface extends RepositoryInterface

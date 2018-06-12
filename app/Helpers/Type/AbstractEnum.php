@@ -9,14 +9,9 @@
 namespace App\Helpers\Type;
 
 
-abstract class AbstractEnum
-{
-    protected $code;
-    protected $message;
+use MyCLabs\Enum\Enum;
+use SplEnum;
 
-    public function __construct($code, $message)
-    {
-        $this->code = $code;
-        $this->message = $message;
-    }
+abstract class AbstractEnum extends Enum
+{
 }

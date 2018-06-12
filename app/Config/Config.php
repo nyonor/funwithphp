@@ -85,7 +85,7 @@ class Config
         if ($db_type == 'MYSQL_PDO') {
             return [
                 'pdo' => [
-                    'dsn' => 'mysql:host=127.0.0.1:3306;dbname=fightstarter_db',
+                    'dsn' => 'mysql:host=mysql;port=3306;dbname=fightstarter_db',
                     'username' => 'askidans',
                     'password' => 'geekbrains',
                 ],

@@ -11,6 +11,7 @@ namespace App\DAL;
 
 use App\Config\Config;
 use App\DAL\Mysql\MysqlPdoDbConnectionInterface;
+use function App\Helpers\Globals\container;
 use App\Ioc\Ioc;
 
 class DbConnector implements DbConnectorInterface
@@ -23,7 +24,7 @@ class DbConnector implements DbConnectorInterface
     {
         switch ($db_type) {
             case('MYSQL_PDO'):
-                $mysql_connection = Ioc::factoryWithArgs(MysqlPdoDbConnectionInterface::class,
+                $mysql_connection = container()->create(MysqlPdoDbConnectionInterface::class,
                     Config::getDbConnectionSettings($db_type)['pdo']);
                 return $mysql_connection;
                 break;

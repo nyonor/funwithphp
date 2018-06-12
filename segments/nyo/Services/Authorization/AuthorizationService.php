@@ -11,10 +11,7 @@ namespace Segments\Nyo\Services\Authorization;
 
 use App\Config\Config;
 use App\Helpers\KeyValueStorageInterface;
-use App\Ioc\Ioc;
-use App\Services\ServiceException;
-use Segments\Nyo\DAL\Repository\UserRepository;
-use Segments\Nyo\DAL\Repository\UserRepositoryInterface;
+use Segments\Nyo\DAL\Repository\User\UserRepositoryInterface;
 use Segments\Nyo\Model\UserModel;
 
 class AuthorizationService implements AuthorizationServiceInterface

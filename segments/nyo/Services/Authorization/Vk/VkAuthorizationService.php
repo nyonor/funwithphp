@@ -144,7 +144,7 @@ class VkAuthorizationService implements VkAuthorizationServiceInterface
             $answer = $this->auth->getAccessToken(self::APP_ID, self::CLIENT_SECRET_KEY,
                 self::REDIRECT_URI, $auth_code);
         } catch (Exception $e) {
-            throw new ServiceException($e);
+            throw new ServiceException(null, $e);
         }
 
         if (empty($answer)) {

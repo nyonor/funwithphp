@@ -65,4 +65,10 @@ interface DbConnectionInterface
      * @return mixed
      */
     public function getOneAs($class_to_map);
+
+    /**
+     * Имя соединения
+     * @return string
+     */
+    public static function getConnectionName();
 }

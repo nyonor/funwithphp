@@ -6,14 +6,14 @@
  * Time: 6:56 PM
  */
 
-namespace Segments\Nyo\DAL\Repository;
+namespace Segments\Nyo\DAL\Repository\User;
 
 
 use App\DAL\AbstractRepository;
 use App\DAL\DbConnectionException;
 use App\DAL\RepositoryException;
 use App\DAL\RepositoryExceptionCause;
-use Segments\Nyo\Model\UserModel;
+use Segments\Nyo\Model\User\UserModel;
 use Segments\Nyo\Services\Authorization\AuthorizationTypeEnum;
 
 class UserRepository extends AbstractRepository implements UserRepositoryInterface

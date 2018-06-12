@@ -15,7 +15,7 @@ use PDO;
 
 class MysqlPdoDbConnection implements MysqlPdoDbConnectionInterface
 {
-    const CONNECTION_NAME = 'MYSQL';
+    const CONNECTION_NAME = 'MYSQL_PDO';
 
     protected $connectionSettings;
     protected $connection;
@@ -34,6 +34,11 @@ class MysqlPdoDbConnection implements MysqlPdoDbConnectionInterface
 //      $host = $this->connectionSettings['host'];
 //      $db = $this->connectionSettings['db'];
         $this->connection = new PDO($this->connectionSettings['dsn'], $username, $password);
+    }
+
+    public static function getConnectionName()
+    {
+        return self::CONNECTION_NAME;
     }
 
     /**

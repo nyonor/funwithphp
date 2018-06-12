@@ -75,7 +75,7 @@ class AuthorizationController extends AbstractMvcController
         /** @var AuthorizationServiceInterface $auth_service */
         $auth_service = $container->create('authorization_service');
 
-        $auth_type = new AuthorizationTypeEnum(AuthorizationTypeEnum::EXTERNAL_VK());
+        $auth_type = AuthorizationTypeEnum::EXTERNAL_VK();
 
         try {
             $user_authorized = $auth_service->authorizeByUserId($access_token_and_user_id_assoc_array['user_id'], $auth_type);

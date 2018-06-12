@@ -8,7 +8,7 @@
  * Time: 4:03 PM
  */
 
-namespace Segments\Nyo\Model;
+namespace Segments\Nyo\Model\User;
 
 
 class UserModel

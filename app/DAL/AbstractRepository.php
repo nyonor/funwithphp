@@ -44,7 +44,7 @@ abstract class AbstractRepository
             $this->dbConnection = $db_connection;
         } else {
             $this->dbConnector = container()->create(DbConnectorInterface::class);
-            $this->dbConnection = $this->dbConnector->getConnection(MysqlPdoDbConnection::CONNECTION_NAME);
+            $this->dbConnection = $this->dbConnector->getConnection(MysqlPdoDbConnection::getConnectionName());
         }
     }
 }

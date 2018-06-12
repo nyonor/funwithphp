@@ -45,11 +45,11 @@ $container
     ->bind('registration_service', \Segments\Nyo\Services\Registration\UserRegistrationService::class)
     ->bind('authorization_service', function () use ($container) {
 
-        $container->bind('user_repository', function() use ($container){
-            return new \Segments\Nyo\DAL\Repository\UserRepository();
-        });
+        $container->bind('user_repository', \Segments\Nyo\DAL\Repository\User\UserRepository::class);
+        $container->bind(\Segments\Nyo\Services\Authorization\AuthorizationServiceInterface::class,
+            \Segments\Nyo\Services\Authorization\AuthorizationService::class);
 
-        return new \Segments\Nyo\Services\Authorization\AuthorizationService(
+        return $container->create(\Segments\Nyo\Services\Authorization\AuthorizationServiceInterface::class,
             $container->create(\App\Http\SessionInterface::class),
             $container->create('user_repository')
         );
