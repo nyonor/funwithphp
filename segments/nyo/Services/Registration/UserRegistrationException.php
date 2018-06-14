@@ -9,7 +9,7 @@
 namespace Segments\Nyo\Services\Registration;
 
 
-use App\Helpers\Exceptions\AbstractCause;
+use App\Helpers\Exceptions\ExceptionCause;
 use App\Helpers\Exceptions\AbstractStrictlyTypedException;
 use Throwable;
 
@@ -17,10 +17,10 @@ class UserRegistrationException extends AbstractStrictlyTypedException
 {
     /**
      * UserRegistrationException constructor.
-     * @param UserRegistrationExceptionCause $cause
+     * @param ExceptionCause $cause
      * @param Throwable|null $previous
      */
-    public function __construct(UserRegistrationExceptionCause $cause, Throwable $previous = null)
+    public function __construct(ExceptionCause $cause = null, Throwable $previous = null)
     {
         /** @var TYPE_NAME $cause */
         parent::__construct($cause, $previous);

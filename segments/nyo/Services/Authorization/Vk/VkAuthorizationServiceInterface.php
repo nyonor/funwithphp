@@ -9,6 +9,8 @@
 namespace Segments\Nyo\Services\Authorization\Vk;
 
 
+use Segments\Nyo\Model\User\UserModel;
+
 interface VkAuthorizationServiceInterface
 {
     /**
@@ -20,4 +22,14 @@ interface VkAuthorizationServiceInterface
      * @return mixed
      */
     public function checkIsValid($vk_user_id, $access_token);
+
+    /**
+     * Получить данные пользователя по переданным параметрам
+     *
+     * @param $vk_client_id
+     * @param $access_token
+     * @param array|null $array
+     * @return array
+     */
+    public function getUserData($vk_client_id, $access_token, array $array = null);
 }

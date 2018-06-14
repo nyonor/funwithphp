@@ -49,10 +49,11 @@ interface DbConnectionInterface
     public function setParameters(array $parameters_for_query_assoc_array);
 
     /**
+     * @param null $sql
      * @param array|null $options
      * @return $this
      */
-    public function prepareQueryAndExecute(array $options = null);
+    public function prepareQuery($sql = null, array $options = null);
 
     /**
      * @param $class_to_map
@@ -61,10 +62,21 @@ interface DbConnectionInterface
     public function getAsArrayOf($class_to_map);
 
     /**
+     * @deprecated
      * @param $class_to_map
      * @return mixed
      */
     public function getOneAs($class_to_map);
+
+    /**
+     * @return array
+     */
+    public function getOneAsAssoc();
+
+    /**
+     * @return array
+     */
+    public function getAsAssocArray();
 
     /**
      * Имя соединения

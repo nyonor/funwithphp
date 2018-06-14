@@ -17,38 +17,38 @@ use Throwable;
 
 abstract class AbstractStrictlyTypedException extends Exception
 {
-    /** @var AbstractCause $cause */
+    /** @var ExceptionCause $cause */
     protected $cause;
 
     /**
      * Проверка, что переданная причина поддерживается
      * данным типом исключения
      *
-     * @param AbstractCause $cause
+     * @param ExceptionCause $cause
      */
 //    abstract protected function isValidCause(AbstractCause $cause);
 
     /**
      * StrictlyTypedException constructor.
-     * @param AbstractCause $cause
+     * @param ExceptionCause $cause
      * @param null|Throwable $previous
      */
-    public function __construct(AbstractCause $cause = null, Throwable $previous = null)
+    public function __construct(ExceptionCause $cause = null, Throwable $previous = null)
     {
         $this->cause = $cause;
 
         $message = $this->cause != null ? $cause->getValue() : null;
         $code = $this->cause != null ? $cause->getKey() : null;
 
-        parent::__construct($message, $code, $previous);
+        parent::__construct($message, null, $previous);
     }
 
     /**
      * Возвращает причину исключения
      *
-     * @return AbstractCause
+     * @return ExceptionCause
      */
-    public function getCause() : AbstractCause
+    public function getCause() : ExceptionCause
     {
         return $this->cause;
     }

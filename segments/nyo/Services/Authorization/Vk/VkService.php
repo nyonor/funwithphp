@@ -14,13 +14,16 @@ namespace Segments\Nyo\Services\Authorization\Vk;
 
 use App\Services\ServiceException;
 use Exception;
+use Segments\Nyo\Model\User\UserModel;
 use VK\Client\VKApiClient;
 use VK\Exceptions\VKApiException;
 use VK\Exceptions\VKClientException;
 use VK\OAuth\VKOAuth;
 
-class VkAuthorizationService implements VkAuthorizationServiceInterface
+class VkService implements VkAuthorizationServiceInterface
 {
+    protected static $serviceKey;
+
     protected $vkApi;
     protected $auth;
 
@@ -165,7 +168,9 @@ class VkAuthorizationService implements VkAuthorizationServiceInterface
     public function checkIsValid($vk_user_id, $access_token)
     {
         try {
-            $check_result = $this->vkApi->secure()->checkToken($access_token);
+            $check_result = $this->vkApi->secure()->checkToken($access_token, [
+
+            ]);
 
             if ($check_result->success != 1) {
                 return false;
@@ -182,6 +187,29 @@ class VkAuthorizationService implements VkAuthorizationServiceInterface
             return false;
         } catch (VKClientException $e) {
             return false;
+        }
+
+        return false;
+    }
+
+    /**
+     * Получить данные пользователя по переданным параметрам
+     *
+     * @param $vk_client_id
+     * @param $access_token
+     * @param array|null $array
+     * @return array
+     */
+    public function getUserData($vk_client_id, $access_token, array $array = null)
+    {
+        $result = [];
+        try {
+            $result = $this->vkApi->users()->get($access_token, ['fields' => implode(',', $array)]);
+            return $result;
+        } catch (VKApiException $e) {
+            return $result;
+        } catch (VKClientException $e) {
+            return $result;
         }
     }
 }

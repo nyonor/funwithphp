@@ -11,7 +11,7 @@
 namespace Segments\Nyo\Services\Authorization;
 
 
-use Segments\Nyo\Model\UserModel;
+use Segments\Nyo\Model\User\UserModel;
 
 interface AuthorizationServiceInterface
 {
@@ -38,4 +38,11 @@ interface AuthorizationServiceInterface
      * @throws AuthorizationException
      */
     public function authorizeByUserId(int $user_id, AuthorizationTypeEnum $auth_type) : UserModel;
+
+    /**
+     * Авторизован ли пользователь
+     *
+     * @return bool
+     */
+    public function isAuthorized();
 }

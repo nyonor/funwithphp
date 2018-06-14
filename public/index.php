@@ -54,12 +54,12 @@ $container
             $container->create('user_repository')
         );
     })
-    ->bind('vk_authorization_service', function () use ($container) {
+    ->bind('vk_service', function () use ($container) {
         $container
             ->bind(\VK\OAuth\VKOAuth::class, \VK\OAuth\VKOAuth::class)
             ->bind(\VK\Client\VKApiClient::class, \VK\Client\VKApiClient::class)
             ->bind(\Segments\Nyo\Services\Authorization\Vk\VkAuthorizationServiceInterface::class,
-                \Segments\Nyo\Services\Authorization\Vk\VkAuthorizationService::class);
+                \Segments\Nyo\Services\Authorization\Vk\VkService::class);
 
         return $container->create(\Segments\Nyo\Services\Authorization\Vk\VkAuthorizationServiceInterface::class,
             $container->create(\VK\Client\VKApiClient::class),

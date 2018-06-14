@@ -11,9 +11,9 @@
 namespace App\DAL;
 
 
-use App\Helpers\Exceptions\AbstractCause;
+use App\Helpers\Exceptions\ExceptionCause;
 
-class RepositoryExceptionCause extends AbstractCause
+class RepositoryExceptionCause extends ExceptionCause
 {
     public const ENTITY_ALREADY_EXISTS = 'Repository entity already exists!';
 }

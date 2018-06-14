@@ -9,7 +9,7 @@
 namespace Segments\Nyo\Services\Registration;
 
 
-use Segments\Nyo\Model\UserModel;
+use Segments\Nyo\Model\User\UserModel;
 use Segments\Nyo\Services\Authorization\Vk\VkAuthorizationServiceInterface;
 
 interface UserRegistrationServiceInterface

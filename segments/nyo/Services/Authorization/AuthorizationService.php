@@ -12,7 +12,7 @@ namespace Segments\Nyo\Services\Authorization;
 use App\Config\Config;
 use App\Helpers\KeyValueStorageInterface;
 use Segments\Nyo\DAL\Repository\User\UserRepositoryInterface;
-use Segments\Nyo\Model\UserModel;
+use Segments\Nyo\Model\User\UserModel;
 
 class AuthorizationService implements AuthorizationServiceInterface
 {
@@ -45,7 +45,7 @@ class AuthorizationService implements AuthorizationServiceInterface
     {
         //пользователь найден в бд
         $user_found = $this->userRepository->getUserById($user_id, $auth_type);
-        if (empty($user_found)) {
+        if ($user_found->userId == 0) {
             throw new AuthorizationException(AuthorizationExceptionCause::NOT_REGISTERED());
         }
 
@@ -93,5 +93,15 @@ class AuthorizationService implements AuthorizationServiceInterface
     public function authorizeByToken(string $token): UserModel
     {
         return $this->storage->get($token);
+    }
+
+    /**
+     * Авторизован ли пользователь
+     *
+     * @return bool
+     */
+    public function isAuthorized()
+    {
+        return empty($this->storage->get(self::USER_MODEL_KEY)) === false;
     }
 }

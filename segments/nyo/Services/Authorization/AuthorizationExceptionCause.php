@@ -12,9 +12,9 @@
 namespace Segments\Nyo\Services\Authorization;
 
 
-use App\Helpers\Exceptions\AbstractCause;
+use App\Helpers\Exceptions\ExceptionCause;
 
-class AuthorizationExceptionCause extends AbstractCause
+class AuthorizationExceptionCause extends ExceptionCause
 {
     const NOT_REGISTERED = 'User is not registered!';
     const ALREADY_AUTHORIZED = 'User already authorized!';

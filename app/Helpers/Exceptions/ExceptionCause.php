@@ -14,6 +14,7 @@ namespace App\Helpers\Exceptions;
 
 use MyCLabs\Enum\Enum;
 
-abstract class AbstractCause extends Enum
+class ExceptionCause extends Enum
 {
+    const INTERNAL_ERROR = "Internal error check info!";
 }

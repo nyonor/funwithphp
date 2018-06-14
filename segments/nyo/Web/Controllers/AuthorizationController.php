@@ -20,7 +20,7 @@ use Segments\Nyo\Services\Authorization\AuthorizationExceptionCause;
 use Segments\Nyo\Services\Authorization\AuthorizationService;
 use Segments\Nyo\Services\Authorization\AuthorizationServiceInterface;
 use Segments\Nyo\Services\Authorization\AuthorizationTypeEnum;
-use Segments\Nyo\Services\Authorization\Vk\VkAuthorizationService;
+use Segments\Nyo\Services\Authorization\Vk\VkService;
 use Segments\Nyo\Services\Authorization\Vk\VkAuthorizationServiceInterface;
 use Segments\Nyo\Services\Registration\UserRegistrationServiceInterface;
 use VK\Client\VKApiClient;
@@ -38,14 +38,14 @@ class AuthorizationController extends AbstractMvcController
     {
         //создадим сервис авторизации
         /**
-         * @var $vk_auth_service VkAuthorizationService
+         * @var $vk_service VkService
          */
         $container = container();
-        $vk_auth_service = $container->create('vk_authorization_service');
+        $vk_service = $container->create('vk_service');
 
         //начальный этап - авторизация пользователя и получение code
         if (empty($state)) {
-            return $this->redirectToUrl($vk_auth_service->getAuthorizationDialogUrl());
+            return $this->redirectToUrl($vk_service->getAuthorizationDialogUrl());
         }
 
         //была ли ошибка на каком то этапе авторизации
@@ -65,7 +65,7 @@ class AuthorizationController extends AbstractMvcController
          */
 
         try {
-            $access_token_and_user_id_assoc_array = $vk_auth_service->getAccessTokenAndUserId($code);
+            $access_token_and_user_id_assoc_array = $vk_service->getAccessTokenAndUserId($code);
         } catch (ServiceException $e) {
             return $this->redirect('Authorization', 'vk');
         }
@@ -95,11 +95,11 @@ class AuthorizationController extends AbstractMvcController
                                     ->registerAsVkUser(
                                         $access_token_and_user_id_assoc_array['user_id'],
                                         $access_token_and_user_id_assoc_array['access_token'],
-                                        $vk_auth_service
+                                        $vk_service
                                     );
 
             //авторизуемся
-            $auth_service->authorizeByUserId($registered_user->userId, $auth_type);
+            $auth_service->authorizeByUserId($registered_user->vkUserId, $auth_type);
         }
 
         //редирект на главную
