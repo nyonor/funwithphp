@@ -11,6 +11,7 @@ namespace Segments\Nyo\Services\Authorization;
 
 use App\Config\Config;
 use App\Helpers\KeyValueStorageInterface;
+use App\Http\SessionInterface;
 use Segments\Nyo\DAL\Repository\User\UserRepositoryInterface;
 use Segments\Nyo\Model\User\UserModel;
 
@@ -57,8 +58,11 @@ class AuthorizationService implements AuthorizationServiceInterface
         //иначе сохраняем user_model в переданное хранилище(storage)
         $this->storage->set(self::USER_MODEL_KEY, $user_found);
 
-        //обновляем сессию
-        self::regenerateSession();
+        if (is_a($this->storage, SessionInterface::class)) {
+            /** @var $session SessionInterface */
+            $session = $this->storage;
+            $session->regenerateSession();
+        }
 
         return $user_found;
     }
@@ -73,17 +77,6 @@ class AuthorizationService implements AuthorizationServiceInterface
     {
         return password_hash(password_hash($seed, PASSWORD_BCRYPT, ['salt' => Config::SALT_GLOBAL]),
             PASSWORD_BCRYPT);
-    }
-
-    /**
-     * Регенерирует сессию
-     *
-     * @return void
-     */
-    public static function regenerateSession()
-    {
-        //обновляем сессию
-        session_regenerate_id();
     }
 
     /**

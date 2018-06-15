@@ -81,7 +81,7 @@ class AuthorizationController extends AbstractMvcController
             $user_authorized = $auth_service->authorizeByUserId($access_token_and_user_id_assoc_array['user_id'], $auth_type);
         } catch (AuthorizationException $e) {
             //если пользователь уже авторизован
-            if ($e->getCause() === AuthorizationExceptionCause::ALREADY_AUTHORIZED) {
+            if ($e->getCause()->getValue() === AuthorizationExceptionCause::ALREADY_AUTHORIZED) {
                 return $this->redirect('Home', 'index');
             }
         }
@@ -99,7 +99,7 @@ class AuthorizationController extends AbstractMvcController
                                     );
 
             //авторизуемся
-            $auth_service->authorizeByUserId($registered_user->vkUserId, $auth_type);
+            $user_authorized = $auth_service->authorizeByUserId($registered_user->vkUserId, $auth_type);
         }
 
         //редирект на главную

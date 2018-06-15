@@ -17,6 +17,13 @@ class Session implements SessionInterface
 {
     use SingletonTrait;
 
+    protected function __construct()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+
     /**
      * Установить значение по ключу
      *
