@@ -26,13 +26,20 @@ final class TwigRender implements ViewRenderInterface
     protected $twigLoader;
     protected $twig;
 
-    public function __construct()
+    public function __construct(array $helpers)
     {
         $this->twigLoader = new Twig_Loader_Filesystem(null, getcwd().'/..');
         $this->twig = new Twig_Environment($this->twigLoader);
 
-        //регистрируем глобалы
-        $this->twig->addGlobal('path', container()->create(PathInterface::class));
+        //регистрируем хелперы
+
+        //globals
+        foreach ($helpers['globals'] as $key => $val) {
+            $this->twig->addGlobal($key, $val);
+        }
+
+        $this->twig->addExtension(new \Twig_Extension_Debug());
+
     }
 
     public function render()

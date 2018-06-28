@@ -9,6 +9,7 @@
 namespace App\Modules\Mvc\Controller;
 
 use Exception;
+
 class ControllerException extends Exception
 {
 

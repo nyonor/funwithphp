@@ -13,7 +13,7 @@ use Exception;
 
 abstract class AbstractActionResult
 {
-    protected $isSuccessful = false;
+    protected $isSuccessful = true;
 
     /**
      * @var $exception Exception

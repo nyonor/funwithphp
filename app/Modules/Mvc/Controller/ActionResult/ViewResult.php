@@ -36,24 +36,14 @@ final class ViewResult extends AbstractActionResult implements ViewResultInterfa
 
     public function getResult()
     {
-        try {
-
-            if (empty($this->renderedContent)){
-                $this->render->setTemplatesPath($this->options['templates_path']);
-                $this->render->setViewName($this->options['view_name']);
-                $this->render->setViewModel($this->options['view_model']);
-                $this->renderedContent = $this->render->render();
-            }
-
-            $this->isSuccessful = true;
-
-            return $this->renderedContent;
-
-        } catch (Exception $e) {
-            $this->isSuccessful = false;
-        } finally {
-            return $this->renderedContent;
+        if (empty($this->renderedContent)){
+            $this->render->setTemplatesPath($this->options['templates_path']);
+            $this->render->setViewName($this->options['view_name']);
+            $this->render->setViewModel($this->options['view_model']);
+            $this->renderedContent = $this->render->render();
         }
+
+        return $this->renderedContent;
     }
 
     public function isSuccessful(): bool

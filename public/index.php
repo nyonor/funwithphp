@@ -32,7 +32,17 @@ $container
     ->bind(\App\Http\RequestInterface::class, \App\Http\Request::class)
     ->bind(\App\Http\ResponseInterface::class, \App\Http\Response::class)
     ->bind(\App\Pipeline\ResponseHandlerInterface::class, \App\Pipeline\ResponseHandler::class)
-    ->bind(\App\Modules\Mvc\View\Render\ViewRenderInterface::class, \App\Modules\Mvc\View\Render\TwigRender::class)
+    ->bind(\App\Modules\Mvc\View\Render\ViewRenderInterface::class, function () use ($container){
+        $parameters = [
+            'globals' => [
+                'path' => $container->create(\App\Helpers\PathInterface::class),
+                'storage' => $container->create(\App\Http\SessionInterface::class)
+            ]
+        ];
+
+        $container->bind(\App\Modules\Mvc\View\Render\TwigRender::class, \App\Modules\Mvc\View\Render\TwigRender::class);
+        return $container->create(\App\Modules\Mvc\View\Render\TwigRender::class, $parameters);
+    })
     ->bind(\App\Modules\Mvc\Controller\ActionResult\ViewResultInterface::class, \App\Modules\Mvc\Controller\ActionResult\ViewResult::class)
     ->bind(\App\DAL\Mysql\MysqlPdoDbConnectionInterface::class, \App\DAL\Mysql\MysqlPdoDbConnection::class)
     ->bind(\App\Modules\Mvc\MvcModuleInterface::class, \App\Modules\Mvc\MvcModule::class)

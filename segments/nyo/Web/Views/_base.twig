@@ -19,9 +19,14 @@
         FIGHTSTARTER
     </a>
 
-    <a target="_parent" href="/authorization/vk" class="float-right">
-        Войти через VK
-    </a>
+    {% set picture_path = storage.get('user_model').pictureMiniPath %}
+        {%  if picture_path == null %}
+            <a target="_parent" href="/authorization/vk" class="float-right">
+                Войти через VK
+            </a>
+        {% else %}
+            <img src="{{ picture_path }}" class="rounded-circle" alt="Ваш аватар">
+        {% endif %}
 </nav>
 
 <div class="container">
