@@ -75,7 +75,8 @@ $container
             $container->create(\VK\Client\VKApiClient::class),
             $container->create(\VK\OAuth\VKOAuth::class)
         );
-    });
+    })
+	->bind('user_model', \Segments\Nyo\Model\User\UserModel::class);
 
 //создание пайплайна, модулей, регистрация модулей в пайплайне
 /**

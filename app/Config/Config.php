@@ -78,6 +78,7 @@ class Config
         'bootstrap' => '/assets/bootstrap',
         'images' => '/assets/images',
         'icons' => '/assets/images/icons',
+	    'the_app' => '/assets/fightstarter/dist/fightstarter',
     ];
 
     public static function getDbConnectionSettings($db_type)

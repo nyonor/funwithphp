@@ -13,6 +13,7 @@ use App\DAL\AbstractRepository;
 use App\DAL\DbConnectionException;
 use App\DAL\RepositoryException;
 use App\DAL\RepositoryExceptionCause;
+use function App\Helpers\Globals\container;
 use Segments\Nyo\Model\User\UserModel;
 use Segments\Nyo\Services\Authorization\AuthorizationTypeEnum;
 
@@ -31,7 +32,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
      */
     public function getUserById(int $id, AuthorizationTypeEnum $auth_type): UserModel
     {
-        $result = new UserModel();
+        $result = container()->create('user_model');
 
         //$user_table_name = $this->getUserTableNameByAuthType($auth_type);
         //$user_table_pk = $user_table_name . '_id';

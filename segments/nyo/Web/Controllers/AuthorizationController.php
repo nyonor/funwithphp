@@ -15,6 +15,7 @@ use App\Http\SessionInterface;
 use App\Ioc\Ioc;
 use App\Modules\Mvc\Controller\AbstractMvcController;
 use App\Services\ServiceException;
+use Segments\Nyo\Model\User\UserModel;
 use Segments\Nyo\Services\Authorization\AuthorizationException;
 use Segments\Nyo\Services\Authorization\AuthorizationExceptionCause;
 use Segments\Nyo\Services\Authorization\AuthorizationService;
@@ -77,12 +78,15 @@ class AuthorizationController extends AbstractMvcController
 
         $auth_type = AuthorizationTypeEnum::EXTERNAL_VK();
 
+        $user_authorized = $container->create('user_model');
         try {
             $user_authorized = $auth_service->authorizeByUserId($access_token_and_user_id_assoc_array['user_id'], $auth_type);
         } catch (AuthorizationException $e) {
             //если пользователь уже авторизован
             if ($e->getCause()->getValue() === AuthorizationExceptionCause::ALREADY_AUTHORIZED) {
                 return $this->redirect('Home', 'index');
+            } else {
+            	// todo ???
             }
         }
 

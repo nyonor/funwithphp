@@ -1,0 +1,17 @@
+{% extends '_base.twig' %}
+
+{% block content%}
+
+    <app-root></app-root>
+
+{% endblock %}
+
+{% block js %}
+
+    <script type="text/javascript" src="{{ path.getAssetFile('the_app', 'runtime.js') }}"></script>
+    <script type="text/javascript" src="{{ path.getAssetFile('the_app', 'polyfills.js') }}"></script>
+    <script type="text/javascript" src="{{ path.getAssetFile('the_app', 'styles.js') }}"></script>
+    <script type="text/javascript" src="{{ path.getAssetFile('the_app', 'vendor.js') }}"></script>
+    <script type="text/javascript" src="{{ path.getAssetFile('the_app', 'main.js') }}"></script>
+
+{% endblock %}
